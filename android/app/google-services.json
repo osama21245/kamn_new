@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "1036256826353",
+    "project_id": "kman-ab86f",
+    "storage_bucket": "kman-ab86f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036256826353:android:17aa0c5ebb09ce06f26a50",
+        "android_client_info": {
+          "package_name": "cloud.osamagamil.kman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036256826353-bpv93fp334pq2jhbir8ia0kr1jn4ik0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cloud.osamagamil.kman",
+            "certificate_hash": "28ead12a7678abb5545f679df9e1c87a958de2df"
+          }
+        },
+        {
+          "client_id": "1036256826353-im4tr9ss7c3s993m520nblo57he6g42n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cloud.osamagamil.kman",
+            "certificate_hash": "e1bbdae908ac49928162136e7f4e7cbc1403777d"
+          }
+        },
+        {
+          "client_id": "1036256826353-ts0d6s2rluvam2h43rlcvpmvo2h6v4p9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cloud.osamagamil.kman",
+            "certificate_hash": "589a0dba5ecdd2da0bf7a31c9e32124a993e54f0"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtzXztWsC3Rj-KFQ_aQtzq1uqRShKxjCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036256826353-ars1076idu2qhefnqh73jn2l934u2jdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
