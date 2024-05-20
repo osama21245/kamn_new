@@ -40,6 +40,9 @@ class _EditCollaboratorStateScreenState
     WidgetRef ref,
   ) {
     ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("4", userId!.text, context);
+    ref
         .watch(coachesGymsControllerProvider.notifier)
         .activeCoach(widget.id, userId!.text, context);
   }
@@ -47,6 +50,9 @@ class _EditCollaboratorStateScreenState
   activeGym(
     WidgetRef ref,
   ) {
+    ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("5", userId!.text, context);
     ref
         .watch(coachesGymsControllerProvider.notifier)
         .activegym(widget.id, userId!.text, context);
@@ -56,29 +62,31 @@ class _EditCollaboratorStateScreenState
     WidgetRef ref,
   ) {
     ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("6", userId!.text, context);
+    ref
         .watch(benefitsControllerProvider.notifier)
         .activeMedical(widget.id, userId!.text, context);
-  }
-
-  activeSports(WidgetRef ref) async {
-    ref
-        .watch(authControllerProvider.notifier)
-        .updateUserServiceStatus("4", userId!.text, context);
-    ref
-        .watch(benefitsControllerProvider.notifier)
-        .activeSports(widget.id, userId!.text, context);
   }
 
   activeNutrition(
     WidgetRef ref,
   ) {
     ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("7", userId!.text, context);
+    ref
         .watch(benefitsControllerProvider.notifier)
         .activeNutrition(widget.id, userId!.text, context);
+  }
 
+  activeSports(WidgetRef ref) async {
     ref
         .watch(authControllerProvider.notifier)
-        .updateUserServiceStatus("5", userId!.text, context);
+        .updateUserServiceStatus("8", userId!.text, context);
+    ref
+        .watch(benefitsControllerProvider.notifier)
+        .activeSports(widget.id, userId!.text, context);
   }
 
   activeGround(

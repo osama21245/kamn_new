@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
 
 import '../../../../core/common/textfield.dart';
+import '../../../../core/providers/valid.dart';
 import '../../../../models/prices_model copy.dart';
 import '../../../../theme/pallete.dart';
 
@@ -32,6 +33,7 @@ class _CustomAddGymPlansButtonState
   TextEditingController? planTime;
   TextEditingController? discount;
   TextEditingController? points;
+  GlobalKey<FormState> formstate = GlobalKey<FormState>();
   String gym = "Mix";
 
   @override
@@ -80,6 +82,33 @@ class _CustomAddGymPlansButtonState
           context);
     }
 
+    void addPlan() {
+      if (formstate.currentState!.validate()) {
+        widget.gymPricesModel.planDescriptions.add(description!.text);
+        widget.gymPricesModel.planName.add(plan!.text);
+        widget.gymPricesModel.prices.add(price!.text);
+        widget.gymPricesModel.discount.add(discount!.text);
+        widget.gymPricesModel.points.add(points!.text);
+        widget.gymPricesModel.ismix.add(gym);
+        widget.gymPricesModel.planTime.add(planTime!.text);
+        updatePricesBenefits(
+            widget.gymPricesModel.prices,
+            widget.gymPricesModel.planName,
+            widget.gymPricesModel.planDescriptions,
+            widget.gymPricesModel.discount,
+            widget.gymPricesModel.points,
+            widget.gymPricesModel.ismix,
+            widget.gymPricesModel.planTime);
+        price!.clear();
+        plan!.clear();
+        description!.clear();
+        discount!.clear();
+        points!.clear();
+        planTime!.clear();
+        Get.back();
+      }
+    }
+
     List<String> gymList = [
       'Mix',
       'Separeted',
@@ -87,153 +116,148 @@ class _CustomAddGymPlansButtonState
 
     Size size = MediaQuery.of(context).size;
     return ElevatedButton(
-      onPressed: () => Get.bottomSheet(Container(
-        padding: EdgeInsets.all(10),
-        height: size.height * 0.48,
-        child: ListView(
-          children: [
-            TextFiled(
-              name: "Plan",
-              controller: plan!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.height * 0.02,
-            ),
-            TextFiled(
-              name: "Description",
-              controller: description!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            TextFiled(
-              name: "Points",
-              controller: points!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.height * 0.01,
-            ),
-            TextFiled(
-              name: "price",
-              controller: price!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.width * 0.02,
-            ),
-            TextFiled(
-              name: "discount",
-              controller: discount!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.width * 0.03,
-            ),
-            TextFiled(
-              name: "PlanTime",
-              controller: planTime!,
-              color: Pallete.lightgreyColor2,
-            ),
-            SizedBox(
-              height: size.width * 0.03,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Pallete.fontColor),
-                  borderRadius: BorderRadius.circular(size.width * 0.02)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: DropdownButton(
-                  underline: Text(""),
-                  style: TextStyle(
-                      color: Pallete.lightgreyColor2,
-                      fontFamily: "Muller",
-                      fontSize: size.width * 0.037,
-                      fontWeight: FontWeight.w500),
-                  isExpanded: true,
-                  value: gym,
-                  focusColor: const Color.fromARGB(0, 255, 192, 192),
-                  items: gymList.map((gen) {
-                    return DropdownMenuItem(
-                      value: gen,
-                      child: Text(gen),
-                      onTap: () {
-                        if (gen == gymList[0]) {
-                          gym = gymList[0];
-                        } else if (gen == gymList[1]) {
-                          gym = gymList[1];
-                        }
-                        setState(() {});
-                      },
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      gym = value!;
-                    });
-                  },
-                ),
+      onPressed: () => Get.bottomSheet(Form(
+        key: formstate,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          height: size.height * 0.48,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: Pallete.listofGridientCard,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                transform: const GradientRotation(3.14 / 4)),
+          ),
+          child: ListView(
+            children: [
+              TextFiled(
+                name: "Plan",
+                controller: plan!,
+                color: Pallete.lightgreyColor2,
               ),
-            ),
-            SizedBox(
-              height: size.width * 0.03,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  widget.gymPricesModel.planDescriptions.add(description!.text);
-                  widget.gymPricesModel.planName.add(plan!.text);
-                  widget.gymPricesModel.prices.add(price!.text);
-                  widget.gymPricesModel.discount.add(discount!.text);
-                  widget.gymPricesModel.points.add(points!.text);
-                  widget.gymPricesModel.ismix.add(gym);
-                  widget.gymPricesModel.planTime.add(planTime!.text);
-                  updatePricesBenefits(
-                      widget.gymPricesModel.prices,
-                      widget.gymPricesModel.planName,
-                      widget.gymPricesModel.planDescriptions,
-                      widget.gymPricesModel.discount,
-                      widget.gymPricesModel.points,
-                      widget.gymPricesModel.ismix,
-                      widget.gymPricesModel.planTime);
-                  price!.clear();
-                  plan!.clear();
-                  description!.clear();
-                  discount!.clear();
-                  points!.clear();
-                  planTime!.clear();
-                  Get.back();
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              TextFiled(
+                name: "Description",
+                controller: description!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              TextFiled(
+                validator: (val) {
+                  return validinput(val!, 1, 500, "int");
                 },
-                child: Text(
-                  'Add',
-                  style: TextStyle(
-                      color: Pallete.whiteColor,
-                      fontFamily: "Muller",
-                      fontSize: size.width * 0.05,
-                      fontWeight: FontWeight.w600),
-                ),
-                style: ElevatedButton.styleFrom(
-                    fixedSize: Size(size.width * 0.6, size.height * 0.04),
-                    backgroundColor: Color.fromARGB(255, 52, 180, 189),
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(size.width * 0.02))),
+                name: "Points",
+                controller: points!,
+                color: Pallete.lightgreyColor2,
               ),
-            ),
-          ],
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: Pallete.listofGridientCard,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              transform: GradientRotation(3.14 / 4)),
+              SizedBox(
+                height: size.height * 0.01,
+              ),
+              TextFiled(
+                validator: (val) {
+                  return validinput(val!, 1, 500, "int");
+                },
+                name: "price",
+                controller: price!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.width * 0.02,
+              ),
+              TextFiled(
+                validator: (val) {
+                  return validinput(val!, 1, 500, "int");
+                },
+                name: "discount",
+                controller: discount!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.width * 0.03,
+              ),
+              TextFiled(
+                name: "PlanTime",
+                controller: planTime!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.width * 0.03,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Pallete.fontColor),
+                    borderRadius: BorderRadius.circular(size.width * 0.02)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                  child: DropdownButton(
+                    underline: const Text(""),
+                    style: TextStyle(
+                        color: Pallete.lightgreyColor2,
+                        fontFamily: "Muller",
+                        fontSize: size.width * 0.037,
+                        fontWeight: FontWeight.w500),
+                    isExpanded: true,
+                    value: gym,
+                    focusColor: const Color.fromARGB(0, 255, 192, 192),
+                    items: gymList.map((gen) {
+                      return DropdownMenuItem(
+                        value: gen,
+                        child: Text(gen),
+                        onTap: () {
+                          if (gen == gymList[0]) {
+                            gym = gymList[0];
+                          } else if (gen == gymList[1]) {
+                            gym = gymList[1];
+                          }
+                          setState(() {});
+                        },
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        gym = value!;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: size.width * 0.03,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () => addPlan(),
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(size.width * 0.6, size.height * 0.04),
+                    backgroundColor: const Color.fromARGB(255, 52, 180, 189),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(size.width * 0.02),
+                    ),
+                  ),
+                  child: Text(
+                    'Add',
+                    style: TextStyle(
+                        color: Pallete.whiteColor,
+                        fontFamily: "Muller",
+                        fontSize: size.width * 0.05,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       )),
+      style: ElevatedButton.styleFrom(
+          fixedSize: Size(size.width * 0.6, size.height * 0.04),
+          backgroundColor: Pallete.primaryColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(size.width * 0.02))),
       child: Row(
         children: [
           Image.asset(
@@ -250,11 +274,6 @@ class _CustomAddGymPlansButtonState
           ),
         ],
       ),
-      style: ElevatedButton.styleFrom(
-          fixedSize: Size(size.width * 0.6, size.height * 0.04),
-          backgroundColor: Pallete.primaryColor,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(size.width * 0.02))),
     );
   }
 }

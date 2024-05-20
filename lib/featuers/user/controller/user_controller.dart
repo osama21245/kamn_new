@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
+import 'package:kman/models/inbox_model.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,11 @@ final getUserJoindGroundsProvider = FutureProvider.family((ref, String uid) =>
 
 final getUserDataProviderr = FutureProvider.family((ref, String uid) =>
     ref.watch(userControllerProvider.notifier).getUserData(uid));
+
+//inBox
+
+final getInBoxMessagesProviderr = FutureProvider.family((ref, String uid) =>
+    ref.watch(userControllerProvider.notifier).getInBoxMessages(uid));
 
 final userControllerProvider =
     StateNotifierProvider<UserController, StatusRequest>((ref) =>
@@ -64,16 +71,43 @@ class UserController extends StateNotifier<StatusRequest> {
     });
   }
 
-  // Future<List<ReserveModel>> getUserResevisions() {
-  //   final user = _ref.watch(usersProvider);
-  //   return _userRepository.getUserResevisions(user!.uid);
-  // }
-
   Future<List<ReserveModel>> getuserJoindGrounds(String uid) {
     return _userRepository.getUserJoinedGrounds(uid);
   }
 
   Future<UserModel> getUserData(String userId) {
     return _userRepository.getUserData(userId);
+  }
+
+  //inBox
+  void sendInboxToUser(String title, String description, bool isImageEnter,
+      File imageFile, BuildContext context) async {
+    final user = _ref.watch(usersProvider);
+    String image = "";
+    final id = Uuid().v1();
+    if (isImageEnter) {
+      final resImage = await _storageRepository.storeFile(
+          path: "Inbox", id: id, file: imageFile);
+
+      resImage.fold((l) => showSnackBar(l.toString(), context), (r) {
+        image = r;
+      });
+    }
+
+    InBoxModel inBoxModel = InBoxModel(
+        id: id,
+        title: title,
+        image: image,
+        description: description,
+        userId: user!.uid,
+        sentAt: DateTime.now());
+    final res = await _userRepository.sendInboxToUser(inBoxModel);
+
+    res.fold((l) => showSnackBar(l.message, context),
+        (r) => showSnackBar("send message success", context));
+  }
+
+  Future<List<InBoxModel>> getInBoxMessages(String userId) {
+    return _userRepository.getInBoxMessages(userId);
   }
 }

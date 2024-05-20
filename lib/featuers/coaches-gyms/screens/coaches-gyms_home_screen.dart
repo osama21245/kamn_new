@@ -10,6 +10,7 @@ import 'package:kman/featuers/coaches-gyms/screens/coach/add_coach_screen.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_gyms.dart';
 import 'package:kman/theme/pallete.dart';
+import '../../../core/class/alex_regions_lists.dart';
 import '../../../core/class/statusrequest.dart';
 import '../../../core/providers/checkInternet.dart';
 import '../../play/widget/play/custom_play_serarch.dart';
@@ -166,54 +167,37 @@ class _CoachesGymsHomeScreenState extends ConsumerState<CoachesGymsHomeScreen> {
                 ),
               ],
             ),
-            InkWell(
-                onTap: () => showSearch(
-                    context: context,
-                    delegate: status == CoachesGymsFilterStatus.Coaches
-                        ? SearchCoachDelegate(ref, "coach", size)
-                        : SearchGymDelegate(ref, "gym", size)),
-                child: CustomPlaySearch(
-                  size: size,
-                  category: status.name,
-                )),
+            CustomPlaySearch(
+              onSearchPress: () => showSearch(
+                  context: context,
+                  delegate: status == CoachesGymsFilterStatus.Coaches
+                      ? SearchCoachDelegate(ref, "coach", size)
+                      : SearchGymDelegate(ref, "gym", size)),
+              onfilterPress: () {
+                showMenu<String>(
+                  color: Colors.blue[300],
+                  context: context,
+                  position: RelativeRect.fromLTRB(15, 20, 30, 60),
+                  items: alexandriaRegions.map((region) {
+                    return PopupMenuItem(
+                      value: region,
+                      child: Text(region),
+                    );
+                  }).toList(),
+                ).then((selectedValue) {
+                  if (selectedValue != null) {
+                    setState(() {
+                      region = selectedValue;
+                    });
+                  }
+                });
+              },
+              size: size,
+              category: status.name,
+            ),
             SizedBox(
               height: size.height * 0.01,
             ),
-            //        Container(
-            //   decoration: BoxDecoration(
-            //     border: Border.all(color: Pallete.fontColor),
-            //     borderRadius: BorderRadius.circular(size.width * 0.02),
-            //   ),
-            //   child: Padding(
-            //     padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            //     child: DropdownButton(
-            //       underline: Text(""),
-            //       style: TextStyle(
-            //         color: Pallete.lightgreyColor2,
-            //         fontFamily: "Muller",
-            //         fontSize: size.width * 0.037,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            //       isExpanded: true,
-            //       value: region,
-            //       focusColor: const Color.fromARGB(0, 255, 192, 192),
-            //       items: alexandriaRegions.map((region) {
-            //         return DropdownMenuItem(
-            //           value: region,
-            //           child: Text(region),
-            //         );
-            //       }).toList(),
-            //       onChanged: (value) {
-            //         setState(() {
-            //           region = value!;
-            //         });
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: size.height * 0.01,
-            // ),
             HandlingDataView(
                 statusRequest: statusRequest,
                 widget: status == CoachesGymsFilterStatus.Coaches

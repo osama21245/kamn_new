@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/core/faliure.dart';
 import 'package:kman/core/providers/firebase_providers.dart';
 import 'package:kman/core/type_def.dart';

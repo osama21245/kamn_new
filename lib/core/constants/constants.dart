@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Constants {
   static const logoPath = 'assets/images/logo.png';
@@ -9,6 +8,10 @@ class Constants {
   static const bannerDefault =
       'https://0samaahmed.com/webphotos/kamn_backGround_image.png';
   static const avatarDefault = 'https://0samaahmed.com/webphotos/kamn_new.jpg';
+
+  static const store1 = 'https://0samaahmed.com/webphotos/shop1.png';
+  static const store2 = 'https://0samaahmed.com/webphotos/shop2.png';
+  static const defpro = 'https://0samaahmed.com/webphotos/defpro.png';
 
   static const Color cafeBrown = Color(0xff632B13);
   // static const bannerDefault =
@@ -34,8 +37,8 @@ class Constants {
     'til': '${Constants.awardsPath}/til.png',
   };
 
-  static const CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(31.193838, 29.898432),
-    zoom: 14.4746,
-  );
+  // static const CameraPosition kGooglePlex = CameraPosition(
+  //   target: LatLng(31.193838, 29.898432),
+  //   zoom: 14.4746,
+  // );
 }

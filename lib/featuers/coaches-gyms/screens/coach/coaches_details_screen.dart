@@ -15,7 +15,7 @@ import 'package:kman/models/coache_model.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/common/update_gallery_screen.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../theme/pallete.dart';
 
 import '../../../play/widget/play/showrating.dart';
@@ -96,7 +96,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
             CustomUpperSec(
               size: size,

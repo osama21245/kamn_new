@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/core/common/custom_uppersec.dart';
-import 'package:kman/featuers/add_serviceprovider/screens/serviceprovider_requests.dart';
-import '../../../core/class/orders_categoriy.dart';
-import '../../../theme/pallete.dart';
-import '../../play/widget/play_home/custom_home_card.dart';
+import 'package:kman/featuers/serviceprovider/screens/add_serviceprovider/serviceprovider_requests.dart';
+import '../../../../core/class/orders_categoriy.dart';
+import '../../../../theme/pallete.dart';
+import '../../../play/widget/play_home/custom_home_card.dart';
 import 'grounds_categories_request_screen.dart';
 
 class AcceptChooseYourServiceScreen extends ConsumerWidget {

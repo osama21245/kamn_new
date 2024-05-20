@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import '../../../../HandlingDataView.dart';
 import '../../../../core/class/alex_regions_lists.dart';
+import '../../../../core/common/custom_map.dart';
 import '../../../../core/common/textfield.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../core/providers/utils.dart';
 import '../../../../core/providers/valid.dart';
 import '../../../../theme/pallete.dart';
@@ -27,10 +29,7 @@ class _AddgymsLocationsScreenState
     extends ConsumerState<AddgymsLocationsScreen> {
   GlobalKey<FormState> formstate = GlobalKey<FormState>();
   TextEditingController? fullname;
-
   TextEditingController? whatssAppnum;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? address;
   TextEditingController? instgramLink;
   TextEditingController? facebookLink;
@@ -46,8 +45,6 @@ class _AddgymsLocationsScreenState
     facebookLink = TextEditingController();
     dynamicLink = TextEditingController();
     fullname = TextEditingController();
-    lat = TextEditingController();
-    long = TextEditingController();
     address = TextEditingController();
 
     super.initState();
@@ -58,8 +55,6 @@ class _AddgymsLocationsScreenState
     dynamicLink!.dispose();
     facebookLink!.dispose();
     whatssAppnum!.dispose();
-    lat!.dispose();
-    long!.dispose();
     address!.dispose();
     instgramLink!.dispose();
     fullname!.dispose();
@@ -77,8 +72,6 @@ class _AddgymsLocationsScreenState
             address!.text,
             widget.image,
             widget.gymId,
-            double.parse(lat!.text),
-            double.parse(long!.text),
             facebookLink!.text,
             dynamicLink!.text,
             region,
@@ -147,28 +140,6 @@ class _AddgymsLocationsScreenState
                   validator: (val) {
                     return validinput(val!, 1, 500, "");
                   },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "address",
                   controller: address!,
                   color: Pallete.lightgreyColor2,
@@ -227,7 +198,7 @@ class _AddgymsLocationsScreenState
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: DropdownButton(
-                      underline: Text(""),
+                      underline: const Text(""),
                       style: TextStyle(
                           color: Pallete.lightgreyColor2,
                           fontFamily: "Muller",
@@ -270,7 +241,7 @@ class _AddgymsLocationsScreenState
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: DropdownButton(
-                      underline: Text(""),
+                      underline: const Text(""),
                       style: TextStyle(
                         color: Pallete.lightgreyColor2,
                         fontFamily: "Muller",
@@ -309,7 +280,7 @@ class _AddgymsLocationsScreenState
                   height: size.height * 0.023,
                 ),
                 galleryList.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                         height: size.height * 0.3,
                         width: size.width,
                         child: GridView.builder(
@@ -317,7 +288,7 @@ class _AddgymsLocationsScreenState
                             physics: const AlwaysScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                     childAspectRatio: 0.54, crossAxisCount: 2),
                             itemBuilder: (context, index) {
                               return Image.file(
@@ -349,14 +320,6 @@ class _AddgymsLocationsScreenState
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => pickimagesfromGallery(context),
-                    child: Text(
-                      'Add cv images',
-                      style: TextStyle(
-                          color: Pallete.whiteColor,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600),
-                    ),
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
@@ -366,12 +329,30 @@ class _AddgymsLocationsScreenState
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
+                    child: Text(
+                      'Add cv images',
+                      style: TextStyle(
+                          color: Pallete.whiteColor,
+                          fontFamily: "Muller",
+                          fontSize: size.width * 0.05,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
+                ),
+                const CustomGoogleMaps(
+                  collection: Collections.gymCollection,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => setGymLocation(ref),
+                    style: ElevatedButton.styleFrom(
+                        elevation: 5,
+                        fixedSize: Size(size.width, size.height * 0.06),
+                        backgroundColor: Pallete.primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(size.width * 0.02))),
                     child: Text(
                       'Finish',
                       style: TextStyle(
@@ -380,13 +361,6 @@ class _AddgymsLocationsScreenState
                           fontSize: size.width * 0.05,
                           fontWeight: FontWeight.w600),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: Pallete.primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02))),
                   ),
                 ),
               ],

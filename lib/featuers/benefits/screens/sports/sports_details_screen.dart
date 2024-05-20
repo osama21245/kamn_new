@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/class/statusrequest.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:kman/featuers/benefits/screens/sports/update_sports_screen.dart';
@@ -115,7 +115,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
         body: HandlingDataView(
       statusRequest: statusRequest,
       widget: SafeArea(
-          child: Column(
+          child: ListView(
         children: [
           CustomUpperSec(
             size: size,

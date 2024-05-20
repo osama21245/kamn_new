@@ -8,7 +8,7 @@ import 'package:kman/models/medical_model.dart';
 import '../../../../core/common/custom_elevated_button.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
@@ -98,7 +98,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
     final user = ref.watch(usersProvider);
     return Scaffold(
       body: SafeArea(
-          child: Column(
+          child: ListView(
         children: [
           CustomUpperSec(
             size: size,

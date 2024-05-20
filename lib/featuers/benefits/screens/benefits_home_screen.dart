@@ -12,6 +12,7 @@ import 'package:kman/featuers/benefits/screens/sports/add_sports_screen.dart';
 import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_medical.dart';
 import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_nutrition.dart';
 import 'package:kman/theme/pallete.dart';
+import '../../../core/class/alex_regions_lists.dart';
 import '../../../core/class/statusrequest.dart';
 import '../../../core/providers/checkInternet.dart';
 import '../../play/widget/play/custom_play_serarch.dart';
@@ -176,52 +177,34 @@ class _BenefitsHomeScreenState extends ConsumerState<BenefitsHomeScreen> {
                 ),
               ],
             ),
-            InkWell(
-              onTap: () => showSearch(
+            CustomPlaySearch(
+              onfilterPress: () {
+                showMenu<String>(
+                  color: Colors.blue[300],
+                  context: context,
+                  position: RelativeRect.fromLTRB(15, 20, 30, 60),
+                  items: alexandriaRegions.map((region) {
+                    return PopupMenuItem(
+                      value: region,
+                      child: Text(region),
+                    );
+                  }).toList(),
+                ).then((selectedValue) {
+                  if (selectedValue != null) {
+                    setState(() {
+                      region = selectedValue;
+                    });
+                  }
+                });
+              },
+              onSearchPress: () => showSearch(
                   context: context,
                   delegate: status == BenefitsFilterStatus.Medical
                       ? SearchMedicalDelegate(ref, "medical", size)
                       : SearchNutiritionDelegate(ref, "nutrition", size)),
-              child: CustomPlaySearch(
-                size: size,
-                category: status.name,
-              ),
+              size: size,
+              category: status.name,
             ),
-            // SizedBox(
-            //   height: size.height * 0.01,
-            // ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //     border: Border.all(color: Pallete.fontColor),
-            //     borderRadius: BorderRadius.circular(size.width * 0.02),
-            //   ),
-            //   child: Padding(
-            //     padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            //     child: DropdownButton(
-            //       underline: Text(""),
-            //       style: TextStyle(
-            //         color: Pallete.lightgreyColor2,
-            //         fontFamily: "Muller",
-            //         fontSize: size.width * 0.037,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            //       isExpanded: true,
-            //       value: region,
-            //       focusColor: const Color.fromARGB(0, 255, 192, 192),
-            //       items: alexandriaRegions.map((region) {
-            //         return DropdownMenuItem(
-            //           value: region,
-            //           child: Text(region),
-            //         );
-            //       }).toList(),
-            //       onChanged: (value) {
-            //         setState(() {
-            //           region = value!;
-            //         });
-            //       },
-            //     ),
-            //   ),
-            // ),
             SizedBox(
               height: size.height * 0.01,
             ),
@@ -229,11 +212,11 @@ class _BenefitsHomeScreenState extends ConsumerState<BenefitsHomeScreen> {
                 statusRequest: statusRequest,
                 widget: status == BenefitsFilterStatus.Medical
                     ? CustomGetMedical(
-                        region: "All",
+                        region: region,
                         fromOrders: false,
                       )
                     : CustomGetNutrition(
-                        region: "All",
+                        region: region,
                         fromOrders: false,
                       ))
           ],

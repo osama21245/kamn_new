@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/core/class/statusrequest.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/core/providers/storage_repository.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:kman/models/sports_model.dart';

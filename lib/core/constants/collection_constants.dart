@@ -4,4 +4,5 @@ class Collections {
   static const sportsCollection = 'sports';
   static const medicalCollection = 'medical';
   static const nutritionCollection = 'nutrition';
+  static const playCollection = 'play';
 }

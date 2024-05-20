@@ -6,7 +6,7 @@ import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/models/gym_locations_model.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/update_gallery_screen.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../models/prices_model copy.dart';
 import '../../../../theme/pallete.dart';

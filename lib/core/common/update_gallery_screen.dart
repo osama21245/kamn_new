@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/core/common/custom_update_gallery_uppersec.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
 import '../providers/storage_repository.dart';

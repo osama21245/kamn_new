@@ -5,8 +5,7 @@ import 'package:get/get.dart';
 import 'package:kman/drawer/widget/custom_drawer_text.dart';
 import 'package:kman/featuers/auth/screens/login_screen.dart';
 import 'package:kman/featuers/orders/screens/my_reservisions_screens.dart';
-import '../featuers/add_serviceprovider/screens/Accept_choose_your_service_screen.dart';
-import '../featuers/add_serviceprovider/screens/user_make_request_screen.dart';
+import 'package:kman/featuers/serviceprovider/screens/show_serviceprovider_store/serviceprovider_stores_screen.dart';
 import '../featuers/auth/controller/auth_controller.dart';
 import '../featuers/orders/screens/choose_order_screen.dart';
 import '../featuers/orders/screens/service_provider_orders_screen.dart';
@@ -14,6 +13,7 @@ import '../featuers/orders/screens/service_provider_reservisions/service_provide
 import '../featuers/orders/screens/service_provider_reservisions/service_provider_sports_reservision_screen.dart';
 import '../featuers/play/widget/home/custom_home_uppersection.dart';
 import '../featuers/post/screens/add_post_screeen.dart';
+import '../featuers/user/screens/inbox/inbox_screen.dart';
 import '../featuers/user/screens/myplay_screen.dart';
 import '../theme/pallete.dart';
 
@@ -65,6 +65,30 @@ class ProfileDrawer extends ConsumerWidget {
                                   title: "Add posts",
                                 ),
                               ),
+                            //   InkWell(
+                            //   onTap: () => Get.to(() => InBoxScreen()),
+                            //   child: CustomDrawerText(
+                            //     size: size,
+                            //     title: "Inbox",
+                            //   ),
+                            // ),
+                            //   if(user.state!="1"||user.state!="2"||user.state!="0")
+                            //    InkWell(
+                            //   onTap: () =>
+                            //       Get.to(() => ServiceProviderStoresScreen()),
+                            //   child: CustomDrawerText(
+                            //     size: size,
+                            //     title: "My Store",
+                            //   ),
+                            // ),
+                            InkWell(
+                              onTap: () =>
+                                  Get.to(() => MyReservisionsScreens()),
+                              child: CustomDrawerText(
+                                size: size,
+                                title: "My Reservisions",
+                              ),
+                            ),
                             InkWell(
                               onTap: () =>
                                   Get.to(() => MyReservisionsScreens()),

@@ -6,6 +6,8 @@ import 'package:kman/featuers/play/widget/play/showrating.dart';
 import 'package:kman/models/coache_model.dart';
 import 'package:kman/theme/pallete.dart';
 
+import '../../../../core/constants/constants.dart';
+
 class CustomCoachesCard extends ConsumerWidget {
   CoacheModel coacheModel;
   CustomCoachesCard({
@@ -113,7 +115,9 @@ class CustomCoachesCard extends ConsumerWidget {
                     child: Center(
                       child: CircleAvatar(
                           backgroundColor: Pallete.primaryColor,
-                          radius: size.width * 0.1,
+                          radius: coacheModel.image == Constants.defpro
+                              ? size.width * 0.14
+                              : size.width * 0.1,
                           backgroundImage:
                               CachedNetworkImageProvider(coacheModel.image)),
                     ),

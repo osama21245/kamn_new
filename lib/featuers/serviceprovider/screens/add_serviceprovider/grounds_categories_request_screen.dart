@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kman/core/class/categories.dart';
-import 'package:kman/featuers/add_serviceprovider/screens/serviceprovider_requests.dart';
+import 'package:kman/featuers/serviceprovider/screens/add_serviceprovider/serviceprovider_requests.dart';
 import 'package:kman/featuers/play/screens/add_ground_screen.dart';
 import 'package:kman/theme/pallete.dart';
-import '../../../core/common/custom_uppersec.dart';
-import '../../play/widget/play_home/custom_home_card.dart';
+import '../../../../core/common/custom_uppersec.dart';
+import '../../../play/widget/play_home/custom_home_card.dart';
 
 class GroundCategoriesRequestScreen extends StatelessWidget {
   final bool isUser;

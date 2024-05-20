@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kman/core/class/statusrequest.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/homemain.dart';
 import 'package:kman/models/medical_model.dart';
@@ -452,14 +452,8 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     }
   }
 
-  setNutritionOffers(
-      String title,
-      String description,
-      String price,
-      String discount,
-      String nutritionId,
-      BuildContext context,
-      File filelogo) async {
+  setNutritionOffers(String title, String description, String discount,
+      String nutritionId, BuildContext context, File filelogo) async {
     final id = Uuid().v1();
     String logo = "";
     state = StatusRequest.loading;
@@ -520,7 +514,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setMedical(
       BuildContext context,
-      File filelogo,
+      File? filelogo,
       int price,
       String name,
       String experience,
@@ -533,8 +527,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
       String dynamicLink,
       String instgramLink,
       String whatssAppNumber,
-      double lat,
-      double long,
       List<File> fileGallery,
       bool fromAsk) async {
     state = StatusRequest.loading;
@@ -542,16 +534,17 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     String id = Uuid().v1();
     int iteration = 0;
     final user = _ref.read(usersProvider);
-    String logo = "";
+    String logo = Constants.store1;
 
     //get image
+    if (filelogo != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.medicalCollection, id: id, file: filelogo);
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.medicalCollection, id: id, file: filelogo);
-
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      logo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        logo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       String imgId = Uuid().v4();
@@ -599,7 +592,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setNutrition(
       BuildContext context,
-      File fileNutritionImage,
+      File? fileNutritionImage,
       String name,
       String about,
       String specialization,
@@ -608,8 +601,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
       String region,
       String whatsAppNumber,
       String dynamicLink,
-      double lat,
-      double long,
       int discount,
       List<File> fileGallery,
       bool fromAsk) async {
@@ -617,18 +608,20 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final user = _ref.read(usersProvider);
     String id = Uuid().v1();
     List<String> gallery = [];
-    String photo = "";
+    String photo = Constants.store1;
     int iteration = 0;
     //get image
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.nutritionCollection,
-        id: id,
-        file: fileNutritionImage);
+    if (fileNutritionImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.nutritionCollection,
+          id: id,
+          file: fileNutritionImage);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      photo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        photo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       final res = await _storageRepository.storeFile(
@@ -673,15 +666,13 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setSports(
       BuildContext context,
-      File fileSportsImage,
+      File? fileSportsImage,
       String name,
       String about,
       String faceBook,
       String instgram,
       String whatsAppNumber,
       String dynamicLink,
-      double lat,
-      double long,
       int discount,
       List<File> fileGallery,
       String region,
@@ -690,16 +681,18 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     String id = Uuid().v1();
     int iteration = 0;
     final user = _ref.read(usersProvider);
-    String photo = "";
+    String photo = Constants.store1;
     List<String> gallery = [];
     // // get image
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.sportsCollection, id: id, file: fileSportsImage);
+    if (fileSportsImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.sportsCollection, id: id, file: fileSportsImage);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      photo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        photo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       final res = await _storageRepository.storeFile(

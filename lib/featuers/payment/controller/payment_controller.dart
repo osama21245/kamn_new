@@ -1,18 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/featuers/payment/screens/mobile_wallet_screen.dart';
-import 'package:kman/featuers/payment/screens/toggle_screen.dart';
 import 'package:kman/featuers/payment/screens/visa_screen.dart';
 import 'package:kman/models/passorder_model.dart';
 import 'package:kman/models/qr_order_model.dart';
-import '../../../core/constants/routesname.dart';
 import '../../../core/data/payment_data.dart';
 import '../../../core/providers/handlingdata.dart';
 import '../../../core/providers/storage_repository.dart';
-import '../../../theme/pallete.dart';
 import '../screens/ref_code_screen.dart';
 import '../screens/valu_screen.dart';
 
@@ -220,7 +215,7 @@ class paymentController extends StateNotifier<StatusRequest> {
   //***********************************Mobile WAllet ***************************** */
 
   getidMobileWallet(String price, String phone, PassOrderModel passOrderModel,
-      String collection) async {
+      String collection, QrOrderModel qrOrderModel) async {
     state = StatusRequest.loading;
     var response = await paymentdata.getid(token, price);
     print("==================$response");
@@ -229,7 +224,8 @@ class paymentController extends StateNotifier<StatusRequest> {
       if (response["id"] != "") {
         orderPaymentid = response['id'].toString();
         print("=================1");
-        paymentMobileWallet(price, phone, passOrderModel, collection);
+        paymentMobileWallet(
+            price, phone, passOrderModel, collection, qrOrderModel);
       } else {
         Get.defaultDialog(title: "Warning", middleText: "Erorr at connect");
       }
@@ -237,7 +233,7 @@ class paymentController extends StateNotifier<StatusRequest> {
   }
 
   paymentMobileWallet(String price, String phone, PassOrderModel passOrderModel,
-      String collection) async {
+      String collection, QrOrderModel qrOrderModel) async {
     state = StatusRequest.loading;
     var response = await paymentdata.getpayment(
         orderPaymentid, token, mobileWalletintegrationid, price);
@@ -247,15 +243,15 @@ class paymentController extends StateNotifier<StatusRequest> {
       if (response["token"] != "") {
         finaltoken = response['token'];
         print(finaltoken);
-        mobileWallet(phone, passOrderModel, collection);
+        mobileWallet(phone, passOrderModel, collection, qrOrderModel);
       } else {
         Get.defaultDialog(title: "Warning", middleText: "erorr at connect");
       }
     }
   }
 
-  mobileWallet(
-      String phone, PassOrderModel passOrderModel, String collection) async {
+  mobileWallet(String phone, PassOrderModel passOrderModel, String collection,
+      QrOrderModel qrOrderModel) async {
     state = StatusRequest.loading;
     var response = await paymentdata.mobileWalletPayment(finaltoken, phone);
     print("==================$response");
@@ -264,6 +260,7 @@ class paymentController extends StateNotifier<StatusRequest> {
       redirectMobileWalletUrl = response['redirect_url'];
       print("===============$redirectMobileWalletUrl");
       Get.to(() => MobileWalletScreen(
+            qrOrderModel: qrOrderModel,
             collection: collection,
             url: redirectMobileWalletUrl,
             passOrderModel: passOrderModel,

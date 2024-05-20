@@ -6,7 +6,9 @@ import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import '../../../../HandlingDataView.dart';
 import '../../../../core/class/alex_regions_lists.dart';
+import '../../../../core/common/custom_map.dart';
 import '../../../../core/common/textfield.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../core/providers/utils.dart';
 import '../../../../core/providers/valid.dart';
 import '../../../../theme/pallete.dart';
@@ -31,8 +33,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
   TextEditingController? specialization;
   TextEditingController? dynamicLink;
   TextEditingController? discount;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? about;
   List<File> galleryList = [];
   File? logo;
@@ -46,8 +46,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
     dynamicLink = TextEditingController();
     fullname = TextEditingController();
     discount = TextEditingController();
-    lat = TextEditingController();
-    long = TextEditingController();
     about = TextEditingController();
     super.initState();
   }
@@ -61,8 +59,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
     specialization!.dispose();
     fullname!.dispose();
     discount!.dispose();
-    lat!.dispose();
-    long!.dispose();
     about!.dispose();
     super.dispose();
   }
@@ -72,7 +68,7 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
     if (Formdata!.validate()) {
       ref.watch(benefitsControllerProvider.notifier).setNutrition(
           context,
-          logo!,
+          logo,
           fullname!.text,
           about!.text,
           specialization!.text,
@@ -81,8 +77,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
           region,
           whatsAppNumber!.text,
           dynamicLink!.text,
-          double.parse(lat!.text),
-          double.parse(long!.text),
           int.parse(discount!.text),
           galleryList,
           widget.fromAsk);
@@ -181,9 +175,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "faceBook",
                   controller: faceBook!,
                   color: Pallete.lightgreyColor2,
@@ -192,9 +183,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "instgram",
                   controller: instgram!,
                   color: Pallete.lightgreyColor2,
@@ -203,9 +191,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "whatsAppNumber",
                   controller: whatsAppNumber!,
                   color: Pallete.lightgreyColor2,
@@ -214,9 +199,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "dynamicLink",
                   controller: dynamicLink!,
                   color: Pallete.lightgreyColor2,
@@ -226,29 +208,7 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                 ),
                 TextFiled(
                   validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
+                    return validinput(val!, 1, 500, "int");
                   },
                   name: "discount",
                   controller: discount!,
@@ -266,7 +226,7 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: DropdownButton(
-                      underline: Text(""),
+                      underline: const Text(""),
                       style: TextStyle(
                         color: Pallete.lightgreyColor2,
                         fontFamily: "Muller",
@@ -302,7 +262,7 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                       size: size),
                 ),
                 galleryList.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                         height: size.height * 0.3,
                         width: size.width,
                         child: GridView.builder(
@@ -310,7 +270,7 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                     childAspectRatio: 0.54, crossAxisCount: 2),
                             itemBuilder: (context, index) {
                               return Image.file(
@@ -364,14 +324,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => pickimagefromGallery(context),
-                    child: Text(
-                      'Add Nutrtion image',
-                      style: TextStyle(
-                          color: Pallete.whiteColor,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600),
-                    ),
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
@@ -381,20 +333,20 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: ElevatedButton(
-                    onPressed: () => pickimagesfromGallery(context),
                     child: Text(
-                      'Add Gallery images',
+                      'Add Nutrtion image',
                       style: TextStyle(
                           color: Pallete.whiteColor,
                           fontFamily: "Muller",
                           fontSize: size.width * 0.05,
                           fontWeight: FontWeight.w600),
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                  child: ElevatedButton(
+                    onPressed: () => pickimagesfromGallery(context),
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
@@ -404,12 +356,30 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
+                    child: Text(
+                      'Add Gallery images',
+                      style: TextStyle(
+                          color: Pallete.whiteColor,
+                          fontFamily: "Muller",
+                          fontSize: size.width * 0.05,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
+                ),
+                const CustomGoogleMaps(
+                  collection: Collections.nutritionCollection,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => setNutrition(ref),
+                    style: ElevatedButton.styleFrom(
+                        elevation: 5,
+                        fixedSize: Size(size.width, size.height * 0.06),
+                        backgroundColor: Pallete.primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(size.width * 0.02))),
                     child: Text(
                       'Finish',
                       style: TextStyle(
@@ -418,13 +388,6 @@ class _AddNutrtionScreenState extends ConsumerState<AddNutrtionScreen> {
                           fontSize: size.width * 0.05,
                           fontWeight: FontWeight.w600),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: Pallete.primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02))),
                   ),
                 ),
               ],

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:kman/featuers/benefits/screens/medical/medical_details_screen.dart';
 import 'package:kman/models/medical_reservision_model.dart';

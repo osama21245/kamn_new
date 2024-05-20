@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/core/faliure.dart';
 import 'package:kman/core/providers/firebase_providers.dart';
 import 'package:kman/core/type_def.dart';
@@ -142,7 +142,7 @@ class CoachesGymsRepository {
 
   Either updatePricesCoaches(
       String collection,
-      String gymId,
+      String coachId,
       List<dynamic> prices,
       List<dynamic> pricePlan,
       List<dynamic> points,
@@ -152,7 +152,7 @@ class CoachesGymsRepository {
       List<dynamic> reservisionTimes) {
     try {
       return collection == "online"
-          ? right(_coaches.doc(gymId).update({
+          ? right(_coaches.doc(coachId).update({
               "onlinepoints": points,
               "onlineprices": prices,
               "onlinePlanName": pricePlan,
@@ -161,7 +161,7 @@ class CoachesGymsRepository {
               "onlineisGroup": isGroup,
               "onlineReservisionTimes": reservisionTimes
             }))
-          : right(_coaches.doc(gymId).update({
+          : right(_coaches.doc(coachId).update({
               "offlinepoints": points,
               "offlineprices": prices,
               "offlinePlanName": pricePlan,

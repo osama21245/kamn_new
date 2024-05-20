@@ -7,15 +7,18 @@ import 'package:kman/core/common/textfield.dart';
 import 'package:kman/core/providers/valid.dart';
 import 'package:kman/featuers/payment/controller/payment_controller.dart';
 import 'package:kman/models/passorder_model.dart';
+import '../../../models/qr_order_model.dart';
 import '../../../theme/pallete.dart';
 
 class TakeWalletNumScren extends ConsumerStatefulWidget {
   final int price;
   final PassOrderModel passOrderModel;
+  final QrOrderModel qrOrderModel;
   final String collection;
   const TakeWalletNumScren({
     required this.price,
     required this.passOrderModel,
+    required this.qrOrderModel,
     required this.collection,
   });
   @override
@@ -43,7 +46,8 @@ class _TakeWalletNumScrenState extends ConsumerState<TakeWalletNumScren> {
         widget.price.toString(),
         phone!.text,
         widget.passOrderModel,
-        widget.collection);
+        widget.collection,
+        widget.qrOrderModel);
   }
 
   @override

@@ -6,11 +6,13 @@ class GymModel {
   final String name;
   final bool ismix;
   final String image;
+  final String userId;
   GymModel({
     required this.id,
     required this.name,
     required this.ismix,
     required this.image,
+    required this.userId,
   });
 
   GymModel copyWith({
@@ -18,12 +20,14 @@ class GymModel {
     String? name,
     bool? ismix,
     String? image,
+    String? userId,
   }) {
     return GymModel(
       id: id ?? this.id,
       name: name ?? this.name,
       ismix: ismix ?? this.ismix,
       image: image ?? this.image,
+      userId: userId ?? this.userId,
     );
   }
 
@@ -33,6 +37,7 @@ class GymModel {
       'name': name,
       'ismix': ismix,
       'image': image,
+      'userId': userId,
     };
   }
 
@@ -42,6 +47,7 @@ class GymModel {
       name: map['name'] as String,
       ismix: map['ismix'] as bool,
       image: map['image'] as String,
+      userId: map['userId'] as String,
     );
   }
 
@@ -52,7 +58,7 @@ class GymModel {
 
   @override
   String toString() {
-    return 'GymModel(id: $id, name: $name, ismix: $ismix, image: $image)';
+    return 'GymModel(id: $id, name: $name, ismix: $ismix, image: $image, userId: $userId)';
   }
 
   @override
@@ -62,11 +68,16 @@ class GymModel {
     return other.id == id &&
         other.name == name &&
         other.ismix == ismix &&
-        other.image == image;
+        other.image == image &&
+        other.userId == userId;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ name.hashCode ^ ismix.hashCode ^ image.hashCode;
+    return id.hashCode ^
+        name.hashCode ^
+        ismix.hashCode ^
+        image.hashCode ^
+        userId.hashCode;
   }
 }

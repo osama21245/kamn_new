@@ -7,7 +7,9 @@ import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
 import '../../../HandlingDataView.dart';
 import '../../../core/class/alex_regions_lists.dart';
+import '../../../core/common/custom_map.dart';
 import '../../../core/common/textfield.dart';
+import '../../../core/constants/collection_constants.dart';
 import '../../../core/providers/utils.dart';
 import '../../../core/providers/valid.dart';
 import '../../../theme/pallete.dart';
@@ -31,8 +33,6 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
   TextEditingController? futures;
   TextEditingController? fullname;
   TextEditingController? groundPlayersNum;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? address;
   TextEditingController? price;
   TextEditingController? phone;
@@ -43,11 +43,7 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
     futures = TextEditingController();
     groundPlayersNum = TextEditingController();
     fullname = TextEditingController();
-
-    lat = TextEditingController();
-    long = TextEditingController();
     address = TextEditingController();
-
     phone = TextEditingController();
     price = TextEditingController();
     super.initState();
@@ -57,8 +53,6 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
   void dispose() {
     futures!.dispose();
     groundPlayersNum!.dispose();
-    lat!.dispose();
-    long!.dispose();
     address!.dispose();
     fullname!.dispose();
     phone!.dispose();
@@ -70,14 +64,12 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
     var Formdata = formstate.currentState;
     if (Formdata!.validate()) {
       ref.watch(playControllerProvider.notifier).setGround(
-          double.parse(lat!.text),
-          double.parse(long!.text),
           address!.text,
           int.parse(price!.text),
           fullname!.text,
           phone!.text,
           futures!.text,
-          groundImage!,
+          groundImage,
           context,
           widget.collection,
           int.parse(groundPlayersNum!.text),
@@ -146,28 +138,6 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                   },
                   name: "phone",
                   controller: phone!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
                   color: Pallete.lightgreyColor2,
                 ),
                 SizedBox(
@@ -356,6 +326,9 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
                   ),
+                ),
+                const CustomGoogleMaps(
+                  collection: Collections.playCollection,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),

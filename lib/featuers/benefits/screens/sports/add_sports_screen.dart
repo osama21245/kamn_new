@@ -2,13 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:kman/core/common/custom_map.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
+import 'package:open_street_map_search_and_pick/open_street_map_search_and_pick.dart';
 import '../../../../HandlingDataView.dart';
 import '../../../../core/class/alex_regions_lists.dart';
+import '../../../../core/common/custom_elevated_button.dart';
 import '../../../../core/common/textfield.dart';
-import '../../../../core/constants/constants.dart';
 import '../../../../core/providers/utils.dart';
 import '../../../../core/providers/valid.dart';
 import '../../../../theme/pallete.dart';
@@ -32,8 +34,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
   TextEditingController? whatsAppNumber;
   TextEditingController? dynamicLink;
   TextEditingController? discount;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? about;
   List<File> galleryList = [];
   File? logo;
@@ -46,8 +46,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
     dynamicLink = TextEditingController();
     fullname = TextEditingController();
     discount = TextEditingController();
-    lat = TextEditingController();
-    long = TextEditingController();
     about = TextEditingController();
     super.initState();
   }
@@ -60,8 +58,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
     dynamicLink!.dispose();
     fullname!.dispose();
     discount!.dispose();
-    lat!.dispose();
-    long!.dispose();
     about!.dispose();
     super.dispose();
   }
@@ -73,15 +69,13 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
         // Check if the widget is still mounted
         ref.watch(benefitsControllerProvider.notifier).setSports(
             context,
-            logo!,
+            logo,
             fullname!.text,
             about!.text,
             faceBook!.text,
             instgram!.text,
             whatsAppNumber!.text,
             dynamicLink!.text,
-            double.parse(lat!.text),
-            double.parse(long!.text),
             int.parse(discount!.text),
             galleryList,
             region,
@@ -174,9 +168,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "faceBook",
                   controller: faceBook!,
                   color: Pallete.lightgreyColor2,
@@ -185,9 +176,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "instgram",
                   controller: instgram!,
                   color: Pallete.lightgreyColor2,
@@ -196,9 +184,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "whatsAppNumber",
                   controller: whatsAppNumber!,
                   color: Pallete.lightgreyColor2,
@@ -207,9 +192,6 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "dynamicLink",
                   controller: dynamicLink!,
                   color: Pallete.lightgreyColor2,
@@ -219,29 +201,7 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                 ),
                 TextFiled(
                   validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
+                    return validinput(val!, 1, 500, "int");
                   },
                   name: "discount",
                   controller: discount!,
@@ -398,6 +358,9 @@ class _AddSportsScreenState extends ConsumerState<AddSportsScreen> {
                           fontWeight: FontWeight.w600),
                     ),
                   ),
+                ),
+                const CustomGoogleMaps(
+                  collection: Collections.sportsCollection,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),

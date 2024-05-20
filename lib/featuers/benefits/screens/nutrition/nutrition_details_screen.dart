@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/featuers/benefits/widget/nutrition_details/custom_add_nutrition_offers_items_button.dart';
 import 'package:kman/featuers/benefits/widget/nutrition_details/custom_nutrition_offers_item_card.dart';
 import 'package:kman/models/nutrition_model.dart';
 import '../../../../HandlingDataView.dart';
@@ -10,7 +11,7 @@ import '../../../../core/class/statusrequest.dart';
 import '../../../../core/common/custom_elevated_button.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
@@ -113,7 +114,7 @@ class _NutritionDetailsScreenState
         body: HandlingDataView(
       statusRequest: statusRequest,
       widget: SafeArea(
-          child: Column(
+          child: ListView(
         children: [
           CustomUpperSec(
             size: size,
@@ -148,7 +149,7 @@ class _NutritionDetailsScreenState
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(size.width * 0.02),
                               topRight: Radius.circular(size.width * 0.02))),
-                      height: size.height * 0.64,
+                      height: size.height * 0.655,
                       width: size.width,
                       child: Text(""),
                     ),
@@ -736,7 +737,7 @@ class _NutritionDetailsScreenState
                                   nutritionId: widget.nutritionModel.id))
                           : Opacity(
                               opacity: 0.5,
-                              child: CustomAddNutritionOffersButton(
+                              child: CustomAddNutritionOffersItemsButton(
                                   nutritionId: widget.nutritionModel.id))
                   ],
                 )),

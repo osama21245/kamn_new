@@ -6,7 +6,9 @@ import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import '../../../../HandlingDataView.dart';
 import '../../../../core/class/alex_regions_lists.dart';
+import '../../../../core/common/custom_map.dart';
 import '../../../../core/common/textfield.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../core/providers/utils.dart';
 import '../../../../core/providers/valid.dart';
 import '../../../../theme/pallete.dart';
@@ -31,8 +33,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
   TextEditingController? specialization;
   TextEditingController? education;
   TextEditingController? price;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? whatssAppnum;
   TextEditingController? instgramLink;
   TextEditingController? facebookLink;
@@ -50,8 +50,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
     discount = TextEditingController();
     specialization = TextEditingController();
     education = TextEditingController();
-    lat = TextEditingController();
-    long = TextEditingController();
     whatssAppnum = TextEditingController();
     instgramLink = TextEditingController();
     facebookLink = TextEditingController();
@@ -71,8 +69,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
     specialization!.dispose();
     education!.dispose();
     dynamicLink!.dispose();
-    lat!.dispose();
-    long!.dispose();
     facebookLink!.dispose();
     whatssAppnum!.dispose();
     instgramLink!.dispose();
@@ -85,7 +81,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
     if (Formdata!.validate()) {
       ref.watch(benefitsControllerProvider.notifier).setMedical(
           context,
-          logo!,
+          logo,
           int.parse(price!.text),
           fullname!.text,
           experience!.text,
@@ -98,8 +94,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
           dynamicLink!.text,
           instgramLink!.text,
           whatssAppnum!.text,
-          double.parse(lat!.text),
-          double.parse(long!.text),
           galleryList,
           widget.fromAsk);
     }
@@ -218,28 +212,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                 SizedBox(
                   height: size.height * 0.016,
                 ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
                 Padding(
                   padding: EdgeInsets.only(
                       left: size.height * 0.02, bottom: size.height * 0.02),
@@ -249,9 +221,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                       size: size),
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "whatAppNumber",
                   controller: whatssAppnum!,
                   color: Pallete.lightgreyColor2,
@@ -260,9 +229,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                   height: size.height * 0.016,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "instgramLink",
                   controller: instgramLink!,
                   color: Pallete.lightgreyColor2,
@@ -271,9 +237,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                   height: size.height * 0.016,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "faceBookLink",
                   controller: facebookLink!,
                   color: Pallete.lightgreyColor2,
@@ -282,9 +245,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                   height: size.height * 0.016,
                 ),
                 TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
                   name: "dynamicLink",
                   controller: dynamicLink!,
                   color: Pallete.lightgreyColor2,
@@ -294,7 +254,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                 ),
                 TextFiled(
                   validator: (val) {
-                    return validinput(val!, 1, 500, "");
+                    return validinput(val!, 1, 500, "int");
                   },
                   name: "price",
                   controller: price!,
@@ -305,7 +265,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                 ),
                 TextFiled(
                   validator: (val) {
-                    return validinput(val!, 1, 500, "");
+                    return validinput(val!, 1, 500, "int");
                   },
                   name: "discount",
                   controller: discount!,
@@ -323,7 +283,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                     padding:
                         EdgeInsets.symmetric(horizontal: size.width * 0.05),
                     child: DropdownButton(
-                      underline: Text(""),
+                      underline: const Text(""),
                       style: TextStyle(
                         color: Pallete.lightgreyColor2,
                         fontFamily: "Muller",
@@ -373,7 +333,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                   height: size.height * 0.023,
                 ),
                 galleryList.isNotEmpty
-                    ? Container(
+                    ? SizedBox(
                         height: size.height * 0.3,
                         width: size.width,
                         child: GridView.builder(
@@ -381,7 +341,7 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                                     childAspectRatio: 0.54, crossAxisCount: 2),
                             itemBuilder: (context, index) {
                               return Image.file(
@@ -413,14 +373,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => pickimagefromGallery(context),
-                    child: Text(
-                      'Add Medical image',
-                      style: TextStyle(
-                          color: Pallete.whiteColor,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600),
-                    ),
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
@@ -430,20 +382,20 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: ElevatedButton(
-                    onPressed: () => pickimagesfromGallery(context),
                     child: Text(
-                      'Add cv images',
+                      'Add Medical image',
                       style: TextStyle(
                           color: Pallete.whiteColor,
                           fontFamily: "Muller",
                           fontSize: size.width * 0.05,
                           fontWeight: FontWeight.w600),
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                  child: ElevatedButton(
+                    onPressed: () => pickimagesfromGallery(context),
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
@@ -453,12 +405,30 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
+                    child: Text(
+                      'Add cv images',
+                      style: TextStyle(
+                          color: Pallete.whiteColor,
+                          fontFamily: "Muller",
+                          fontSize: size.width * 0.05,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
+                ),
+                const CustomGoogleMaps(
+                  collection: Collections.medicalCollection,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                   child: ElevatedButton(
                     onPressed: () => setMedical(ref),
+                    style: ElevatedButton.styleFrom(
+                        elevation: 5,
+                        fixedSize: Size(size.width, size.height * 0.06),
+                        backgroundColor: Pallete.primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(size.width * 0.02))),
                     child: Text(
                       'Finish',
                       style: TextStyle(
@@ -467,13 +437,6 @@ class _AddMedicalScreenState extends ConsumerState<AddMedicalScreen> {
                           fontSize: size.width * 0.05,
                           fontWeight: FontWeight.w600),
                     ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: Pallete.primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02))),
                   ),
                 ),
               ],

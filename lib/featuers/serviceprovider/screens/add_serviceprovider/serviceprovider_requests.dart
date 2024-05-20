@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/featuers/add_serviceprovider/widget/custom_get_grounds_requests.dart';
-import 'package:kman/featuers/add_serviceprovider/widget/custom_get_medical_requests.dart';
+import 'package:kman/featuers/serviceprovider/widget/custom_get_grounds_requests.dart';
+import 'package:kman/featuers/serviceprovider/widget/custom_get_medical_requests.dart';
 
-import '../../../HandlingDataView.dart';
-import '../../../core/class/statusrequest.dart';
-import '../../../core/common/custom_uppersec.dart';
-import '../../../core/providers/checkInternet.dart';
-import '../../../theme/pallete.dart';
-import '../../coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
-import '../widget/custom_get_coaches_requests.dart';
-import '../widget/custom_get_gyms_requests.dart';
-import '../widget/custom_get_nutrition_requests.dart';
-import '../widget/custom_get_sports.dart';
+import '../../../../HandlingDataView.dart';
+import '../../../../core/class/statusrequest.dart';
+import '../../../../core/common/custom_uppersec.dart';
+import '../../../../core/providers/checkInternet.dart';
+import '../../../../theme/pallete.dart';
+import '../../widget/custom_get_coaches_requests.dart';
+import '../../widget/custom_get_gyms_requests.dart';
+import '../../widget/custom_get_nutrition_requests.dart';
+import '../../widget/custom_get_sports.dart';
 
 class ServiceProviderRequestsScreen extends ConsumerStatefulWidget {
   final String collection;

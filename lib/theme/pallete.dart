@@ -65,8 +65,10 @@ class Pallete {
   static const primaryGridentColors = [Color(0x5fffffff), Color(0xff3a7cbd)];
   static const footballGridentColors = [Color(0x5fffffff), Color(0x5f22b947)];
   static const paddelGridentColors = [Color(0x5fffffff), Color(0x5f542fab)];
-  static const swimingGridentColors = [Color(0x5fffffff),   Color.fromARGB(255, 65, 224, 203)
-];
+  static const swimingGridentColors = [
+    Color(0x5fffffff),
+    Color.fromARGB(255, 65, 224, 203)
+  ];
   static const basketballlGridentColors = [
     Color(0x5fffffff),
     Color(0x5fec821f)
@@ -96,8 +98,6 @@ class Pallete {
       backgroundColor: drawerColor,
     ),
     primaryColor: primaryColor,
-    backgroundColor:
-        drawerColor, // will be used as alternative background color
   );
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
@@ -113,7 +113,6 @@ class Pallete {
       backgroundColor: whiteColor,
     ),
     primaryColor: primaryColor,
-    backgroundColor: whiteColor,
   );
 }
 

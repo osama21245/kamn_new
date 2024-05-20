@@ -73,7 +73,7 @@ class _AddCoachScreenState extends ConsumerState<AddCoachScreen> {
           whatssAppnum!.text,
           categoriry!.text,
           experince!.text,
-          coachImage!,
+          coachImage,
           cvsList,
           benefits!.text,
           widget.fromAsk);
@@ -149,22 +149,6 @@ class _AddCoachScreenState extends ConsumerState<AddCoachScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  name: "whatAppNumber",
-                  controller: whatssAppnum!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: size.height * 0.02, bottom: size.height * 0.02),
-                  child: CustomFinishMiddleSec(
-                      color: Pallete.fontColor,
-                      collection: "Finish Submet",
-                      size: size),
-                ),
-                TextFiled(
                   validator: (val) {
                     return validinput(val!, 4, 500, "");
                   },
@@ -174,6 +158,14 @@ class _AddCoachScreenState extends ConsumerState<AddCoachScreen> {
                 ),
                 SizedBox(
                   height: size.height * 0.023,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: size.height * 0.02, bottom: size.height * 0.02),
+                  child: CustomFinishMiddleSec(
+                      color: Pallete.fontColor,
+                      collection: "Finish Submet",
+                      size: size),
                 ),
                 TextFiled(
                   validator: (val) {
@@ -207,6 +199,14 @@ class _AddCoachScreenState extends ConsumerState<AddCoachScreen> {
                 ),
                 SizedBox(
                   height: size.height * 0.023,
+                ),
+                TextFiled(
+                  name: "whatAppNumber",
+                  controller: whatssAppnum!,
+                  color: Pallete.lightgreyColor2,
+                ),
+                SizedBox(
+                  height: size.height * 0.016,
                 ),
                 TextFiled(
                   name: "instgramLink",

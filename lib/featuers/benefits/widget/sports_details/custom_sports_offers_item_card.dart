@@ -7,7 +7,7 @@ import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../models/offers_items_model.dart';
 import '../../../../models/passorder_model.dart';
 import '../../../../models/qr_order_model.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/orders/controller/orders_controller.dart';
 import 'package:kman/models/passorder_model.dart';
 import 'package:kman/models/qr_order_model.dart';

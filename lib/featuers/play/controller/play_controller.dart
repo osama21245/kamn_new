@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/class/reservisionParameters.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:kman/core/constants/constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/homemain.dart';
 import 'package:kman/models/reserved_model.dart';
@@ -122,6 +123,9 @@ class playController extends StateNotifier<StatusRequest> {
         _ref = ref,
         _storageRepository = storageRepository,
         super(StatusRequest.success);
+
+  double lat = 0.0;
+  double long = 0.0;
 
   void reserve(BuildContext context, ReserveModel reserveModel, int points,
       String groundOwnerId) async {
@@ -339,14 +343,12 @@ class playController extends StateNotifier<StatusRequest> {
   //**************************futuers only for ground owner*******************************************
 
   void setGround(
-      double long,
-      double lat,
       String address,
       int price,
       String name,
       String phone,
       String futures,
-      File FilegroundImage,
+      File? filegroundImage,
       BuildContext context,
       String collection,
       int groundPlayersNum,
@@ -361,14 +363,17 @@ class playController extends StateNotifier<StatusRequest> {
     String groundownerId = _ref.watch(usersProvider)!.uid;
     String id = Uuid().v1();
     final user = _ref.read(usersProvider);
-    String groundImage = "";
+    String groundImage = Constants.store1;
 
-    final res = await _storageRepository.storeFile(
-        path: "Grounds", id: "${collection}$id", file: FilegroundImage);
+    if (filegroundImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: "Grounds", id: "${collection}$id", file: filegroundImage);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      groundImage = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        groundImage = r;
+      });
+    }
+
 //set data
     if (groundImage != "") {
       GroundModel groundModel = GroundModel(
