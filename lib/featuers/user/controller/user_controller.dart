@@ -7,6 +7,7 @@ import 'package:kman/models/inbox_model.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/providers/utils.dart';
 import '../../../models/user_model.dart';
@@ -80,12 +81,19 @@ class UserController extends StateNotifier<StatusRequest> {
   }
 
   //inBox
-  void sendInboxToUser(String title, String description, bool isImageEnter,
-      File imageFile, BuildContext context) async {
-    final user = _ref.watch(usersProvider);
+  void sendInboxToUser(
+      {required String title,
+      required String description,
+      required File? imageFile,
+      required bool defImage,
+      required String userId,
+      required BuildContext context}) async {
     String image = "";
+    if (defImage) {
+      image = Constants.bannerDefault;
+    }
     final id = Uuid().v1();
-    if (isImageEnter) {
+    if (imageFile != null) {
       final resImage = await _storageRepository.storeFile(
           path: "Inbox", id: id, file: imageFile);
 
@@ -99,12 +107,11 @@ class UserController extends StateNotifier<StatusRequest> {
         title: title,
         image: image,
         description: description,
-        userId: user!.uid,
+        userId: userId,
         sentAt: DateTime.now());
     final res = await _userRepository.sendInboxToUser(inBoxModel);
 
-    res.fold((l) => showSnackBar(l.message, context),
-        (r) => showSnackBar("send message success", context));
+    res.fold((l) => showSnackBar(l.message, context), (r) {});
   }
 
   Future<List<InBoxModel>> getInBoxMessages(String userId) {

@@ -1,17 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/featuers/benefits/screens/nutrition/update_nutrition_screen.dart';
 import 'package:kman/featuers/benefits/widget/nutrition_details/custom_add_nutrition_offers_items_button.dart';
 import 'package:kman/featuers/benefits/widget/nutrition_details/custom_nutrition_offers_item_card.dart';
 import 'package:kman/models/nutrition_model.dart';
 import '../../../../HandlingDataView.dart';
 import '../../../../core/class/statusrequest.dart';
 import '../../../../core/common/custom_elevated_button.dart';
+import '../../../../core/common/custom_icon_uppersec.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/collection_constants.dart';
+import '../../../../core/function/awesome_dialog.dart';
+import '../../../../core/function/goTo.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
@@ -19,6 +24,7 @@ import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
 import '../../../orders/controller/orders_controller.dart';
 import '../../../play/controller/play_controller.dart';
 import '../../../play/widget/play/showrating.dart';
+import '../../../user/controller/user_controller.dart';
 import '../../controller/benefits_controller.dart';
 import '../../widget/nutrition_details/custom_add_nutrition_offers_button.dart';
 import '../../widget/nutrition_details/custom_nutrition_offers_card.dart';
@@ -80,6 +86,19 @@ class _NutritionDetailsScreenState
     ref
         .watch(benefitsControllerProvider.notifier)
         .deleteNutritionRequest(widget.nutritionModel.id, context);
+    // send message to user
+    ref.watch(userControllerProvider.notifier).sendInboxToUser(
+        title: "Congratulations",
+        description: "Your service has been added successfully to kamn",
+        imageFile: null,
+        userId: widget.nutritionModel.userId,
+        defImage: true,
+        context: context);
+
+    //update user state
+    ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("7", widget.nutritionModel.userId, context);
   }
 
   refusesNutrition() {
@@ -100,9 +119,13 @@ class _NutritionDetailsScreenState
     ref.watch(coachesGymsControllerProvider.notifier).openLink(link, context);
   }
 
-  void gpsTracking() {
-    ref.watch(playControllerProvider.notifier).gpsTracking(
-        widget.nutritionModel.long, widget.nutritionModel.lat, context);
+  void gpsTracking(Size size) {
+    if (widget.nutritionModel.lat == 0.0 && widget.nutritionModel.long == 0.0) {
+      showAwesomeDialog(context, "This store\n has no location added", size);
+    } else {
+      ref.watch(playControllerProvider.notifier).gpsTracking(
+          widget.nutritionModel.long, widget.nutritionModel.lat, context);
+    }
   }
 
   @override
@@ -116,11 +139,23 @@ class _NutritionDetailsScreenState
       widget: SafeArea(
           child: ListView(
         children: [
-          CustomUpperSec(
-            size: size,
-            color: Pallete.fontColor,
-            title: "Nutrition",
-          ),
+          widget.nutritionModel.userId == user.uid || user.state == "1"
+              ? CustomIconUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "Nutrition",
+                  onTapAction: () {
+                    goToScreen(
+                        context,
+                        UpdateNutrtionScreen(
+                            nutritionModel: widget.nutritionModel));
+                  },
+                )
+              : CustomUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "Nutrition",
+                ),
           SizedBox(
             height: size.height * 0.02,
           ),
@@ -135,31 +170,33 @@ class _NutritionDetailsScreenState
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.032),
             child: Stack(
               children: [
-                Column(
-                  children: [
-                    Container(
-                      height: size.height * 0.08,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: Pallete.listofGridientCard,
-                              begin: Alignment.bottomRight,
-                              end: Alignment.topLeft),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(size.width * 0.02),
-                              topRight: Radius.circular(size.width * 0.02))),
-                      height: size.height * 0.655,
-                      width: size.width,
-                      child: Text(""),
-                    ),
-                    InkWell(
-                        onTap: () => gpsTracking(),
-                        child: CustomMaterialButton(
-                            color: Pallete.greenButton,
-                            size: size,
-                            title: "Gps Tracking"))
-                  ],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: size.height * 0.08,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: Pallete.listofGridientCard,
+                                begin: Alignment.bottomRight,
+                                end: Alignment.topLeft),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(size.width * 0.02),
+                                topRight: Radius.circular(size.width * 0.02))),
+                        height: size.height * 0.67,
+                        width: size.width,
+                        child: Text(""),
+                      ),
+                      InkWell(
+                          onTap: () => gpsTracking(size),
+                          child: CustomMaterialButton(
+                              color: Pallete.greenButton,
+                              size: size,
+                              title: "Gps Tracking"))
+                    ],
+                  ),
                 ),
                 Positioned.fill(
                     child: Column(
@@ -574,8 +611,8 @@ class _NutritionDetailsScreenState
                                                             error: error
                                                                 .toString());
                                                       },
-                                                      loading: () =>
-                                                          Text("Wait...."));
+                                                      loading: () => const Text(
+                                                          "Wait...."));
                                             },
                                             error: (error, StackTrace) {
                                               print(error);
@@ -728,19 +765,27 @@ class _NutritionDetailsScreenState
                           ],
                         ),
                       ),
-                    if (user.uid == widget.nutritionModel.userId ||
-                        user.state == "1")
-                      offresstatus == NutrtionsOffersStatus.Public
-                          ? Opacity(
-                              opacity: 0.5,
-                              child: CustomAddNutritionOffersButton(
-                                  nutritionId: widget.nutritionModel.id))
-                          : Opacity(
-                              opacity: 0.5,
-                              child: CustomAddNutritionOffersItemsButton(
-                                  nutritionId: widget.nutritionModel.id))
                   ],
                 )),
+                if (user.uid == widget.nutritionModel.userId ||
+                    user.state == "1")
+                  offresstatus == NutrtionsOffersStatus.Public
+                      ? Positioned(
+                          right: size.width * 0.15,
+                          bottom: size.height * 0.08,
+                          child: Opacity(
+                              opacity: 0.5,
+                              child: CustomAddNutritionOffersButton(
+                                  nutritionId: widget.nutritionModel.id)),
+                        )
+                      : Positioned(
+                          right: size.width * 0.15,
+                          bottom: size.height * 0.08,
+                          child: Opacity(
+                              opacity: 0.5,
+                              child: CustomAddNutritionOffersItemsButton(
+                                  nutritionId: widget.nutritionModel.id)),
+                        ),
                 if (widget.nutritionModel.faceBook != "")
                   Positioned(
                       right: size.width * 0.03,

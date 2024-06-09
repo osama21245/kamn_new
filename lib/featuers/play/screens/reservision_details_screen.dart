@@ -156,34 +156,42 @@ class _ReservisionDetailsScreenState
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Card(
-                          color: Colors.white,
                           elevation: 4,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 17.0, top: 15),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text("Reservision Time : ",
-                                        style: TextStyle(
-                                            fontSize: 19,
-                                            color: Pallete.primaryColor)),
-                                  ],
-                                ),
+                          child: Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 17.0, top: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text("Reservision Time : ",
+                                            style: TextStyle(
+                                                fontSize: 19,
+                                                color: Pallete.primaryColor)),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: ListTile(
+                                      title: Text(
+                                          "Day :${widget.reserveModel.day}"),
+                                      subtitle: Text(
+                                          "Time :${widget.reserveModel.time}"),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: ListTile(
-                                  title:
-                                      Text("Day :${widget.reserveModel.day}"),
-                                  subtitle:
-                                      Text("Time :${widget.reserveModel.time}"),
-                                ),
-                              ),
-                            ],
+                            ),
                           )),
                     ),
                     const Padding(
@@ -196,55 +204,65 @@ class _ReservisionDetailsScreenState
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
-                            color: Colors.white,
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 17.0, top: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text("Ask for players : ",
-                                          style: TextStyle(
-                                              fontSize: size.width * 0.05,
-                                              color: Pallete.primaryColor)),
-                                      SizedBox(
-                                        width: size.width * 0.13,
+                            child: Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 17.0, top: 15),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text("Ask for players : ",
+                                              style: TextStyle(
+                                                  fontSize: size.width * 0.05,
+                                                  color: Pallete.primaryColor)),
+                                          SizedBox(
+                                            width: size.width * 0.13,
+                                          ),
+                                          if (widget.reserveModel.iscomplete ==
+                                                  false ||
+                                              askForrPlayers == true)
+                                            Text(
+                                                "Collaborations  ${widget.reserveModel.collaborations.length}/${numberOfNeededPlayersForPage != "" ? numberOfNeededPlayersForPage : widget.reserveModel.targetplayesNum}",
+                                                style: TextStyle(
+                                                    fontSize: size.width * 0.03,
+                                                    color: Pallete.redColor)),
+                                        ],
                                       ),
-                                      if (widget.reserveModel.iscomplete ==
-                                              false ||
-                                          askForrPlayers == true)
-                                        Text(
-                                            "Collaborations  ${widget.reserveModel.collaborations.length}/${numberOfNeededPlayersForPage != "" ? numberOfNeededPlayersForPage : widget.reserveModel.targetplayesNum}",
-                                            style: TextStyle(
-                                                fontSize: size.width * 0.03,
-                                                color: Pallete.redColor)),
-                                    ],
-                                  ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.all(size.width * 0.04),
+                                      child: TextFiled(
+                                        keytypeisnumber: true,
+                                        validator: (val) {
+                                          return validinput(val!, 1, 500, "");
+                                        },
+                                        name: "Number of needed players",
+                                        controller: numberOfNeededPlayers!,
+                                        color: Pallete.lightgreyColor2,
+                                      ),
+                                    ),
+                                    CustomElevatedButton(
+                                      color: Pallete.primaryColor,
+                                      size: size,
+                                      title: "Ask",
+                                      sizeofwidth: size.width * 0.3,
+                                      sizeofhight: size.height * 0.04,
+                                      onTap: () => askForPlayers(),
+                                    )
+                                  ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.all(size.width * 0.04),
-                                  child: TextFiled(
-                                    validator: (val) {
-                                      return validinput(val!, 1, 500, "");
-                                    },
-                                    name: "Number of needed players",
-                                    controller: numberOfNeededPlayers!,
-                                    color: Pallete.lightgreyColor2,
-                                  ),
-                                ),
-                                CustomElevatedButton(
-                                  color: Pallete.primaryColor,
-                                  size: size,
-                                  title: "Ask",
-                                  sizeofwidth: size.width * 0.3,
-                                  sizeofhight: size.height * 0.04,
-                                  onTap: () => askForPlayers(),
-                                )
-                              ],
+                              ),
                             )),
                       ),
                     ref.watch(getGroundDataProvider(tuple)).when(

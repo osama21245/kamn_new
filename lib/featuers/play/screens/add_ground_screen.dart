@@ -37,7 +37,6 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
   TextEditingController? price;
   TextEditingController? phone;
   File? groundImage;
-  //List<File> cvsList = [];
   @override
   void initState() {
     futures = TextEditingController();
@@ -73,7 +72,7 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
           context,
           widget.collection,
           int.parse(groundPlayersNum!.text),
-          city,
+          "Alexandria",
           region,
           widget.fromAsk);
     }
@@ -134,7 +133,30 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                 ),
                 TextFiled(
                   validator: (val) {
+                    return validinput(val!, 2, 200, "");
+                  },
+                  name: "Full Name",
+                  controller: fullname!,
+                  color: Pallete.lightgreyColor2,
+                ),
+                SizedBox(
+                  height: size.height * 0.023,
+                ),
+                TextFiled(
+                  validator: (val) {
                     return validinput(val!, 4, 200, "");
+                  },
+                  name: "futures",
+                  controller: futures!,
+                  color: Pallete.lightgreyColor2,
+                ),
+                SizedBox(
+                  height: size.height * 0.023,
+                ),
+                TextFiled(
+                  keytypeisnumber: true,
+                  validator: (val) {
+                    return validinput(val!, 4, 200, "int");
                   },
                   name: "phone",
                   controller: phone!,
@@ -155,8 +177,9 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
+                  keytypeisnumber: true,
                   validator: (val) {
-                    return validinput(val!, 1, 200, "");
+                    return validinput(val!, 1, 200, "int");
                   },
                   name: "price",
                   controller: price!,
@@ -166,74 +189,13 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                   height: size.height * 0.023,
                 ),
                 TextFiled(
+                  keytypeisnumber: true,
                   validator: (val) {
-                    return validinput(val!, 4, 200, "");
-                  },
-                  name: "futures",
-                  controller: futures!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 200, "");
-                  },
-                  name: "Full Name",
-                  controller: fullname!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 200, "");
+                    return validinput(val!, 1, 200, "int");
                   },
                   name: "groundPlayersNum",
                   controller: groundPlayersNum!,
                   color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Pallete.fontColor),
-                      borderRadius: BorderRadius.circular(size.width * 0.02)),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                    child: DropdownButton(
-                      underline: Text(""),
-                      style: TextStyle(
-                          color: Pallete.lightgreyColor2,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.037,
-                          fontWeight: FontWeight.w500),
-                      isExpanded: true,
-                      value: city,
-                      focusColor: const Color.fromARGB(0, 255, 192, 192),
-                      items: cityList.map((con) {
-                        return DropdownMenuItem(
-                          value: con,
-                          child: Text(con),
-                          onTap: () {
-                            if (con == cityList[0]) {
-                              city = cityList[0];
-                            }
-                            setState(() {});
-                          },
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          city = value!;
-                        });
-                      },
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: size.height * 0.023,
@@ -319,9 +281,7 @@ class _AddGroundScreenState extends ConsumerState<AddGroundScreen> {
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: groundImage == null
-                            ? Pallete.greyColor
-                            : Pallete.primaryColor,
+                        backgroundColor: Pallete.primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),

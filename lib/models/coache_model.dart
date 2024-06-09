@@ -9,7 +9,7 @@ class CoacheModel {
   final String name;
   final String userId;
   final double rating;
-  String image;
+  final String image;
   final String education;
   final String whatsAppNum;
   final String faceBook;

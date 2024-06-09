@@ -24,7 +24,7 @@ class CustomCoachesCard extends ConsumerWidget {
       child: Stack(
         children: [
           Container(
-            height: size.height * 0.24,
+            height: size.height * 0.26,
             child: Column(
               children: [
                 Container(
@@ -43,7 +43,7 @@ class CustomCoachesCard extends ConsumerWidget {
                                     Radius.circular(size.width * 0.018)),
                             color: Pallete.fontColor),
                         width: size.width * 0.1,
-                        height: size.height * 0.17,
+                        height: size.height * 0.19,
                         child: RotatedBox(
                           quarterTurns: 3,
                           child: Center(
@@ -60,7 +60,7 @@ class CustomCoachesCard extends ConsumerWidget {
                       ),
                       Expanded(
                           child: Container(
-                        height: size.height * 0.17,
+                        height: size.height * 0.19,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                               colors: Pallete.listofGridientCard,
@@ -76,7 +76,7 @@ class CustomCoachesCard extends ConsumerWidget {
                                 bottomRight:
                                     Radius.circular(size.width * 0.018)),
                             color: Pallete.fontColor),
-                        height: size.height * 0.17,
+                        height: size.height * 0.19,
                         width: size.width * 0.1,
                         child: RotatedBox(
                           quarterTurns: 3,
@@ -122,9 +122,6 @@ class CustomCoachesCard extends ConsumerWidget {
                               CachedNetworkImageProvider(coacheModel.image)),
                     ),
                   )),
-              SizedBox(
-                height: size.width * 0.01,
-              ),
               Text(
                 "Coach",
                 style: TextStyle(
@@ -141,9 +138,6 @@ class CustomCoachesCard extends ConsumerWidget {
                     color: Pallete.whiteColor,
                     fontSize: size.width * 0.05,
                     fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: size.width * 0.008,
               ),
               Text(
                 "${coacheModel.categoriry}",

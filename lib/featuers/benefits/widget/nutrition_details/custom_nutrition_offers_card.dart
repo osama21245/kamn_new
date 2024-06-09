@@ -197,8 +197,8 @@ class _CustomNutritionOffersCardState
                                 fontFamily: "Muller",
                                 fontSize:
                                     widget.nutritionModel.userId == user.uid
-                                        ? size.width * 0.029
-                                        : size.width * 0.034,
+                                        ? size.width * 0.026
+                                        : size.width * 0.03,
                                 fontWeight: FontWeight.w600),
                           ),
                           style: ElevatedButton.styleFrom(

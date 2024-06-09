@@ -84,7 +84,7 @@ class ServiceProviderRepository {
       });
     } else {
       return _sports
-          .where("userId", isEqualTo: serviceProviderId)
+          .where("servicePrividerId", isEqualTo: serviceProviderId)
           .get()
           .then((value) {
         List<SportsModel> sports = [];

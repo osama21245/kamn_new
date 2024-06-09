@@ -69,7 +69,7 @@ class _MyReservisionsScreenState extends ConsumerState<MyPlayScreen> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.13),
-              child: Divider(
+              child: const Divider(
                 thickness: 2,
                 color: Color.fromARGB(94, 146, 146, 146),
               ),

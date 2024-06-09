@@ -16,7 +16,7 @@ class CategoriesScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Padding(
-      padding: EdgeInsets.symmetric(vertical: size.width * 0.03),
+      padding: EdgeInsets.symmetric(vertical: size.width * 0.09),
       child: Column(
         children: [
           CustomUpperSec(

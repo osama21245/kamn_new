@@ -9,6 +9,7 @@ import 'package:kman/featuers/orders/screens/my_reservisions/orders_gym_details.
 import 'package:kman/featuers/orders/widget/customcardPending.dart';
 import 'package:kman/featuers/orders/widget/gym/custom_card_Pending_gym.dart';
 import 'package:kman/featuers/serviceprovider/controller/service_provider_controller.dart';
+import 'package:kman/models/gym_model.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
@@ -30,7 +31,7 @@ class CustomGetServiceProviderGymStores extends ConsumerWidget {
               child: ListView.builder(
                   itemCount: gyms.length,
                   itemBuilder: (context, i) {
-                    final gym = gyms[i];
+                    final gym = gyms[i] as GymModel;
                     return InkWell(
                         onTap: () => Get.to(() => GymLocationsScreen(
                               collection: "gym",

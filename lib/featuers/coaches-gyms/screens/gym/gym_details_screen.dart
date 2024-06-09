@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/function/awesome_dialog.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/models/gym_locations_model.dart';
 import '../../../../core/common/custom_uppersec.dart';
@@ -55,10 +56,14 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
         .openWhatsApp(phone, context);
   }
 
-  void gpsTracking() {
-    ref
-        .watch(playControllerProvider.notifier)
-        .gpsTracking(widget.gymModel.long, widget.gymModel.lat, context);
+  void gpsTracking(Size size) {
+    if (widget.gymModel.lat == 0.0 && widget.gymModel.long == 0.0) {
+      showAwesomeDialog(context, "This store\n has no location added", size);
+    } else {
+      ref
+          .watch(playControllerProvider.notifier)
+          .gpsTracking(widget.gymModel.long, widget.gymModel.lat, context);
+    }
   }
 
   @override
@@ -74,7 +79,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
             size: size,
             color: Pallete.fontColor,
             title: "GYM",
-            onTapAction: () => gpsTracking(),
+            onTapAction: () => gpsTracking(size),
           ),
           SizedBox(
             height: size.height * 0.02,

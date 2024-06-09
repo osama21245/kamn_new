@@ -6,20 +6,25 @@ import 'package:kman/featuers/benefits/widget/medical_details/custom_get_medical
 import 'package:kman/featuers/benefits/widget/medical_details/custom_medical_times_card.dart';
 import 'package:kman/models/medical_model.dart';
 import '../../../../core/common/custom_elevated_button.dart';
+import '../../../../core/common/custom_icon_uppersec.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/collection_constants.dart';
+import '../../../../core/function/awesome_dialog.dart';
+import '../../../../core/function/goTo.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
 import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
 import '../../../play/controller/play_controller.dart';
 import '../../../play/widget/play/showrating.dart';
+import '../../../user/controller/user_controller.dart';
 import '../../controller/benefits_controller.dart';
 import '../../widget/medical_details/custom_add_medical_service_button.dart';
 import '../../widget/sports_details/custom_material_button.dart';
 import '../../../../core/common/update_gallery_screen.dart';
 import '../../../../core/common/update_gallery_screen.dart';
+import 'update_medical_screen.dart';
 
 class MedicalDetailsScreen extends ConsumerStatefulWidget {
   final String collection;
@@ -49,7 +54,6 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
     ref.watch(benefitsControllerProvider.notifier).setMedicalRequest(
           context,
           widget.medicalModel.image,
-          widget.medicalModel.price,
           widget.medicalModel.name,
           widget.medicalModel.experience,
           widget.medicalModel.benefits,
@@ -69,6 +73,18 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
     ref
         .watch(benefitsControllerProvider.notifier)
         .deleteMedicalRequest(widget.medicalModel!.id, context);
+    // send message to user
+    ref.watch(userControllerProvider.notifier).sendInboxToUser(
+        title: "Congratulations",
+        description: "Your service has been added successfully to kamn",
+        imageFile: null,
+        userId: widget.medicalModel.userId,
+        defImage: true,
+        context: context);
+    // update user state
+    ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("6", widget.medicalModel.userId, context);
   }
 
   refusesMedical() {
@@ -86,29 +102,41 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
     ref.watch(coachesGymsControllerProvider.notifier).openLink(link, context);
   }
 
-  void gpsTracking() {
-    ref.watch(playControllerProvider.notifier).gpsTracking(
-        widget.medicalModel!.long, widget.medicalModel!.lat, context);
+  void gpsTracking(Size size) {
+    if (widget.medicalModel.lat == 0.0 && widget.medicalModel.long == 0.0) {
+      showAwesomeDialog(context, "This store\n has no location added", size);
+    } else {
+      ref.watch(playControllerProvider.notifier).gpsTracking(
+          widget.medicalModel.long, widget.medicalModel.lat, context);
+    }
   }
 
   Widget build(BuildContext context) {
-    double finalPrice = widget.medicalModel!.price -
-        ((widget.medicalModel!.discount / 100) * widget.medicalModel!.price);
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
     return Scaffold(
       body: SafeArea(
           child: ListView(
         children: [
-          CustomUpperSec(
-            size: size,
-            color: Pallete.fontColor,
-            title: "Doctor",
-          ),
+          widget.medicalModel.userId == user!.uid || user.state == "1"
+              ? CustomIconUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "Doctor",
+                  onTapAction: () {
+                    goToScreen(context,
+                        UpdateMedicalScreen(medicalModel: widget.medicalModel));
+                  },
+                )
+              : CustomUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "Doctor",
+                ),
           SizedBox(
             height: size.height * 0.02,
           ),
-          Divider(
+          const Divider(
             thickness: 3,
             color: Colors.black,
           ),
@@ -134,12 +162,12 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter),
                       ),
-                      height: size.height * 0.62,
+                      height: size.height * 0.67,
                       width: size.width,
-                      child: Text(""),
+                      child: const Text(""),
                     ),
                     InkWell(
-                        onTap: () => gpsTracking(),
+                        onTap: () => gpsTracking(size),
                         child: CustomMaterialButton(
                             color: Pallete.greenButton,
                             size: size,
@@ -164,7 +192,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                 backgroundColor: Pallete.primaryColor,
                                 radius: size.width * 0.2,
                                 backgroundImage: CachedNetworkImageProvider(
-                                    widget.medicalModel!.image)),
+                                    widget.medicalModel.image)),
                           ),
                         )),
                     SizedBox(
@@ -180,7 +208,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                       ),
                     ),
                     Text(
-                      "${widget.medicalModel!.name}",
+                      widget.medicalModel.name,
                       style: TextStyle(
                           fontFamily: "Muller",
                           color: Pallete.whiteColor,
@@ -191,7 +219,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                       height: size.width * 0.008,
                     ),
                     Text(
-                      "${widget.medicalModel!.specialization}",
+                      widget.medicalModel.specialization,
                       style: TextStyle(
                         fontFamily: "Muller",
                         color: Pallete.whiteColor,
@@ -199,7 +227,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                       ),
                     ),
                     RatingDisplayWidget(
-                        rating: widget.medicalModel!.rating,
+                        rating: widget.medicalModel.rating,
                         color: Pallete.ratingColor,
                         size: size.width * 0.06),
                     Padding(
@@ -300,18 +328,17 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                               storeId: widget.medicalModel.id,
                                             )))
                                 : () {},
-                            child: Container(
+                            child: SizedBox(
                               height: size.height * 0.3,
                               width: size.width,
                               child: GridView.builder(
                                   scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      widget.medicalModel!.gallery.length,
+                                  itemCount: widget.medicalModel.gallery.length,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
                                           childAspectRatio: 1,
                                           crossAxisCount: 1),
                                   itemBuilder: (context, index) {
@@ -324,7 +351,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                         child: CachedNetworkImage(
                                           fit: BoxFit.cover,
                                           imageUrl: widget
-                                              .medicalModel!.gallery[index],
+                                              .medicalModel.gallery[index],
                                         ),
                                       ),
                                     );
@@ -335,7 +362,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                             ? Column(
                                 children: [
                                   CustomGetMedicalServices(
-                                    medicalModel: widget.medicalModel!,
+                                    medicalModel: widget.medicalModel,
                                   ),
                                   // if (widget.medicalModel!.userId ==
                                   //         user!.uid ||
@@ -345,7 +372,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                   //   )
                                 ],
                               )
-                            : Container(
+                            : SizedBox(
                                 height: size.height * 0.18,
                                 child: Padding(
                                   padding:
@@ -360,14 +387,14 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                             "Education",
                                             style: TextStyle(
                                               fontFamily: "Muller",
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 250, 220, 52),
                                               fontSize: size.width * 0.037,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           Text(
-                                            "${widget.medicalModel!.education}",
+                                            widget.medicalModel.education,
                                             style: TextStyle(
                                               fontFamily: "Muller",
                                               height: size.width * 0.0037,
@@ -383,14 +410,14 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                             "Experience",
                                             style: TextStyle(
                                               fontFamily: "Muller",
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 250, 220, 52),
                                               fontSize: size.width * 0.037,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           Text(
-                                            "${widget.medicalModel!.experience}",
+                                            widget.medicalModel.experience,
                                             style: TextStyle(
                                               fontFamily: "Muller",
                                               height: size.width * 0.0037,
@@ -406,14 +433,14 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                             "Benifits",
                                             style: TextStyle(
                                               fontFamily: "Muller",
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 250, 220, 52),
                                               fontSize: size.width * 0.037,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           Text(
-                                            "${widget.medicalModel!.benefits}",
+                                            widget.medicalModel.benefits,
                                             style: TextStyle(
                                               fontFamily: "Muller",
                                               height: size.width * 0.0037,
@@ -457,37 +484,43 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                       height: size.width * 0.04,
                     ),
                     if (status == MedicalFilterStatus.CV)
-                      Container(
-                        padding: EdgeInsets.all(size.width * 0.01),
-                        color: Color.fromARGB(24, 255, 255, 255),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: size.width * 0.03),
-                              child: Text(
-                                "Opening Times",
-                                style: TextStyle(
-                                  fontFamily: "Muller",
-                                  color: Color.fromARGB(255, 250, 220, 52),
-                                  fontSize: size.width * 0.037,
-                                  fontWeight: FontWeight.w500,
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: size.width * 0.00),
+                        child: Container(
+                          padding: EdgeInsets.all(size.width * 0.01),
+                          color: const Color.fromARGB(24, 255, 255, 255),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: size.width * 0.03),
+                                child: Text(
+                                  "Opening Times",
+                                  style: TextStyle(
+                                    fontFamily: "Muller",
+                                    color:
+                                        const Color.fromARGB(255, 250, 220, 52),
+                                    fontSize: size.width * 0.037,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            CustomMedicalTimesCard(
-                                fromDays: widget.medicalModel!.from,
-                                toDays: widget.medicalModel!.to,
-                                medicalModel: widget.medicalModel!),
-                          ],
+                              CustomMedicalTimesCard(
+                                  fromDays: widget.medicalModel.from,
+                                  toDays: widget.medicalModel.to,
+                                  medicalModel: widget.medicalModel),
+                            ],
+                          ),
                         ),
                       ),
-                    if (widget.medicalModel!.userId == user!.uid &&
+                    if (user!.state == "1" &&
                         status == MedicalFilterStatus.Services)
                       Opacity(
                         opacity: 0.5,
                         child: CustomAddMedicalOffersButton(
-                          medicalId: widget.medicalModel!.id,
+                          medicalId: widget.medicalModel.id,
                         ),
                       )
                   ],
@@ -499,7 +532,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${widget.medicalModel!.discount} %",
+                        "${widget.medicalModel.discount} %",
                         maxLines: 3,
                         style: TextStyle(
                           wordSpacing: -0.4,
@@ -523,7 +556,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                       SizedBox(
                         height: size.height * 0.01,
                       ),
-                      if (widget.medicalModel!.userId == "" &&
+                      if (widget.medicalModel.userId == "" &&
                           user!.state == "1")
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -532,7 +565,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                               onTap: () => Get.to(() =>
                                   EditCollaboratorStateScreen(
                                       collection: widget.collection,
-                                      id: widget.medicalModel!.id)),
+                                      id: widget.medicalModel.id)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -558,58 +591,58 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                     ],
                   ),
                 ),
-                if (widget.medicalModel!.faceBook != "")
+                if (widget.medicalModel.faceBook != "")
                   Positioned(
                       right: size.width * 0.03,
                       top: size.height * 0.115,
                       child: InkWell(
                         onTap: () =>
-                            openLink(widget.medicalModel!.faceBook, context),
+                            openLink(widget.medicalModel.faceBook, context),
                         child: Image.asset(
                           "assets/page-1/images/facebook-logo.png",
                           width: size.width * 0.08,
                         ),
                       )),
-                if (widget.medicalModel!.whatAppNum != "")
+                if (widget.medicalModel.whatAppNum != "")
                   Positioned(
                       right: size.width * 0.03,
                       top: size.height * 0.16,
                       child: InkWell(
                         onTap: () => openWhatsApp(
-                            widget.medicalModel!.whatAppNum, context),
+                            widget.medicalModel.whatAppNum, context),
                         child: Image.asset(
                           "assets/page-1/images/whatsapp.png",
                           width: size.width * 0.08,
                         ),
                       )),
-                if (widget.medicalModel!.instgram != "")
+                if (widget.medicalModel.instgram != "")
                   Positioned(
                       right: size.width * 0.03,
                       top: size.height * 0.2,
                       child: InkWell(
                         onTap: () =>
-                            openLink(widget.medicalModel!.instgram, context),
+                            openLink(widget.medicalModel.instgram, context),
                         child: Image.asset(
                           "assets/page-1/images/instagram.png",
                           width: size.width * 0.08,
                         ),
                       )),
-                if (widget.medicalModel!.dynamicLink != "")
+                if (widget.medicalModel.dynamicLink != "")
                   Positioned(
                       right: size.width * 0.03,
                       top: size.height * 0.241,
                       child: InkWell(
                         onTap: () =>
-                            openLink(widget.medicalModel!.dynamicLink, context),
+                            openLink(widget.medicalModel.dynamicLink, context),
                         child: Image.asset(
                           "assets/page-1/images/world-wide-web.png",
                           width: size.width * 0.08,
                         ),
                       )),
-                if (widget.medicalModel!.userId != "")
+                if (widget.medicalModel.userId != "")
                   ref
-                      .watch(getUserDataFutureProvider(
-                          widget.medicalModel!.userId))
+                      .watch(
+                          getUserDataFutureProvider(widget.medicalModel.userId))
                       .when(data: (userModel) {
                     return Positioned(
                         left: size.width * 0.05,
@@ -623,7 +656,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                         width: size.width * 0.1,
                                       )
                                     : userModel.points >= 100 &&
-                                            userModel!.points < 400
+                                            userModel.points < 400
                                         ? Image.asset(
                                             "assets/page-1/images/level2.png",
                                             width: size.width * 0.1,
@@ -649,7 +682,7 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
 
                     return ErrorText(error: error.toString());
                   }, loading: () {
-                    return Center(
+                    return const Center(
                       child: Column(),
                     );
                   }),

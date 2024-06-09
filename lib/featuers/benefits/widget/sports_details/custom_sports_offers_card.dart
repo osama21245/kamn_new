@@ -50,7 +50,7 @@ class _CustomSportsOffersCardState
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Success'),
+                const Text('Success'),
                 Text(
                   "ID:${widget.offerId}",
                   style: TextStyle(fontSize: size.width * 0.016),
@@ -62,7 +62,7 @@ class _CustomSportsOffersCardState
             actions: [
               TextButton(
                 onPressed: () => Get.back(), // Close dialog
-                child: Text('Close'),
+                child: const Text('Close'),
               ),
             ],
           ),
@@ -70,7 +70,7 @@ class _CustomSportsOffersCardState
       } else {
         AwesomeDialog(
             dialogBackgroundColor: const Color.fromARGB(255, 231, 230, 230),
-            barrierColor: Color.fromARGB(108, 0, 0, 0),
+            barrierColor: const Color.fromARGB(108, 0, 0, 0),
             context: context,
             animType: AnimType.scale,
             dialogType:
@@ -121,7 +121,7 @@ class _CustomSportsOffersCardState
           horizontal: size.width * 0.02, vertical: size.width * 0.012),
       child: Container(
           decoration: BoxDecoration(
-              color: Color.fromARGB(94, 255, 255, 255),
+              color: const Color.fromARGB(94, 255, 255, 255),
               borderRadius: BorderRadius.circular(size.width * 0.02)),
           height: size.height * 0.1,
           child: Row(
@@ -144,7 +144,7 @@ class _CustomSportsOffersCardState
                   flex: 2,
                   child: ListTile(
                     title: Text(
-                      "${widget.offersModel.title}",
+                      widget.offersModel.title,
                       style: TextStyle(
                           color: Pallete.whiteColor,
                           fontFamily: "Muller",
@@ -152,7 +152,7 @@ class _CustomSportsOffersCardState
                           fontWeight: FontWeight.w500),
                     ),
                     subtitle: Text(
-                      "${widget.offersModel.description}",
+                      widget.offersModel.description,
                       maxLines: 3,
                       style: TextStyle(
                           color: Pallete.whiteColor,
@@ -169,7 +169,7 @@ class _CustomSportsOffersCardState
                       Text(
                         "Discount ${widget.offersModel.discount}%",
                         style: TextStyle(
-                            color: Color.fromARGB(230, 252, 252, 252),
+                            color: const Color.fromARGB(230, 252, 252, 252),
                             fontFamily: "Muller",
                             fontSize: size.width * 0.025,
                             fontWeight: FontWeight.w500),
@@ -190,20 +190,6 @@ class _CustomSportsOffersCardState
                                       user!.uid
                                   ? () => deleteOffer()
                                   : () {},
-                          child: Text(
-                            widget.sportsmodel.servicePrividerId == user!.uid
-                                ? "Delete"
-                                : "Use",
-                            style: TextStyle(
-                                color: Pallete.whiteColor,
-                                fontFamily: "Muller",
-                                fontSize:
-                                    widget.sportsmodel.servicePrividerId ==
-                                            user.uid
-                                        ? size.width * 0.029
-                                        : size.width * 0.034,
-                                fontWeight: FontWeight.w600),
-                          ),
                           style: ElevatedButton.styleFrom(
                               fixedSize: Size(size.width, size.height * 0.02),
                               backgroundColor: !widget.offersIds
@@ -216,6 +202,20 @@ class _CustomSportsOffersCardState
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       size.width * 0.02))),
+                          child: Text(
+                            widget.sportsmodel.servicePrividerId == user!.uid
+                                ? "Delete"
+                                : "Use",
+                            style: TextStyle(
+                                color: Pallete.whiteColor,
+                                fontFamily: "Muller",
+                                fontSize:
+                                    widget.sportsmodel.servicePrividerId ==
+                                            user.uid
+                                        ? size.width * 0.026
+                                        : size.width * 0.03,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       )
                     ],

@@ -3,23 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../theme/pallete.dart';
 
-class TextFiled extends ConsumerWidget {
+class SocialTextFiled extends ConsumerWidget {
   String name;
   Color color;
   bool? ispassword;
   bool? istakenum;
   bool? keytypeisnumber;
-  String? Function(String?)? validator;
   TextEditingController controller;
-  TextFiled(
-      {super.key,
-      required this.name,
-      required this.color,
-      this.ispassword,
-      this.istakenum,
-      this.keytypeisnumber = false,
-      required this.controller,
-      this.validator});
+  SocialTextFiled({
+    super.key,
+    required this.name,
+    required this.color,
+    this.ispassword,
+    this.istakenum,
+    this.keytypeisnumber = false,
+    required this.controller,
+  });
   bool showAndHidePass = false;
   void changestate() {
     showAndHidePass = !showAndHidePass;
@@ -34,7 +33,6 @@ class TextFiled extends ConsumerWidget {
           maxLines: null,
           keyboardType: keytypeisnumber! ? TextInputType.phone : null,
           controller: controller,
-          validator: validator,
           obscureText: showAndHidePass,
           decoration: InputDecoration(
             suffixIcon: ispassword == null

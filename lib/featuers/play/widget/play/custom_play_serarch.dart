@@ -7,12 +7,14 @@ class CustomPlaySearch extends ConsumerWidget {
   final Size size;
   final void Function()? onfilterPress;
   final void Function()? onSearchPress;
+  final bool isshowFilter;
 
   const CustomPlaySearch(
       {required this.category,
       required this.size,
       required this.onfilterPress,
-      required this.onSearchPress});
+      required this.onSearchPress,
+      this.isshowFilter = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,7 +23,7 @@ class CustomPlaySearch extends ConsumerWidget {
         InkWell(
           onTap: onSearchPress,
           child: SizedBox(
-            width: size.width * 0.86,
+            width: isshowFilter ? size.width * 0.86 : size.width,
             child: Column(
               children: [
                 Padding(
@@ -85,13 +87,14 @@ class CustomPlaySearch extends ConsumerWidget {
             ),
           ),
         ),
-        InkWell(
-          onTap: onfilterPress,
-          child: Image.asset(
-            "assets/page-1/images/playFiltering.png",
-            width: size.width * 0.09,
-          ),
-        )
+        if (isshowFilter)
+          InkWell(
+            onTap: onfilterPress,
+            child: Image.asset(
+              "assets/page-1/images/playFiltering.png",
+              width: size.width * 0.09,
+            ),
+          )
       ],
     );
   }

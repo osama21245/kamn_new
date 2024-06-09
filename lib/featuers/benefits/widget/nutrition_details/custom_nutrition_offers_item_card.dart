@@ -1,8 +1,6 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
@@ -11,11 +9,8 @@ import 'package:kman/featuers/payment/screens/toggle_screen.dart';
 import 'package:kman/models/nutrition_model.dart';
 import 'package:kman/models/passorder_model.dart';
 import 'package:kman/models/qr_order_model.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import '../../../../models/offers_items_model.dart';
-import '../../../../models/sports_model.dart';
 import '../../../../theme/pallete.dart';
-import '../../../orders/controller/orders_controller.dart';
 
 class CustomNutritionOffersItemCard extends ConsumerStatefulWidget {
   final OffersItemsModel offersModel;
@@ -255,8 +250,8 @@ class _CustomNutritionOffersItemCardState
                                 fontFamily: "Muller",
                                 fontSize:
                                     widget.nutritionModel.userId == user.uid
-                                        ? size.width * 0.029
-                                        : size.width * 0.034,
+                                        ? size.width * 0.026
+                                        : size.width * 0.03,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),

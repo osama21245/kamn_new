@@ -12,6 +12,7 @@ class Constants {
   static const store1 = 'https://0samaahmed.com/webphotos/shop1.png';
   static const store2 = 'https://0samaahmed.com/webphotos/shop2.png';
   static const defpro = 'https://0samaahmed.com/webphotos/defpro.png';
+  static const defground = 'https://0samaahmed.com/webphotos/defground.png';
 
   static const Color cafeBrown = Color(0xff632B13);
   // static const bannerDefault =

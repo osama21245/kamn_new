@@ -8,9 +8,8 @@ class MedicalModel {
   final String userId;
   final String name;
   final double rating;
-  String image;
+  final String image;
   final String education;
-  final int price;
   final double lat;
   final double long;
   final String specialization;
@@ -25,7 +24,7 @@ class MedicalModel {
   final String instgram;
   final String dynamicLink;
   final String whatAppNum;
-  final int discount;
+  final String discount;
   MedicalModel({
     required this.id,
     required this.userId,
@@ -33,7 +32,6 @@ class MedicalModel {
     required this.rating,
     required this.image,
     required this.education,
-    required this.price,
     required this.lat,
     required this.long,
     required this.specialization,
@@ -58,7 +56,6 @@ class MedicalModel {
     double? rating,
     String? image,
     String? education,
-    int? price,
     double? lat,
     double? long,
     String? specialization,
@@ -73,7 +70,7 @@ class MedicalModel {
     String? instgram,
     String? dynamicLink,
     String? whatAppNum,
-    int? discount,
+    String? discount,
   }) {
     return MedicalModel(
       id: id ?? this.id,
@@ -82,7 +79,6 @@ class MedicalModel {
       rating: rating ?? this.rating,
       image: image ?? this.image,
       education: education ?? this.education,
-      price: price ?? this.price,
       lat: lat ?? this.lat,
       long: long ?? this.long,
       specialization: specialization ?? this.specialization,
@@ -109,7 +105,6 @@ class MedicalModel {
       'rating': rating,
       'image': image,
       'education': education,
-      'price': price,
       'lat': lat,
       'long': long,
       'specialization': specialization,
@@ -136,7 +131,6 @@ class MedicalModel {
       rating: map['rating'] as double,
       image: map['image'] as String,
       education: map['education'] as String,
-      price: map['price'] as int,
       lat: map['lat'] as double,
       long: map['long'] as double,
       specialization: map['specialization'] as String,
@@ -151,7 +145,7 @@ class MedicalModel {
       instgram: map['instgram'] as String,
       dynamicLink: map['dynamicLink'] as String,
       whatAppNum: map['whatAppNum'] as String,
-      discount: map['discount'] as int,
+      discount: map['discount'] as String,
     );
   }
 
@@ -162,7 +156,7 @@ class MedicalModel {
 
   @override
   String toString() {
-    return 'MedicalModel(id: $id, userId: $userId, name: $name, rating: $rating, image: $image, education: $education, price: $price, lat: $lat, long: $long, specialization: $specialization, experience: $experience, region: $region, city: $city, gallery: $gallery, from: $from, to: $to, benefits: $benefits, faceBook: $faceBook, instgram: $instgram, dynamicLink: $dynamicLink, whatAppNum: $whatAppNum, discount: $discount)';
+    return 'MedicalModel(id: $id, userId: $userId, name: $name, rating: $rating, image: $image, education: $education, lat: $lat, long: $long, specialization: $specialization, experience: $experience, region: $region, city: $city, gallery: $gallery, from: $from, to: $to, benefits: $benefits, faceBook: $faceBook, instgram: $instgram, dynamicLink: $dynamicLink, whatAppNum: $whatAppNum, discount: $discount)';
   }
 
   @override
@@ -175,7 +169,6 @@ class MedicalModel {
         other.rating == rating &&
         other.image == image &&
         other.education == education &&
-        other.price == price &&
         other.lat == lat &&
         other.long == long &&
         other.specialization == specialization &&
@@ -201,7 +194,6 @@ class MedicalModel {
         rating.hashCode ^
         image.hashCode ^
         education.hashCode ^
-        price.hashCode ^
         lat.hashCode ^
         long.hashCode ^
         specialization.hashCode ^

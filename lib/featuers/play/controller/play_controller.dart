@@ -136,17 +136,25 @@ class playController extends StateNotifier<StatusRequest> {
 
     state = StatusRequest.loading;
     final res = await _playRepository.reserve(reserveModel, user!.uid, points);
-    res.fold((l) => showSnackBar(l.toString(), context), (r) async {
-      UserModel user2 = user;
-      user2.points = points;
-      await _ref.watch(usersProvider.notifier).update((state) => user2);
-      await saveUserModelToPrefs(user2);
-      await _playRepository.pushOrderNotification("New reservision",
-          "You have a new reservision", "users$groundOwnerId");
-      state = StatusRequest.success;
-      Get.to(() => const AnimatedReservisionScreen());
-      showSnackBar("Your reserve Added Succefuly", context);
-    });
+    if (mounted) {
+      res.fold((l) => showSnackBar(l.toString(), context), (r) async {
+        UserModel user2 = user;
+        user2.points = points;
+
+        await _ref.watch(usersProvider.notifier).update((state) => user2);
+
+        await saveUserModelToPrefs(user2);
+        showSnackBar("Your reserve Added Succefuly", context);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const AnimatedReservisionScreen()));
+        _playRepository.pushOrderNotification("New reservision",
+            "You have a new reservision", "users$groundOwnerId");
+
+        //state = StatusRequest.loading;
+      });
+    }
+
+    state = StatusRequest.success;
   }
 
   Future<void> saveUserModelToPrefs(UserModel userModel) async {
@@ -363,7 +371,7 @@ class playController extends StateNotifier<StatusRequest> {
     String groundownerId = _ref.watch(usersProvider)!.uid;
     String id = Uuid().v1();
     final user = _ref.read(usersProvider);
-    String groundImage = Constants.store1;
+    String groundImage = Constants.defground;
 
     if (filegroundImage != null) {
       final res = await _storageRepository.storeFile(
@@ -375,34 +383,32 @@ class playController extends StateNotifier<StatusRequest> {
     }
 
 //set data
-    if (groundImage != "") {
-      GroundModel groundModel = GroundModel(
-          gallery: [],
-          city: city,
-          region: region,
-          groundnumber: phone,
-          rating: 0,
-          groundPlayersNum: groundPlayersNum,
-          id: id,
-          name: name,
-          address: address,
-          groundOwnerId: fromAsk ? user!.uid : "",
-          image: groundImage,
-          price: price,
-          futuers: futures,
-          long: long,
-          lat: lat);
+    GroundModel groundModel = GroundModel(
+        gallery: [],
+        city: city,
+        region: region,
+        groundnumber: phone,
+        rating: 0,
+        groundPlayersNum: groundPlayersNum,
+        id: id,
+        name: name,
+        address: address,
+        groundOwnerId: fromAsk ? user!.uid : "",
+        image: groundImage,
+        price: price,
+        futuers: futures,
+        long: long,
+        lat: lat);
 
-      final res =
-          await _playRepository.setGround(groundModel, collection, fromAsk);
-      if (mounted) {
-        state = StatusRequest.success;
-        res.fold((l) => showSnackBar(l.toString(), context), (r) {
-          showSnackBar("Your Ground Added Successfully", context);
-          Get.offAll(() => const HomeMain());
-        });
-      }
-    }
+    final res =
+        await _playRepository.setGround(groundModel, collection, fromAsk);
+//      if (mounted) {
+    res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      showSnackBar("Your Ground Added Successfully", context);
+      Get.offAll(() => const HomeMain());
+    });
+    //   }
+    state = StatusRequest.success;
   }
 
   void setResrvision(

@@ -297,7 +297,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Medical", id: medicalModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        medicalModel.image = r;
+        medicalModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateMedical(medicalModel);
@@ -315,7 +315,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Nutrition", id: nutritionModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        nutritionModel.image = r;
+        nutritionModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateNutrition(nutritionModel);
@@ -333,7 +333,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Sports", id: sportsModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        sportsModel.image = r;
+        sportsModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateSports(sportsModel);
@@ -515,13 +515,12 @@ class BenefitsController extends StateNotifier<StatusRequest> {
   void setMedical(
       BuildContext context,
       File? filelogo,
-      int price,
       String name,
       String experience,
       String benefits,
       String specialization,
       String education,
-      int discount,
+      String discount,
       String facebooklink,
       String region,
       String dynamicLink,
@@ -566,7 +565,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           from: listmedicalinitialTimesfrom,
           to: listmedicalinitialTimesto,
           gallery: gallery,
-          price: price,
           id: id,
           userId: fromAsk ? user!.uid : "",
           image: logo,
@@ -749,13 +747,12 @@ class BenefitsController extends StateNotifier<StatusRequest> {
   void setMedicalRequest(
     BuildContext context,
     String image,
-    int price,
     String name,
     String experience,
     String benefits,
     String specialization,
     String education,
-    int discount,
+    String discount,
     String facebooklink,
     String region,
     String dynamicLink,
@@ -780,7 +777,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
         from: listmedicalinitialTimesfrom,
         to: listmedicalinitialTimesto,
         gallery: gallery,
-        price: price,
         id: id,
         userId: user!.uid,
         image: image,
@@ -842,13 +838,12 @@ class BenefitsController extends StateNotifier<StatusRequest> {
       dynamicLink: dynamicLink,
       whatsApp: whatsAppNumber,
     );
-    state = StatusRequest.success;
 
     final res = await _benefitsRepository.setSports(sportsModel, false);
     res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      //  Get.offAll(() => HomeMain());
-      showSnackBar("Your sport Added Succefuly", context);
+      showSnackBar(" sport Added Succefuly", context);
     });
+    state = StatusRequest.success;
   }
 
   void setNutritionRequest(

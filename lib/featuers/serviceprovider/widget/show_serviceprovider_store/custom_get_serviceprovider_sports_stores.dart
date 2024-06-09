@@ -2,8 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
+import 'package:kman/featuers/benefits/screens/sports/sports_details_screen.dart';
+import 'package:kman/featuers/benefits/widget/benefits_home/custom_sports_card.dart';
 import 'package:kman/featuers/orders/controller/orders_controller.dart';
+import 'package:kman/models/sports_model.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
@@ -12,7 +16,7 @@ import '../../../orders/widget/sports/custom_card_Pending_sports.dart';
 import '../../controller/service_provider_controller.dart';
 
 class CustomGetServiceProviderSportsStores extends ConsumerWidget {
-  CustomGetServiceProviderSportsStores({
+  const CustomGetServiceProviderSportsStores({
     super.key,
   });
 
@@ -22,20 +26,19 @@ class CustomGetServiceProviderSportsStores extends ConsumerWidget {
     final user = ref.watch(usersProvider)!;
     Tuple2 tuple = Tuple2(user.uid, user.state);
     return ref.watch(getServiceProviderStoreProvider(tuple)).when(
-        data: (orders) => Expanded(
+        data: (sports) => Expanded(
               child: ListView.builder(
-                  itemCount: orders.length,
+                  itemCount: sports.length,
                   itemBuilder: (context, i) {
-                    final order = orders[i];
+                    final sport = sports[i] as SportsModel;
                     return InkWell(
-                        onTap: () => Get.to(() => OrderSportsDetailsScreen(
-                              fromserviceProviderScreen: false,
-                              qrorderModel: order,
+                        onTap: () => Get.to(() => SportsDetailsScreen(
+                              collection: Collections.sportsCollection,
+                              fromAsk: false,
+                              sportsModel: sport,
                             )),
-                        child: CustomcardPendingSports(
-                          qrorderModel: order,
-                          size: size,
-                          fromserviceProviderScreen: false,
+                        child: CustomSportsCard(
+                          sportsModel: sport,
                         ));
                   }),
             ),

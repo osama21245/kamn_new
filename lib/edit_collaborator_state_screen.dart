@@ -93,6 +93,9 @@ class _EditCollaboratorStateScreenState
     WidgetRef ref,
   ) {
     ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("9", userId!.text, context);
+    ref
         .watch(playControllerProvider.notifier)
         .activeGround(widget.id, widget.collection, userId!.text, context);
   }

@@ -1,6 +1,18 @@
 import 'package:get/get.dart';
 
 validinput(String val, int min, int max, String type) {
+  if (type != "social") {
+    if (val.isEmpty) {
+      return "Value Can't Be Empty";
+    }
+  }
+
+  if (type == "") {
+    if (val.isEmpty) {
+      return "Value Can't Be Empty";
+    }
+  }
+
   if (type == "username") {
     if (!GetUtils.isUsername(val)) {
       return "is not a username";
@@ -10,7 +22,7 @@ validinput(String val, int min, int max, String type) {
   if (type == "double") {
     if (!GetUtils.isNum(val)) {
       if (!isDouble(val)) {
-        return "is not a number";
+        return "not a number Example:20";
       }
     }
   }
@@ -18,7 +30,7 @@ validinput(String val, int min, int max, String type) {
   if (type == "int") {
     if (!GetUtils.isNum(val)) {
       if (!isInteger(val)) {
-        return "is not a number";
+        return "not a number Example:20";
       }
     }
   }
@@ -33,10 +45,6 @@ validinput(String val, int min, int max, String type) {
     if (!GetUtils.isPhoneNumber(val)) {
       return "is not a phone";
     }
-  }
-
-  if (val.isEmpty) {
-    return "Value Can't Be Empty";
   }
 
   if (val.length < min) {

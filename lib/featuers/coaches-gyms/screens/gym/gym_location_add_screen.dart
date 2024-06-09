@@ -138,17 +138,6 @@ class _AddgymsLocationsScreenState
                 ),
                 TextFiled(
                   validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "address",
-                  controller: address!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
                     return validinput(val!, 4, 500, "");
                   },
                   name: "Full Name",
@@ -159,36 +148,56 @@ class _AddgymsLocationsScreenState
                   height: size.height * 0.023,
                 ),
                 TextFiled(
-                  name: "whatAppNumber",
-                  controller: whatssAppnum!,
+                  validator: (val) {
+                    return validinput(val!, 1, 500, "");
+                  },
+                  name: "address",
+                  controller: address!,
                   color: Pallete.lightgreyColor2,
                 ),
                 SizedBox(
-                  height: size.height * 0.016,
+                  height: size.height * 0.023,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: size.height * 0.02, bottom: size.height * 0.02),
+                  child: CustomFinishMiddleSec(
+                      color: Pallete.fontColor,
+                      collection: "Optional",
+                      size: size),
                 ),
                 TextFiled(
-                  name: "instgramLink",
-                  controller: instgramLink!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                TextFiled(
-                  name: "faceBookLink",
+                  name: "Your facebook page (Optional)",
                   controller: facebookLink!,
                   color: Pallete.lightgreyColor2,
                 ),
                 SizedBox(
-                  height: size.height * 0.016,
+                  height: size.height * 0.023,
                 ),
                 TextFiled(
-                  name: "dynamicLink",
+                  name: "Your instgram page (Optional)",
+                  controller: instgramLink!,
+                  color: Pallete.lightgreyColor2,
+                ),
+                SizedBox(
+                  height: size.height * 0.023,
+                ),
+                TextFiled(
+                  keytypeisnumber: true,
+                  name: "Your whatsApp Number (Optional)",
+                  controller: whatssAppnum!,
+                  color: Pallete.lightgreyColor2,
+                ),
+                SizedBox(
+                  height: size.height * 0.023,
+                ),
+                TextFiled(
+                  name: "Any other social link (Optional)",
                   controller: dynamicLink!,
                   color: Pallete.lightgreyColor2,
                 ),
                 SizedBox(
-                  height: size.height * 0.016,
+                  height: size.height * 0.023,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -330,7 +339,7 @@ class _AddgymsLocationsScreenState
                             borderRadius:
                                 BorderRadius.circular(size.width * 0.02))),
                     child: Text(
-                      'Add cv images',
+                      'Add Gallery images',
                       style: TextStyle(
                           color: Pallete.whiteColor,
                           fontFamily: "Muller",

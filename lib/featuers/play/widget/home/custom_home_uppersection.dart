@@ -28,7 +28,7 @@ class CustomHomeUpperSec extends StatelessWidget {
           InkWell(
             onTap: () => displayDrawer(context),
             child: Container(
-                height: size.height * 0.05,
+                height: size.height * 0.06,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(size.width * 0.025),
                     color: color),

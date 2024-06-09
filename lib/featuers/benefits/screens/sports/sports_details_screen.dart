@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/core/constants/collection_constants.dart';
+import 'package:kman/core/constants/constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
 import 'package:kman/featuers/benefits/screens/sports/update_sports_screen.dart';
@@ -14,10 +17,14 @@ import 'package:kman/featuers/benefits/widget/sports_details/custom_sports_offer
 import 'package:kman/featuers/orders/controller/orders_controller.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
 import 'package:kman/featuers/play/widget/play/showrating.dart';
+import 'package:kman/featuers/user/controller/user_controller.dart';
 import 'package:kman/models/sports_model.dart';
 import '../../../../core/common/custom_elevated_button.dart';
+import '../../../../core/common/custom_icon_uppersec.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
+import '../../../../core/function/awesome_dialog.dart';
+import '../../../../core/function/goTo.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
@@ -74,6 +81,18 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
     ref
         .watch(benefitsControllerProvider.notifier)
         .deleteSportsRequest(widget.sportsModel!.id, context);
+// send message to user
+    ref.watch(userControllerProvider.notifier).sendInboxToUser(
+        title: "Congratulations",
+        description: "Your service has been added successfully to kamn",
+        imageFile: null,
+        defImage: true,
+        userId: widget.sportsModel.servicePrividerId,
+        context: context);
+    // update user state
+
+    ref.watch(authControllerProvider.notifier).updateUserServiceStatus(
+        "8", widget.sportsModel.servicePrividerId, context);
   }
 
   refusesportsShop() {
@@ -90,10 +109,13 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
   StatusRequest statusRequest = StatusRequest.success;
   List<String> offersIds = [];
 
-  void gpsTracking() {
-    ref
-        .watch(playControllerProvider.notifier)
-        .gpsTracking(widget.sportsModel.long, widget.sportsModel.lat, context);
+  void gpsTracking(Size size) {
+    if (widget.sportsModel.lat == 0.0 && widget.sportsModel.long == 0.0) {
+      showAwesomeDialog(context, "This store\n has no location added", size);
+    } else {
+      ref.watch(playControllerProvider.notifier).gpsTracking(
+          widget.sportsModel.long, widget.sportsModel.lat, context);
+    }
   }
 
   openWhatsApp(String phone, BuildContext context) {
@@ -117,15 +139,25 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
       widget: SafeArea(
           child: ListView(
         children: [
-          CustomUpperSec(
-            size: size,
-            color: Pallete.fontColor,
-            title: "sports",
-          ),
+          widget.sportsModel.servicePrividerId == user.uid || user.state == "1"
+              ? CustomIconUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "Sport",
+                  onTapAction: () {
+                    goToScreen(context,
+                        UpdateSportsScreen(sportsModel: widget.sportsModel));
+                  },
+                )
+              : CustomUpperSec(
+                  size: size,
+                  color: Pallete.fontColor,
+                  title: "sports",
+                ),
           SizedBox(
             height: size.height * 0.02,
           ),
-          Divider(
+          const Divider(
             thickness: 3,
             color: Colors.black,
           ),
@@ -136,31 +168,33 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.032),
             child: Stack(
               children: [
-                Column(
-                  children: [
-                    Container(
-                      height: size.height * 0.08,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: Pallete.listofGridientCard,
-                              begin: Alignment.bottomRight,
-                              end: Alignment.topLeft),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(size.width * 0.02),
-                              topRight: Radius.circular(size.width * 0.02))),
-                      height: size.height * 0.64,
-                      width: size.width,
-                      child: Text(""),
-                    ),
-                    InkWell(
-                        onTap: () => gpsTracking(),
-                        child: CustomMaterialButton(
-                            color: Pallete.greenButton,
-                            size: size,
-                            title: "Gps Tracking"))
-                  ],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: size.height * 0.08,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: Pallete.listofGridientCard,
+                                begin: Alignment.bottomRight,
+                                end: Alignment.topLeft),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(size.width * 0.02),
+                                topRight: Radius.circular(size.width * 0.02))),
+                        height: size.height * 0.67,
+                        width: size.width,
+                        child: const Text(""),
+                      ),
+                      InkWell(
+                          onTap: () => gpsTracking(size),
+                          child: CustomMaterialButton(
+                              color: Pallete.greenButton,
+                              size: size,
+                              title: "Gps Tracking"))
+                    ],
+                  ),
                 ),
                 Positioned.fill(
                     child: Column(
@@ -309,7 +343,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                           decoration: BoxDecoration(
                                               border: offresstatus ==
                                                       SportsOffersStatus.Public
-                                                  ? Border(
+                                                  ? const Border(
                                                       bottom: BorderSide(
                                                           width: 2,
                                                           color: Pallete
@@ -342,7 +376,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                               border: offresstatus ==
                                                       SportsOffersStatus
                                                           .on_items
-                                                  ? Border(
+                                                  ? const Border(
                                                       bottom: BorderSide(
                                                           width: 2,
                                                           color: Pallete
@@ -423,8 +457,8 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                                             error: error
                                                                 .toString());
                                                       },
-                                                      loading: () =>
-                                                          Text("Wait...."));
+                                                      loading: () => const Text(
+                                                          "Wait...."));
                                             },
                                             error: (error, StackTrace) {
                                               print(error);
@@ -435,7 +469,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                             loading: () => InkWell(
                                                 onTap: () => setState(() {}),
                                                 child: Container(
-                                                  child: Text("Wait...."),
+                                                  child: const Text("Wait...."),
                                                 ))),
                                   ),
                                 ],
@@ -457,7 +491,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                           decoration: BoxDecoration(
                                               border: offresstatus ==
                                                       SportsOffersStatus.Public
-                                                  ? Border(
+                                                  ? const Border(
                                                       bottom: BorderSide(
                                                           width: 2,
                                                           color: Pallete
@@ -490,7 +524,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                               border: offresstatus ==
                                                       SportsOffersStatus
                                                           .on_items
-                                                  ? Border(
+                                                  ? const Border(
                                                       bottom: BorderSide(
                                                           width: 2,
                                                           color: Pallete
@@ -571,8 +605,8 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                                             error: error
                                                                 .toString());
                                                       },
-                                                      loading: () =>
-                                                          Text("Wait...."));
+                                                      loading: () => const Text(
+                                                          "Wait...."));
                                             },
                                             error: (error, StackTrace) {
                                               print(error);
@@ -583,7 +617,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                             loading: () => InkWell(
                                                 onTap: () => setState(() {}),
                                                 child: Container(
-                                                  child: Text("Wait...."),
+                                                  child: const Text("Wait...."),
                                                 ))),
                                   ),
                                 ],
@@ -608,7 +642,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                           "About",
                                           style: TextStyle(
                                             fontFamily: "Muller",
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 250, 220, 52),
                                             fontSize: size.width * 0.037,
                                             fontWeight: FontWeight.w500,
@@ -666,7 +700,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                               "Gallery",
                               style: TextStyle(
                                 fontFamily: "Muller",
-                                color: Color.fromARGB(255, 250, 220, 52),
+                                color: const Color.fromARGB(255, 250, 220, 52),
                                 fontSize: size.width * 0.037,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -696,7 +730,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                         size.width * 0.02),
                                     border: Border.all(
                                         width: 2,
-                                        color: Color.fromARGB(
+                                        color: const Color.fromARGB(
                                             118, 255, 255, 255))),
                                 height: size.height * 0.15,
                                 width: size.width,
@@ -708,7 +742,7 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                         const AlwaysScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
                                             childAspectRatio: 1,
                                             crossAxisCount: 1),
                                     itemBuilder: (context, index) {
@@ -731,17 +765,6 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                           ],
                         ),
                       ),
-                    if (user.uid == widget.sportsModel.servicePrividerId ||
-                        user.state == "1")
-                      offresstatus == SportsOffersStatus.Public
-                          ? Opacity(
-                              opacity: 0.5,
-                              child: CustomAddSportsOffersButton(
-                                  sportsId: widget.sportsModel.id))
-                          : Opacity(
-                              opacity: 0.5,
-                              child: CustomAddSportsOffersItemsButton(
-                                  sportsId: widget.sportsModel.id))
                   ],
                 )),
                 if (widget.sportsModel.faceBook != "")
@@ -756,6 +779,25 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                           width: size.width * 0.08,
                         ),
                       )),
+                if (user.uid == widget.sportsModel.servicePrividerId ||
+                    user.state == "1")
+                  offresstatus == SportsOffersStatus.Public
+                      ? Positioned(
+                          right: size.width * 0.15,
+                          bottom: size.height * 0.08,
+                          child: Opacity(
+                              opacity: 0.5,
+                              child: CustomAddSportsOffersButton(
+                                  sportsId: widget.sportsModel.id)),
+                        )
+                      : Positioned(
+                          right: size.width * 0.15,
+                          bottom: size.height * 0.08,
+                          child: Opacity(
+                              opacity: 0.5,
+                              child: CustomAddSportsOffersItemsButton(
+                                  sportsId: widget.sportsModel.id)),
+                        ),
                 if (widget.sportsModel.whatsApp != "")
                   Positioned(
                       right: size.width * 0.03,

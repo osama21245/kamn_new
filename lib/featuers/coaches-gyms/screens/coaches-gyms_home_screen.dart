@@ -168,6 +168,8 @@ class _CoachesGymsHomeScreenState extends ConsumerState<CoachesGymsHomeScreen> {
               ],
             ),
             CustomPlaySearch(
+              isshowFilter:
+                  status == CoachesGymsFilterStatus.Coaches ? false : true,
               onSearchPress: () => showSearch(
                   context: context,
                   delegate: status == CoachesGymsFilterStatus.Coaches

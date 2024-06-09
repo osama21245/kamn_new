@@ -181,7 +181,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
           path: "Coach", id: coachmodel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        coachmodel.image = r;
+        coachmodel.copyWith(image: r);
       });
     }
     final res = await _coachesGymsRepository.updateCoach(coachmodel);
@@ -284,17 +284,15 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     }
 
 //set data
-    if (logo != "") {
-      GymModel gymModel =
-          GymModel(id: id, name: name, image: logo, ismix: ismix, userId: "");
-      final res = await _coachesGymsRepository.setGym(gymModel, fromAsk);
-      state = StatusRequest.success;
+    GymModel gymModel =
+        GymModel(id: id, name: name, image: logo, ismix: ismix, userId: "");
+    final res = await _coachesGymsRepository.setGym(gymModel, fromAsk);
+    state = StatusRequest.success;
 
-      res.fold((l) => showSnackBar(l.toString(), context), (r) async {
-        Get.offAll(() => const HomeMain());
-        showSnackBar("Your reserve Added Succefuly", context);
-      });
-    }
+    res.fold((l) => showSnackBar(l.toString(), context), (r) async {
+      Get.offAll(() => const HomeMain());
+      showSnackBar("Your reserve Added Succefuly", context);
+    });
   }
 
   void setGymsLocations(
@@ -463,6 +461,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      Get.offAll(() => HomeMain());
       setPricesCoaches(id, context);
       showSnackBar("Your reserve Added Succefuly", context);
     });
@@ -485,7 +484,6 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
   ) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
-    String photo = "";
     final user = _ref.read(usersProvider);
 
     CoacheModel coacheModel = CoacheModel(
@@ -497,7 +495,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       name: name,
       rating: 0,
       userId: user!.uid,
-      image: photo,
+      image: fileCoacheImage,
       education: education,
       categoriry: categoriry,
       experience: experience,
@@ -540,12 +538,10 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
 
     GymModel gymModel =
         GymModel(id: id, name: name, image: image, ismix: ismix, userId: "");
-    final res = await _coachesGymsRepository.setGym(gymModel, true);
+    final res = await _coachesGymsRepository.setGym(gymModel, false);
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.toString(), context), (r) async {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeMain()));
       showSnackBar("Your reserve Added Succefuly", context);
     });
   }

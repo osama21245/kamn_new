@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
 import 'package:kman/featuers/user/controller/user_controller.dart';
@@ -11,9 +12,8 @@ import '../../../../../core/providers/valid.dart';
 import '../../../../../theme/pallete.dart';
 
 class AddInBoxScreen extends ConsumerStatefulWidget {
-  const AddInBoxScreen({
-    super.key,
-  });
+  final String serviceProviderId;
+  const AddInBoxScreen({super.key, required this.serviceProviderId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddInBoxScreenState();
@@ -43,11 +43,13 @@ class _AddInBoxScreenState extends ConsumerState<AddInBoxScreen> {
   setInbox(WidgetRef ref) {
     var Formdata = formstate.currentState;
     if (Formdata!.validate()) {
-      if (inBoxImage == null) {
-        inBoxImage = File("");
-      }
       ref.watch(userControllerProvider.notifier).sendInboxToUser(
-          title!.text, description!.text, isimageSet, inBoxImage!, context);
+          title: title!.text,
+          description: description!.text,
+          imageFile: inBoxImage,
+          userId: widget.serviceProviderId,
+          defImage: false,
+          context: context);
     }
   }
 

@@ -36,6 +36,10 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
         widget.gymModel.image, widget.gymModel.name, widget.gymModel.ismix);
 
     ref
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("5", widget.gymModel.userId, context);
+
+    ref
         .watch(coachesGymsControllerProvider.notifier)
         .deletegymRequest(widget.gymModel.id, context);
   }
@@ -75,33 +79,37 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
     final user = ref.read(usersProvider);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: user!.state == "1"
-          ? FloatingActionButton(
-              onPressed: () => Get.to(() => AddgymsLocationsScreen(
-                    image: widget.gymModel.image,
-                    gymId: widget.gymModel.id,
-                  )),
-              child: Icon(Icons.add),
-            )
-          : null,
+      floatingActionButton:
+          user!.state == "1" || widget.gymModel.userId == user.uid
+              ? FloatingActionButton(
+                  onPressed: () => Get.to(() => AddgymsLocationsScreen(
+                        image: widget.gymModel.image,
+                        gymId: widget.gymModel.id,
+                      )),
+                  child: Icon(Icons.add),
+                )
+              : null,
       body: widget.fromAsk
-          ? Column(
-              children: [
-                CustomElevatedButton(
-                    size: size,
-                    color: Pallete.greenButton,
-                    title: "Accept",
-                    sizeofwidth: size.width * 0.25,
-                    sizeofhight: size.height * 0.03,
-                    onTap: () => acceptGym(context)),
-                CustomElevatedButton(
-                    size: size,
-                    color: Pallete.redColor,
-                    title: "Refuse",
-                    sizeofwidth: size.width * 0.25,
-                    sizeofhight: size.height * 0.03,
-                    onTap: () => refusegym())
-              ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomElevatedButton(
+                      size: size,
+                      color: Pallete.greenButton,
+                      title: "Accept",
+                      sizeofwidth: size.width * 0.35,
+                      sizeofhight: size.height * 0.03,
+                      onTap: () => acceptGym(context)),
+                  CustomElevatedButton(
+                      size: size,
+                      color: Pallete.redColor,
+                      title: "Refuse",
+                      sizeofwidth: size.width * 0.35,
+                      sizeofhight: size.height * 0.03,
+                      onTap: () => refusegym())
+                ],
+              ),
             )
           : SafeArea(
               child: Column(

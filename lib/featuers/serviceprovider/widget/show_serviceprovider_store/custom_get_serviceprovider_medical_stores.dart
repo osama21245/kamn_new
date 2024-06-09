@@ -2,19 +2,20 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
-
-import 'package:kman/featuers/orders/controller/orders_controller.dart';
+import 'package:kman/featuers/benefits/screens/medical/medical_details_screen.dart';
+import 'package:kman/featuers/benefits/widget/benefits_home/custom_medical_card.dart';
 import 'package:kman/featuers/orders/screens/my_reservisions/sure_medical_reservision.dart';
 import 'package:kman/featuers/orders/widget/medical/custom_card_medical_reservisions.dart';
-import 'package:kman/featuers/orders/widget/customcardPending.dart';
+import 'package:kman/models/medical_model.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
 import '../../controller/service_provider_controller.dart';
 
 class CustomGetServiceProviderMedicalStores extends ConsumerWidget {
-  CustomGetServiceProviderMedicalStores({
+  const CustomGetServiceProviderMedicalStores({
     super.key,
   });
 
@@ -24,19 +25,18 @@ class CustomGetServiceProviderMedicalStores extends ConsumerWidget {
     final user = ref.watch(usersProvider)!;
     Tuple2 tuple = Tuple2(user.uid, user.state);
     return ref.watch(getServiceProviderStoreProvider(tuple)).when(
-        data: (medicalReservisions) => Expanded(
+        data: (medicals) => Expanded(
               child: ListView.builder(
-                  itemCount: medicalReservisions.length,
+                  itemCount: medicals.length,
                   itemBuilder: (context, i) {
-                    final medicalReservision = medicalReservisions[i];
+                    final medical = medicals[i] as MedicalModel;
                     return InkWell(
-                        onTap: () => Get.to(SureMedicalReservision(
-                              medicalReservisionModel: medicalReservision,
-                            )),
-                        child: CustomcardMedicalReservisions(
-                          medicalReservisionModel: medicalReservision,
-                          size: size,
-                          fromserviceProviderScreen: false,
+                        onTap: () => Get.to(MedicalDetailsScreen(
+                            medicalModel: medical,
+                            fromAsk: false,
+                            collection: Collections.medicalCollection)),
+                        child: CustomMedicalCard(
+                          medicalModel: medical,
                         ));
                   }),
             ),
