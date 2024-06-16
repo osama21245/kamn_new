@@ -5,8 +5,8 @@ import 'package:kman/core/common/custom_uppersec.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/orders/widget/service_provider_orders/custom_get_service_provider_recived_orders.dart';
 import 'package:kman/theme/pallete.dart';
-import '../../../core/class/statusrequest.dart';
-import '../../../core/providers/checkInternet.dart';
+import '../../../../core/class/statusrequest.dart';
+import '../../../../core/providers/checkInternet.dart';
 
 class ServiceProviderOrdersScreen extends ConsumerStatefulWidget {
   const ServiceProviderOrdersScreen({super.key});

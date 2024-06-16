@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/coaches-gyms/screens/coaches-gyms_home_screen.dart';
-import 'package:kman/featuers/orders/screens/service_provider_orders_screen.dart';
+import 'package:kman/featuers/orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import 'package:kman/homemain.dart';
 
 import '../../featuers/orders/screens/my_reservisions_screens.dart';

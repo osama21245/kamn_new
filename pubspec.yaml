@@ -83,6 +83,7 @@ dependencies:
   rating_dialog: ^2.0.4
   timeago: ^3.6.1
   open_street_map_search_and_pick: ^0.1.1
+  rive: ^0.13.7
 
   
  

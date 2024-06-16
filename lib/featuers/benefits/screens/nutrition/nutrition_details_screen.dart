@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/featuers/benefits/screens/nutrition/refuse_nutrition_request.dart';
 import 'package:kman/featuers/benefits/screens/nutrition/update_nutrition_screen.dart';
 import 'package:kman/featuers/benefits/widget/nutrition_details/custom_add_nutrition_offers_items_button.dart';
 import 'package:kman/featuers/benefits/widget/nutrition_details/custom_nutrition_offers_item_card.dart';
@@ -22,6 +23,7 @@ import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
 import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
 import '../../../orders/controller/orders_controller.dart';
+import '../../../orders/screens/service_provider_reservisions/service_provider_nutrition_reservision_screen.dart';
 import '../../../play/controller/play_controller.dart';
 import '../../../play/widget/play/showrating.dart';
 import '../../../user/controller/user_controller.dart';
@@ -99,12 +101,6 @@ class _NutritionDetailsScreenState
     ref
         .watch(authControllerProvider.notifier)
         .updateUserServiceStatus("7", widget.nutritionModel.userId, context);
-  }
-
-  refusesNutrition() {
-    ref
-        .watch(benefitsControllerProvider.notifier)
-        .deleteNutritionRequest(widget.nutritionModel!.id, context);
   }
 
   List<String> offersIds = [];
@@ -192,6 +188,9 @@ class _NutritionDetailsScreenState
                       InkWell(
                           onTap: () => gpsTracking(size),
                           child: CustomMaterialButton(
+                              serviceProviderId: widget.nutritionModel.userId,
+                              fun: () => goToScreen(context,
+                                  ServiceProviderNutritionReservisionsScreen()),
                               color: Pallete.greenButton,
                               size: size,
                               title: "Gps Tracking"))
@@ -682,7 +681,11 @@ class _NutritionDetailsScreenState
                                             title: "Refuse",
                                             sizeofwidth: size.width * 0.3,
                                             sizeofhight: size.height * 0.03,
-                                            onTap: () => refusesNutrition())
+                                            onTap: () => goToScreen(
+                                                context,
+                                                RefuseNutritionRequestScreen(
+                                                    nutritionModel:
+                                                        widget.nutritionModel)))
                                       ],
                                     )
                                 ],

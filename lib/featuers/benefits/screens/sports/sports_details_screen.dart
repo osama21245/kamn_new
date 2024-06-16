@@ -28,10 +28,12 @@ import '../../../../core/function/goTo.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
+import '../../../orders/screens/service_provider_reservisions/service_provider_sports_reservision_screen.dart';
 import '../../widget/sports_details/custom_add_sports_offers_button.dart';
 import '../../widget/sports_details/custom_add_sports_offers_items_button.dart';
 import '../../widget/sports_details/custom_sports_offers_item_card.dart';
 import '../../../../core/common/update_gallery_screen.dart';
+import 'refuse_sports_request.dart';
 
 class SportsDetailsScreen extends ConsumerStatefulWidget {
   final SportsModel sportsModel;
@@ -93,12 +95,6 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
 
     ref.watch(authControllerProvider.notifier).updateUserServiceStatus(
         "8", widget.sportsModel.servicePrividerId, context);
-  }
-
-  refusesportsShop() {
-    ref
-        .watch(benefitsControllerProvider.notifier)
-        .deleteSportsRequest(widget.sportsModel!.id, context);
   }
 
   String qrLink = "";
@@ -190,6 +186,10 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                       InkWell(
                           onTap: () => gpsTracking(size),
                           child: CustomMaterialButton(
+                              serviceProviderId:
+                                  widget.sportsModel.servicePrividerId,
+                              fun: () => goToScreen(context,
+                                  ServiceProviderSportsReservisionsScreen()),
                               color: Pallete.greenButton,
                               size: size,
                               title: "Gps Tracking"))
@@ -682,7 +682,11 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                                               title: "Refuse",
                                               sizeofwidth: size.width * 0.3,
                                               sizeofhight: size.height * 0.03,
-                                              onTap: () => refusesportsShop())
+                                              onTap: () => goToScreen(
+                                                  context,
+                                                  RefuseSportsRequestScreen(
+                                                      sportsModel:
+                                                          widget.sportsModel)))
                                         ],
                                       )
                                   ],

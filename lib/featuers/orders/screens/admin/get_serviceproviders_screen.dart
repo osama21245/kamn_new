@@ -4,12 +4,12 @@ import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_medical.d
 import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_nutrition.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_gyms.dart';
-import '../../../HandlingDataView.dart';
-import '../../../core/class/statusrequest.dart';
-import '../../../core/common/custom_uppersec.dart';
-import '../../../core/providers/checkInternet.dart';
-import '../../../theme/pallete.dart';
-import '../../auth/controller/auth_controller.dart';
+import '../../../../HandlingDataView.dart';
+import '../../../../core/class/statusrequest.dart';
+import '../../../../core/common/custom_uppersec.dart';
+import '../../../../core/providers/checkInternet.dart';
+import '../../../../theme/pallete.dart';
+import '../../../auth/controller/auth_controller.dart';
 
 class GetServiceProviderScreen extends ConsumerStatefulWidget {
   final String collection;

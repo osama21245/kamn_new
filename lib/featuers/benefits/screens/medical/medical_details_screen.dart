@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/featuers/benefits/screens/medical/refuse_medical_request.dart';
 import 'package:kman/featuers/benefits/widget/medical_details/custom_get_medical_services.dart';
 import 'package:kman/featuers/benefits/widget/medical_details/custom_medical_times_card.dart';
 import 'package:kman/models/medical_model.dart';
@@ -16,6 +17,7 @@ import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../theme/pallete.dart';
 import '../../../auth/controller/auth_controller.dart';
 import '../../../coaches-gyms/controller/coaches-gyms_controller.dart';
+import '../../../orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import '../../../play/controller/play_controller.dart';
 import '../../../play/widget/play/showrating.dart';
 import '../../../user/controller/user_controller.dart';
@@ -85,12 +87,6 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
     ref
         .watch(authControllerProvider.notifier)
         .updateUserServiceStatus("6", widget.medicalModel.userId, context);
-  }
-
-  refusesMedical() {
-    ref
-        .watch(benefitsControllerProvider.notifier)
-        .deleteMedicalRequest(widget.medicalModel!.id, context);
   }
 
   @override
@@ -169,6 +165,9 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                     InkWell(
                         onTap: () => gpsTracking(size),
                         child: CustomMaterialButton(
+                            serviceProviderId: widget.medicalModel.userId,
+                            fun: () => goToScreen(
+                                context, ServiceProviderOrdersScreen()),
                             color: Pallete.greenButton,
                             size: size,
                             title: "Gps Tracking"))
@@ -473,7 +472,11 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                                                 title: "Refuse",
                                                 sizeofwidth: size.width * 0.3,
                                                 sizeofhight: size.height * 0.03,
-                                                onTap: () => refusesMedical())
+                                                onTap: () => goToScreen(
+                                                    context,
+                                                    RefuseMedicalRequestScreen(
+                                                        medicalModel: widget
+                                                            .medicalModel)))
                                           ],
                                         )
                                     ],

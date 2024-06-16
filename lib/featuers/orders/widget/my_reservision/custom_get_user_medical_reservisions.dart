@@ -21,22 +21,28 @@ class CustomGetUserMedicalReservisions extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
     return ref.watch(getUserMedicalReservisionProvider(user!.uid)).when(
-        data: (medicalReservisions) => Expanded(
-              child: ListView.builder(
-                  itemCount: medicalReservisions.length,
-                  itemBuilder: (context, i) {
-                    final medicalReservision = medicalReservisions[i];
-                    return InkWell(
-                        onTap: () => Get.to(SureMedicalReservision(
-                              medicalReservisionModel: medicalReservision,
-                            )),
-                        child: CustomcardMedicalReservisions(
-                          medicalReservisionModel: medicalReservision,
-                          size: size,
-                          fromserviceProviderScreen: false,
-                        ));
-                  }),
-            ),
+        data: (medicalReservisions) => medicalReservisions.isEmpty
+            ? LottieBuilder.asset(
+                fit: BoxFit.contain,
+                AppImageAsset.nodata,
+                repeat: true,
+              )
+            : Expanded(
+                child: ListView.builder(
+                    itemCount: medicalReservisions.length,
+                    itemBuilder: (context, i) {
+                      final medicalReservision = medicalReservisions[i];
+                      return InkWell(
+                          onTap: () => Get.to(SureMedicalReservision(
+                                medicalReservisionModel: medicalReservision,
+                              )),
+                          child: CustomcardMedicalReservisions(
+                            medicalReservisionModel: medicalReservision,
+                            size: size,
+                            fromserviceProviderScreen: false,
+                          ));
+                    }),
+              ),
         error: (error, StackTrace) {
           print(error);
 

@@ -900,6 +900,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final res = await _benefitsRepository.deleteMedicalRequest(medicalId);
     res.fold((l) => null, (r) {
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 
@@ -907,12 +908,14 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final res = await _benefitsRepository.deleteNutritionRequest(nutritionId);
     res.fold((l) => null, (r) {
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 
   void deleteSportsRequest(String sportId, BuildContext context) async {
     final res = await _benefitsRepository.deleteSportsRequest(sportId);
     res.fold((l) => null, (r) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
     });
   }

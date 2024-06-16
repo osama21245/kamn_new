@@ -9,6 +9,7 @@ import 'package:kman/core/constants/constants.dart';
 import 'package:kman/edit_collaborator_state_screen.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
+import 'package:kman/featuers/coaches-gyms/screens/coach/refuse_coach_request.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches_details/coach_prices_card.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches_details/custom_add_coachplans_button.dart';
 import 'package:kman/models/coach_prices_model.dart';
@@ -21,6 +22,7 @@ import '../../../../core/constants/collection_constants.dart';
 import '../../../../core/function/goTo.dart';
 import '../../../../theme/pallete.dart';
 
+import '../../../orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import '../../../play/widget/play/showrating.dart';
 import '../../../user/controller/user_controller.dart';
 import 'update_coach_screen.dart';
@@ -93,12 +95,6 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
     ref
         .watch(authControllerProvider.notifier)
         .updateUserServiceStatus("4", widget.coacheModel!.userId, context);
-  }
-
-  refuseCoach() {
-    ref
-        .watch(coachesGymsControllerProvider.notifier)
-        .deleteCoachRequest(widget.coacheModel!.id, context);
   }
 
   @override
@@ -187,8 +183,15 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                             child: Row(
                               children: [
                                 status2 == CoachFilterStatusPricse.main
-                                    ? Container(
-                                        child: const Text("             "))
+                                    ? IconButton(
+                                        onPressed: () {
+                                          goToScreen(context,
+                                              const ServiceProviderOrdersScreen());
+                                        },
+                                        icon: const Icon(
+                                          Icons.assignment_turned_in_outlined,
+                                          color: Pallete.whiteColor,
+                                        ))
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -591,7 +594,11 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                                 title: "Refuse",
                                                 sizeofwidth: size.width * 0.3,
                                                 sizeofhight: size.height * 0.03,
-                                                onTap: () => refuseCoach())
+                                                onTap: () => goToScreen(
+                                                    context,
+                                                    RefuseCoachRequestScreen(
+                                                        coacheModel: widget
+                                                            .coacheModel!)))
                                           ],
                                         )
                                     ],

@@ -21,23 +21,29 @@ class CustomGetUserGymReservisions extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
     return ref.watch(getUserGymReservisionsProvider(user!.uid)).when(
-        data: (orders) => Expanded(
-              child: ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, i) {
-                    final order = orders[i];
-                    return InkWell(
-                        onTap: () => Get.to(() => OrderGymDetailsScreen(
-                              fromserviceProviderScreen: false,
-                              orderModel: order,
-                            )),
-                        child: CustomcardPendingGym(
-                          orderModel: order,
-                          size: size,
-                          fromserviceProviderScreen: false,
-                        ));
-                  }),
-            ),
+        data: (orders) => orders.isEmpty
+            ? LottieBuilder.asset(
+                fit: BoxFit.contain,
+                AppImageAsset.nodata,
+                repeat: true,
+              )
+            : Expanded(
+                child: ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (context, i) {
+                      final order = orders[i];
+                      return InkWell(
+                          onTap: () => Get.to(() => OrderGymDetailsScreen(
+                                fromserviceProviderScreen: false,
+                                orderModel: order,
+                              )),
+                          child: CustomcardPendingGym(
+                            orderModel: order,
+                            size: size,
+                            fromserviceProviderScreen: false,
+                          ));
+                    }),
+              ),
         error: (error, StackTrace) {
           print(error);
 

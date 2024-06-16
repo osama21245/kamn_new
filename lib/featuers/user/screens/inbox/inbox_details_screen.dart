@@ -9,6 +9,7 @@ class InBoxDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Scaffold(
       body: ListView(
         children: [
@@ -31,10 +32,13 @@ class InBoxDetailsScreen extends StatelessWidget {
             title: Text("Kamn"),
             subtitle: Text(inBoxModel.sentAt.toString()),
           ),
-          Text(inBoxModel.description),
+          Text(
+            inBoxModel.description,
+            style: TextStyle(fontSize: size.width * 0.032),
+          ),
           if (inBoxModel.image != "")
             Container(
-                width: 200,
+                width: size.height * 0.75,
                 child: CachedNetworkImage(
                   imageUrl: inBoxModel.image,
                   fit: BoxFit.contain,

@@ -6,10 +6,8 @@ import 'package:kman/drawer/widget/custom_drawer_text.dart';
 import 'package:kman/featuers/auth/screens/login_screen.dart';
 import 'package:kman/featuers/orders/screens/my_reservisions_screens.dart';
 import '../featuers/auth/controller/auth_controller.dart';
-import '../featuers/orders/screens/choose_order_screen.dart';
-import '../featuers/orders/screens/service_provider_orders_screen.dart';
-import '../featuers/orders/screens/service_provider_reservisions/service_provider_nutrition_reservision_screen.dart';
-import '../featuers/orders/screens/service_provider_reservisions/service_provider_sports_reservision_screen.dart';
+import '../featuers/orders/screens/admin/choose_order_screen.dart';
+import '../featuers/orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import '../featuers/play/widget/home/custom_home_uppersection.dart';
 import '../featuers/post/screens/add_post_screeen.dart';
 import '../featuers/serviceprovider/screens/add_serviceprovider/accept_choose_your_service_screen.dart';
@@ -100,7 +98,7 @@ class ProfileDrawer extends ConsumerWidget {
                                     Get.to(() => const ChooseOrderScreen()),
                                 child: CustomDrawerText(
                                   size: size,
-                                  title: "Orders",
+                                  title: "Orders (Admin)",
                                 ),
                               ),
                             if (user.state == "1")
@@ -129,28 +127,28 @@ class ProfileDrawer extends ConsumerWidget {
                                 title: "Add service",
                               ),
                             ),
-                            if (user.state == "8")
-                              InkWell(
-                                onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ServiceProviderSportsReservisionsScreen())),
-                                child: CustomDrawerText(
-                                  size: size,
-                                  title: "Sports orders",
-                                ),
-                              ),
-                            if (user.state == "7")
-                              InkWell(
-                                onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ServiceProviderNutritionReservisionsScreen())),
-                                child: CustomDrawerText(
-                                  size: size,
-                                  title: "Nutrition orders",
-                                ),
-                              ),
+                            // if (user.state == "8")
+                            //   InkWell(
+                            //     onTap: () => Navigator.of(context).push(
+                            //         MaterialPageRoute(
+                            //             builder: (context) =>
+                            //                 const ServiceProviderSportsReservisionsScreen())),
+                            //     child: CustomDrawerText(
+                            //       size: size,
+                            //       title: "Sports orders",
+                            //     ),
+                            //   ),
+                            // if (user.state == "7")
+                            //   InkWell(
+                            //     onTap: () => Navigator.of(context).push(
+                            //         MaterialPageRoute(
+                            //             builder: (context) =>
+                            //                 const ServiceProviderNutritionReservisionsScreen())),
+                            //     child: CustomDrawerText(
+                            //       size: size,
+                            //       title: "Nutrition orders",
+                            //     ),
+                            //   ),
                             InkWell(
                               onTap: () => logOut(ref, user.uid),
                               child: Padding(

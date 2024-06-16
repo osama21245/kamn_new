@@ -30,45 +30,53 @@ class InBoxScreen extends ConsumerWidget {
             ),
             Expanded(
               child: ref.watch(getInBoxMessagesProviderr(user!.uid)).when(
-                  data: (inBox) => ListView.builder(
-                      itemCount: inBox.length,
-                      itemBuilder: (context, i) {
-                        final inboxMessage = inBox[i];
-                        return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 0),
-                            child: Stack(
-                              children: [
-                                Card(
-                                  color: Color.fromARGB(143, 255, 255, 255),
-                                  elevation: 4,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: ListTile(
-                                    trailing: Image.asset(
-                                      "assets/page-1/images/kamn_sentence.png",
-                                      width: size.width * 0.15,
+                  data: (inBox) => inBox.isEmpty
+                      ? LottieBuilder.asset(
+                          fit: BoxFit.contain,
+                          AppImageAsset.nodata,
+                          repeat: true,
+                        )
+                      : ListView.builder(
+                          itemCount: inBox.length,
+                          itemBuilder: (context, i) {
+                            final inboxMessage = inBox[i];
+                            return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 0),
+                                child: Stack(
+                                  children: [
+                                    Card(
+                                      color: Color.fromARGB(143, 255, 255, 255),
+                                      elevation: 4,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: ListTile(
+                                        trailing: Image.asset(
+                                          "assets/page-1/images/kamn_sentence.png",
+                                          width: size.width * 0.15,
+                                        ),
+                                        title: Text(
+                                          inboxMessage.title,
+                                          style: const TextStyle(
+                                              color: Pallete.fontColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle:
+                                            Text(inboxMessage.description),
+                                      ),
                                     ),
-                                    title: Text(
-                                      inboxMessage.title,
-                                      style: const TextStyle(
-                                          color: Pallete.fontColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Text(inboxMessage.description),
-                                  ),
-                                ),
-                                // Positioned(
-                                //     right: 65,
-                                //     top: 11,
-                                //     child: Image.asset(
-                                //       "assets/page-1/images/kamn_sentence.png",
-                                //       width: size.width * 0.1,
-                                //     ))
-                              ],
-                            ));
-                      }),
+                                    // Positioned(
+                                    //     right: 65,
+                                    //     top: 11,
+                                    //     child: Image.asset(
+                                    //       "assets/page-1/images/kamn_sentence.png",
+                                    //       width: size.width * 0.1,
+                                    //     ))
+                                  ],
+                                ));
+                          }),
                   error: (error, StackTrace) {
                     print(error);
 

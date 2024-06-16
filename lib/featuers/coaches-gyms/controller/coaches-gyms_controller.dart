@@ -553,6 +553,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     final res = await _coachesGymsRepository.deleteCoachRequest(coachId);
     res.fold((l) => null, (r) {
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 

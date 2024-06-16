@@ -19,23 +19,29 @@ class CustomGetUserSportsReservisions extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
     return ref.watch(getSportsQrOrdersProvider(user!.uid)).when(
-        data: (orders) => Expanded(
-              child: ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, i) {
-                    final order = orders[i];
-                    return InkWell(
-                        onTap: () => Get.to(() => OrderSportsDetailsScreen(
-                              fromserviceProviderScreen: false,
-                              qrorderModel: order,
-                            )),
-                        child: CustomcardPendingSports(
-                          qrorderModel: order,
-                          size: size,
-                          fromserviceProviderScreen: false,
-                        ));
-                  }),
-            ),
+        data: (orders) => orders.isEmpty
+            ? LottieBuilder.asset(
+                fit: BoxFit.contain,
+                AppImageAsset.nodata,
+                repeat: true,
+              )
+            : Expanded(
+                child: ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (context, i) {
+                      final order = orders[i];
+                      return InkWell(
+                          onTap: () => Get.to(() => OrderSportsDetailsScreen(
+                                fromserviceProviderScreen: false,
+                                qrorderModel: order,
+                              )),
+                          child: CustomcardPendingSports(
+                            qrorderModel: order,
+                            size: size,
+                            fromserviceProviderScreen: false,
+                          ));
+                    }),
+              ),
         error: (error, StackTrace) {
           print(error);
 

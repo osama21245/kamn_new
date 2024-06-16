@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
+import 'package:kman/featuers/play/screens/refuse_ground_request.dart';
 import 'package:kman/featuers/play/screens/update_ground_screen.dart';
 import 'package:kman/featuers/play/widget/ground_details/custom_ground_middlesec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_grident.dart';
@@ -57,14 +58,14 @@ class GroundDetailsScreen extends ConsumerWidget {
 
       ref
           .watch(playControllerProvider.notifier)
-          .deleteGroundRequest(groundModel!.id, collection, context);
+          .deleteGroundRequest(groundModel.id, collection, context);
 
       //send message to user
       ref.watch(userControllerProvider.notifier).sendInboxToUser(
           title: "Congratulations",
           description: "Your service has been added successfully to kamn",
           imageFile: null,
-          userId: groundModel!.groundOwnerId,
+          userId: groundModel.groundOwnerId,
           defImage: true,
           context: context);
 
@@ -73,12 +74,6 @@ class GroundDetailsScreen extends ConsumerWidget {
       ref
           .watch(authControllerProvider.notifier)
           .updateUserServiceStatus("9", groundModel.groundOwnerId, context);
-    }
-
-    refusesGround() {
-      ref
-          .watch(playControllerProvider.notifier)
-          .deleteGroundRequest(groundModel!.id, collection, context);
     }
 
     final user = ref.watch(usersProvider);
@@ -126,9 +121,10 @@ class GroundDetailsScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      if (user.state == "1")
+                      if (user.state == "1") {
                         Get.to(() => EditCollaboratorStateScreen(
                             collection: collection, id: groundModel.id));
+                      }
                     },
                     child: CustomGroundMiddleSec(
                         color: color,
@@ -167,7 +163,11 @@ class GroundDetailsScreen extends ConsumerWidget {
                         title: "Refuse",
                         sizeofwidth: size.width * 0.3,
                         sizeofhight: size.height * 0.03,
-                        onTap: () => refusesGround())
+                        onTap: () => goToScreen(
+                            context,
+                            RefuseGroundRequestScreen(
+                                groundModel: groundModel,
+                                collection: collection)))
                   ],
                 )
             ],

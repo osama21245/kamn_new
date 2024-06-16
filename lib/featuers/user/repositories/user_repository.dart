@@ -114,7 +114,7 @@ class UserRepository {
   }
 
   Future<List<InBoxModel>> getInBoxMessages(String userId) {
-    return _inBox.get().then((event) {
+    return _inBox.where("userId", isEqualTo: userId).get().then((event) {
       List<InBoxModel> inBox = [];
       for (var document in event.docs) {
         inBox.add(InBoxModel.fromMap(document.data() as Map<String, dynamic>));
