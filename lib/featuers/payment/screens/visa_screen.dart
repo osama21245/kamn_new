@@ -46,12 +46,12 @@ class _VisaScreenState extends ConsumerState<VisaScreen> {
     } else if (widget.collection != "medical") {
       ref.watch(ordersControllerProvider.notifier).setOrder(
           context,
-          widget.passOrderModel.discount,
-          widget.passOrderModel.totalPrice,
+          widget.passOrderModel.discount.toInt(),
+          widget.passOrderModel.totalPrice.toInt(),
           "Visa",
           widget.passOrderModel.seviceProviderId,
           widget.passOrderModel.serviceProviderName,
-          widget.passOrderModel.price,
+          widget.passOrderModel.price.toInt(),
           widget.passOrderModel.ordername,
           widget.passOrderModel.orderDescription,
           widget.passOrderModel.mixOrSeparateOrGroupOrPrivet,
@@ -101,6 +101,9 @@ class _VisaScreenState extends ConsumerState<VisaScreen> {
               widget.url = request.url;
               print(
                   "=========================================================osama =========================================");
+            } else {
+              print(
+                  "=========================================================no pay osama =========================================");
             }
             return NavigationDecision.navigate;
           },

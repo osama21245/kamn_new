@@ -24,8 +24,9 @@ final getUserDataProviderr = FutureProvider.family((ref, String uid) =>
 
 //inBox
 
-final getInBoxMessagesProviderr = FutureProvider.family((ref, String uid) =>
-    ref.watch(userControllerProvider.notifier).getInBoxMessages(uid));
+final getInBoxMessagesProviderr = FutureProvider.family.autoDispose(
+    (ref, String uid) =>
+        ref.watch(userControllerProvider.notifier).getInBoxMessages(uid));
 
 final userControllerProvider =
     StateNotifierProvider<UserController, StatusRequest>((ref) =>

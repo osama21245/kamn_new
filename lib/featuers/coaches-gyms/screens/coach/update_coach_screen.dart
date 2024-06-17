@@ -102,7 +102,7 @@ class _UpdateCoachScreenState extends ConsumerState<UpdateCoachScreen> {
       // may cause Erorr null check because logo!
       ref
           .watch(coachesGymsControllerProvider.notifier)
-          .updateCoach(coachModel, coachImage!, context);
+          .updateCoach(coachModel, coachImage, context);
     }
   }
 

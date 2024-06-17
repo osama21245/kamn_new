@@ -17,8 +17,12 @@ import '../../controller/coaches-gyms_controller.dart';
 class AddgymsLocationsScreen extends ConsumerStatefulWidget {
   final String gymId;
   final String image;
+  final String serviceProviderId;
   const AddgymsLocationsScreen(
-      {super.key, required this.gymId, required this.image});
+      {super.key,
+      required this.gymId,
+      required this.image,
+      required this.serviceProviderId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -71,6 +75,7 @@ class _AddgymsLocationsScreenState
             widget.gymId,
             address!.text,
             widget.image,
+            widget.serviceProviderId,
             widget.gymId,
             facebookLink!.text,
             dynamicLink!.text,

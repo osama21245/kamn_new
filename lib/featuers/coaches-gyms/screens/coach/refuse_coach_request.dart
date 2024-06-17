@@ -110,7 +110,7 @@ class _RefuseCoachRequestScreenState
                     validator: (val) {
                       return validinput(val!, 4, 500, "");
                     },
-                    name: "",
+                    name: "Reson",
                     controller: reson!,
                     color: Pallete.lightgreyColor2,
                   ),

@@ -108,7 +108,7 @@ class _UpdateMedicalScreenState extends ConsumerState<UpdateMedicalScreen> {
       // may cause Erorr null check because logo!
       ref
           .watch(benefitsControllerProvider.notifier)
-          .updateMedical(medicalModel, logo!, context);
+          .updateMedical(medicalModel, logo, context);
     }
   }
 

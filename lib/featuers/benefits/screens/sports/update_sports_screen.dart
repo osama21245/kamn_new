@@ -285,7 +285,7 @@ class _UpdateSportsScreenState extends ConsumerState<UpdateSportsScreen> {
                           borderRadius:
                               BorderRadius.circular(size.width * 0.02))),
                   child: Text(
-                    'Update Nutrtion image',
+                    'Update image',
                     style: TextStyle(
                         color: Pallete.whiteColor,
                         fontFamily: "Muller",

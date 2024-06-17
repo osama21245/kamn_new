@@ -95,7 +95,7 @@ class _UpdateNutrtionScreenState extends ConsumerState<UpdateNutrtionScreen> {
       // may cause Erorr null check because logo!
       ref
           .watch(benefitsControllerProvider.notifier)
-          .updateNutrition(nutritionModel, logo!, context);
+          .updateNutrition(nutritionModel, logo, context);
     }
   }
 

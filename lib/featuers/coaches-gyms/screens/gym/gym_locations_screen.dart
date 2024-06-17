@@ -35,8 +35,12 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
   acceptGym(
     BuildContext context,
   ) {
-    ref.watch(coachesGymsControllerProvider.notifier).setGymsRequests(context,
-        widget.gymModel.image, widget.gymModel.name, widget.gymModel.ismix);
+    ref.watch(coachesGymsControllerProvider.notifier).setGymsRequests(
+        context,
+        widget.gymModel.image,
+        widget.gymModel.name,
+        widget.gymModel.userId,
+        widget.gymModel.ismix);
 
     // send message to user
     ref.watch(userControllerProvider.notifier).sendInboxToUser(
@@ -90,6 +94,7 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
           user!.state == "1" || widget.gymModel.userId == user.uid
               ? FloatingActionButton(
                   onPressed: () => Get.to(() => AddgymsLocationsScreen(
+                        serviceProviderId: widget.gymModel.userId,
                         image: widget.gymModel.image,
                         gymId: widget.gymModel.id,
                       )),

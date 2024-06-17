@@ -182,7 +182,8 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                 horizontal: size.width * 0.03),
                             child: Row(
                               children: [
-                                status2 == CoachFilterStatusPricse.main
+                                status2 == CoachFilterStatusPricse.main &&
+                                        user.uid == widget.coacheModel!.userId
                                     ? IconButton(
                                         onPressed: () {
                                           goToScreen(context,
@@ -242,7 +243,8 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                     widget.coacheModel!.onlineReservisionTimes),
                             serviceProviderId: widget.coacheModel!.userId,
                           ),
-                          if (user.state == "1")
+                          if (user.state == "1" ||
+                              user.uid == widget.coacheModel!.userId)
                             CustomAddCoachPlansButton(
                               coachPricesModel: CoachPricesModel(
                                   prices: widget.coacheModel!.onlineprices,

@@ -897,6 +897,9 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
               ],
             ),
           ),
+          SizedBox(
+            height: size.height * 0.03,
+          )
         ],
       )),
     ));

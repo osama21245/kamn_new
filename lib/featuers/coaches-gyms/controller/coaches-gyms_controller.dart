@@ -271,6 +271,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       bool fromAsk) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
+    final user = _ref.read(usersProvider);
 
     String logo = Constants.store1;
 
@@ -284,8 +285,12 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     }
 
 //set data
-    GymModel gymModel =
-        GymModel(id: id, name: name, image: logo, ismix: ismix, userId: "");
+    GymModel gymModel = GymModel(
+        id: id,
+        name: name,
+        image: logo,
+        ismix: ismix,
+        userId: fromAsk ? user!.uid : "");
     final res = await _coachesGymsRepository.setGym(gymModel, fromAsk);
     state = StatusRequest.success;
 
@@ -301,6 +306,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     String gymId,
     String address,
     String image,
+    String userId,
     String mainGymId,
     String facebooklink,
     String dynamicLink,
@@ -321,7 +327,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       city: "Alexandria",
       region: region,
       name: name,
-      userId: "",
+      userId: userId,
       gallery: gallery,
       fitnessisMix: [],
       fitnessisSpecial: [],
@@ -531,13 +537,14 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     BuildContext context,
     String image,
     String name,
+    String userId,
     bool ismix,
   ) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
 
-    GymModel gymModel =
-        GymModel(id: id, name: name, image: image, ismix: ismix, userId: "");
+    GymModel gymModel = GymModel(
+        id: id, name: name, image: image, ismix: ismix, userId: userId);
     final res = await _coachesGymsRepository.setGym(gymModel, false);
     state = StatusRequest.success;
 

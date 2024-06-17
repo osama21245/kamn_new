@@ -48,7 +48,9 @@ class CustomMaterialButton extends ConsumerWidget {
                       child: Text("      "),
                     ),
               SizedBox(
-                width: size.width * 0.23,
+                width: user!.uid == serviceProviderId
+                    ? size.width * 0.16
+                    : size.width * 0.23,
               ),
               Text(
                 title,

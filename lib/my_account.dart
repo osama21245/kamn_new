@@ -95,11 +95,10 @@ class MyAccount extends ConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
                 child: ElevatedButton(
-                  onPressed:
-                      //() => setadmin(),
-                      () => Get.to(() => EditAccountScreen(
-                            usermodel: user,
-                          )),
+                  onPressed: () => setadmin(),
+                  // () => Get.to(() => EditAccountScreen(
+                  //       usermodel: user,
+                  //     )),
                   child: Text(
                     'Edit',
                     style: TextStyle(

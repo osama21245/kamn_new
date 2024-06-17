@@ -196,7 +196,8 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.fitnessplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1")
+                        if (user!.state == "1" ||
+                            user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
                                 prices: widget.gymModel.fitnessprices,
@@ -232,7 +233,8 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.weightLiftplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1")
+                        if (user!.state == "1" ||
+                            user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
                                 prices: widget.gymModel.weightLiftprices,
@@ -268,7 +270,8 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.offersplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1")
+                        if (user!.state == "1" ||
+                            user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
                                 prices: widget.gymModel.offersprices,
@@ -304,7 +307,8 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.servicesplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1")
+                        if (user!.state == "1" ||
+                            user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
                                 prices: widget.gymModel.servicesprices,
