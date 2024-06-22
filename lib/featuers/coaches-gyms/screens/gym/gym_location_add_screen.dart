@@ -72,7 +72,6 @@ class _AddgymsLocationsScreenState
       ref.watch(coachesGymsControllerProvider.notifier).setGymsLocations(
             context,
             fullname!.text,
-            widget.gymId,
             address!.text,
             widget.image,
             widget.serviceProviderId,

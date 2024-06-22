@@ -93,10 +93,11 @@ class OrdersRepository {
   }
 
   Stream<List<OrderModel>> getServiceProviderRecivedOrders(
-      String serviceProviderId) {
+      String serviceProviderId, String storeId) {
     // in this case service provider id is the userId because he will open the orders from his account and already his id linked with the service providerpage the user take the order from
     return _orders
         .where("ordersServiceProviderId", isEqualTo: serviceProviderId)
+        .where("storeId", isEqualTo: storeId)
         .snapshots()
         .map((value) {
       List<OrderModel> orders = [];
@@ -273,7 +274,7 @@ class OrdersRepository {
   ) {
     return _qrOrders
         .where("serviceProviderId", isEqualTo: userId)
-        .where("category", isEqualTo: "Nutrition")
+        .where("category", isEqualTo: Collections.nutritionCollection)
         .snapshots()
         .map((event) {
       List<QrOrderModel> medicals = [];
@@ -286,11 +287,11 @@ class OrdersRepository {
   }
 
   Stream<List<QrOrderModel>> getServiceProviderSportsQrOrder(
-    String userId,
-  ) {
+      String userId, String storeId) {
     return _qrOrders
         .where("serviceProviderId", isEqualTo: userId)
-        .where("category", isEqualTo: "Sport")
+        .where("category", isEqualTo: Collections.sportsCollection)
+        .where("storeId", isEqualTo: storeId)
         .snapshots()
         .map((event) {
       List<QrOrderModel> medicals = [];

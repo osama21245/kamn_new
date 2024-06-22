@@ -368,10 +368,10 @@ class CoachesGymsRepository {
   }
 
   FutureVoid setGymLocations(
-      GymLocationsModel gymLocationsModel, String gymId) async {
+      GymLocationsModel gymLocationsModel, String mainGymId) async {
     try {
       return right(_gyms
-          .doc(gymId)
+          .doc(mainGymId)
           .collection("gymLocations")
           .doc(gymLocationsModel.id)
           .set(gymLocationsModel.toMap()));

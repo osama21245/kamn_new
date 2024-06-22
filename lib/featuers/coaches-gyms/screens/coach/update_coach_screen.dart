@@ -289,7 +289,7 @@ class _UpdateCoachScreenState extends ConsumerState<UpdateCoachScreen> {
                 child: ElevatedButton(
                   onPressed: () => pickimagefromGallery(context),
                   child: Text(
-                    'Add Coach image',
+                    'Add image',
                     style: TextStyle(
                         color: Pallete.whiteColor,
                         fontFamily: "Muller",

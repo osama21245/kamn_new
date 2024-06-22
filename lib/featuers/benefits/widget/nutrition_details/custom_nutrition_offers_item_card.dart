@@ -65,7 +65,7 @@ class _CustomNutritionOffersItemCardState
           decoration: BoxDecoration(
               color: Color.fromARGB(94, 255, 255, 255),
               borderRadius: BorderRadius.circular(size.width * 0.02)),
-          height: size.height * 0.1,
+          height: size.height * 0.13,
           child: Row(
             children: [
               Expanded(
@@ -208,12 +208,15 @@ class _CustomNutritionOffersItemCardState
                                           widget.offersModel.discount),
                                       totalPrice:
                                           (int.parse(widget.offersModel.price) -
-                                                  ((int.parse(widget.offersModel
-                                                              .discount) /
-                                                          100) *
-                                                      int.parse(widget
-                                                          .offersModel.price)))
-                                              .toInt(),
+                                                      ((int.parse(widget
+                                                                  .offersModel
+                                                                  .discount) /
+                                                              100) *
+                                                          int.parse(widget
+                                                              .offersModel
+                                                              .price)))
+                                                  .toInt() *
+                                              100,
                                       price:
                                           int.parse(widget.offersModel.price),
                                       seviceProviderId:
@@ -250,8 +253,8 @@ class _CustomNutritionOffersItemCardState
                                 fontFamily: "Muller",
                                 fontSize:
                                     widget.nutritionModel.userId == user.uid
-                                        ? size.width * 0.026
-                                        : size.width * 0.03,
+                                        ? size.width * 0.016
+                                        : size.width * 0.021,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),

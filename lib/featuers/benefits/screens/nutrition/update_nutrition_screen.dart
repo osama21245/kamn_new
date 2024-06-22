@@ -292,7 +292,7 @@ class _UpdateNutrtionScreenState extends ConsumerState<UpdateNutrtionScreen> {
                 child: ElevatedButton(
                   onPressed: () => pickimagefromGallery(context),
                   child: Text(
-                    'Update Nutrtion image',
+                    'Update image',
                     style: TextStyle(
                         color: Pallete.whiteColor,
                         fontFamily: "Muller",

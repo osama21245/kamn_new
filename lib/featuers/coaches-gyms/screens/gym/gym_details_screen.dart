@@ -4,13 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/function/awesome_dialog.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
+import 'package:kman/featuers/coaches-gyms/screens/gym/update_gym_location_screen.dart';
 import 'package:kman/models/gym_locations_model.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/update_gallery_screen.dart';
 import '../../../../core/constants/collection_constants.dart';
+import '../../../../core/function/goTo.dart';
 import '../../../../edit_collaborator_state_screen.dart';
 import '../../../../models/prices_model copy.dart';
 import '../../../../theme/pallete.dart';
+import '../../../orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import '../../../play/controller/play_controller.dart';
 import '../../../play/widget/play/showrating.dart';
 import '../../controller/coaches-gyms_controller.dart';
@@ -69,7 +72,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(usersProvider);
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.sizeOf(context);
 
     return Scaffold(
       body: SafeArea(
@@ -169,6 +172,24 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                                     fontSize: size.width * 0.053,
                                     fontWeight: FontWeight.w600),
                               ),
+                              SizedBox(
+                                width: status == GymsFilterStatus.Weight_Lifting
+                                    ? size.width * 0.04
+                                    : size.width * 0.175,
+                              ),
+                              if (widget.gymModel.userId == user!.uid)
+                                IconButton(
+                                    onPressed: () {
+                                      goToScreen(
+                                          context,
+                                          ServiceProviderOrdersScreen(
+                                            storeId: widget.gymModel.id,
+                                          ));
+                                    },
+                                    icon: const Icon(
+                                      Icons.assignment_turned_in_outlined,
+                                      color: Pallete.whiteColor,
+                                    ))
                             ],
                           ),
                         ),
@@ -183,7 +204,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                     child: Column(
                       children: [
                         GymPricesCard(
-                          gymId: widget.gymModel.mainGymId,
+                          gymId: widget.gymModel.id,
                           gymName: widget.gymModel.name,
                           pricesModel: GymPricesModel(
                               prices: widget.gymModel.fitnessprices,
@@ -196,7 +217,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.fitnessplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1" ||
+                        if (user.state == "1" ||
                             user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
@@ -233,7 +254,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.weightLiftplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1" ||
+                        if (user.state == "1" ||
                             user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
@@ -270,7 +291,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.offersplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1" ||
+                        if (user.state == "1" ||
                             user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
@@ -307,7 +328,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                               planTime: widget.gymModel.servicesplanTime),
                           serviceProviderId: widget.gymModel.userId,
                         ),
-                        if (user!.state == "1" ||
+                        if (user.state == "1" ||
                             user.uid == widget.gymModel.userId)
                           CustomAddGymPlansButton(
                             gymPricesModel: GymPricesModel(
@@ -331,24 +352,34 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                   Positioned.fill(
                     child: Column(
                       children: [
-                        Container(
-                            height: size.height * 0.2,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                    colors: Pallete.listofGridientCard,
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
-                            child: Padding(
-                              padding: EdgeInsets.all(size.width * 0.01),
-                              child: Center(
-                                child: CircleAvatar(
-                                    backgroundColor: Pallete.primaryColor,
-                                    radius: size.width * 0.2,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                        widget.gymModel.image)),
-                              ),
-                            )),
+                        InkWell(
+                          onLongPress: () {
+                            if (widget.gymModel.userId == user.uid)
+                              goToScreen(
+                                  context,
+                                  UpdateGymLocationScreen(
+                                      gymModel: widget.gymModel));
+                          },
+                          child: Container(
+                              height: size.height * 0.2,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(
+                                      colors: Pallete.listofGridientCard,
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                              child: Padding(
+                                padding: EdgeInsets.all(size.width * 0.01),
+                                child: Center(
+                                  child: CircleAvatar(
+                                      backgroundColor: Pallete.primaryColor,
+                                      radius: size.width * 0.2,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              widget.gymModel.image)),
+                                ),
+                              )),
+                        ),
                         SizedBox(
                           height: size.width * 0.01,
                         ),
@@ -372,7 +403,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                         ),
                         status == GymsFilterStatus.Gallery
                             ? InkWell(
-                                onLongPress: user!.uid == widget.gymModel.userId
+                                onLongPress: user.uid == widget.gymModel.userId
                                     ? () => Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -688,7 +719,7 @@ class _GymDetailsScreenState extends ConsumerState<GymDetailsScreen> {
                           ),
                         ),
                       )),
-                if (widget.gymModel.userId == "" && user!.state == "1")
+                if (widget.gymModel.userId == "" && user.state == "1")
                   Positioned(
                     left: size.width * 0.03,
                     bottom: size.height * 0.117,

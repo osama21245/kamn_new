@@ -212,8 +212,8 @@ class _CustomSportsOffersCardState
                                 fontSize:
                                     widget.sportsmodel.servicePrividerId ==
                                             user.uid
-                                        ? size.width * 0.026
-                                        : size.width * 0.03,
+                                        ? size.width * 0.016
+                                        : size.width * 0.021,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),

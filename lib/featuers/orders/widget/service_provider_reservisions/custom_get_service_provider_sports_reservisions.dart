@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -10,15 +11,17 @@ import '../../screens/my_reservisions/orders_sports_details.dart';
 import '../sports/custom_card_Pending_sports.dart';
 
 class CustomGetServiceProviderSportsReservisions extends ConsumerWidget {
-  CustomGetServiceProviderSportsReservisions({
-    super.key,
-  });
+  final String storeId;
+  const CustomGetServiceProviderSportsReservisions(
+      {super.key, required this.storeId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
-    return ref.watch(getServiceProviderSportsQrOrderProvider(user!.uid)).when(
+    Tuple2<String, String> tuple2 = Tuple2(user!.uid, storeId);
+
+    return ref.watch(getServiceProviderSportsQrOrderProvider(tuple2)).when(
         data: (orders) => Expanded(
               child: ListView.builder(
                   itemCount: orders.length,

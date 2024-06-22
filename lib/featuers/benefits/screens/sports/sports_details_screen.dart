@@ -188,8 +188,11 @@ class _SportsDetailsScreenState extends ConsumerState<SportsDetailsScreen> {
                           child: CustomMaterialButton(
                               serviceProviderId:
                                   widget.sportsModel.servicePrividerId,
-                              fun: () => goToScreen(context,
-                                  ServiceProviderSportsReservisionsScreen()),
+                              fun: () => goToScreen(
+                                  context,
+                                  ServiceProviderSportsReservisionsScreen(
+                                    storeId: widget.sportsModel.id,
+                                  )),
                               color: Pallete.greenButton,
                               size: size,
                               title: "Gps Tracking"))

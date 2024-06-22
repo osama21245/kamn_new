@@ -167,7 +167,10 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
                         child: CustomMaterialButton(
                             serviceProviderId: widget.medicalModel.userId,
                             fun: () => goToScreen(
-                                context, ServiceProviderOrdersScreen()),
+                                context,
+                                ServiceProviderOrdersScreen(
+                                  storeId: widget.medicalModel.id,
+                                )),
                             color: Pallete.greenButton,
                             size: size,
                             title: "Gps Tracking"))
@@ -692,6 +695,9 @@ class _MedicalDetailsScreenState extends ConsumerState<MedicalDetailsScreen> {
               ],
             ),
           ),
+          SizedBox(
+            height: size.height * 0.03,
+          )
         ],
       )),
     );

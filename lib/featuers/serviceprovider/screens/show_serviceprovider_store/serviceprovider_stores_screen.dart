@@ -80,11 +80,7 @@ class _ServiceProviderStoresScreenState
                   ? CustomGetServiceProvidercoachesStores()
                   : user.state == "5"
                       ? CustomGetServiceProviderGymStores()
-                      : user.state == "6"
-                          ? CustomGetServiceProviderMedicalStores()
-                          : user.state == "7"
-                              ? CustomGetServiceProviderNutritionReservisions()
-                              : CustomGetServiceProviderSportsReservisions())
+                      : CustomGetServiceProviderMedicalStores())
         ],
       ),
     ));

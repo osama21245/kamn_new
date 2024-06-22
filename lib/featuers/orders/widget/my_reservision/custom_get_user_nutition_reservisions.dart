@@ -6,6 +6,7 @@ import 'package:kman/featuers/orders/controller/orders_controller.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
+import '../../../../core/common/no_data_animation.dart';
 import '../../screens/my_reservisions/orders_sports_details.dart';
 import '../nutrition/custom_card_Pending_nutrition.dart';
 import '../sports/custom_card_Pending_sports.dart';
@@ -17,14 +18,12 @@ class CustomGetUserNutritionReservisions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.sizeOf(context);
     final user = ref.watch(usersProvider);
     return ref.watch(getNutritionQrOrdersProvider(user!.uid)).when(
         data: (orders) => orders.isEmpty
-            ? LottieBuilder.asset(
-                fit: BoxFit.contain,
-                AppImageAsset.nodata,
-                repeat: true,
+            ? NoDataAnimation(
+                size: size,
               )
             : Expanded(
                 child: ListView.builder(

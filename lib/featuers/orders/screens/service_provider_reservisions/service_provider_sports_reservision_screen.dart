@@ -7,7 +7,9 @@ import '../../../../theme/pallete.dart';
 import '../../widget/service_provider_reservisions/custom_get_service_provider_sports_reservisions.dart';
 
 class ServiceProviderSportsReservisionsScreen extends StatefulWidget {
-  const ServiceProviderSportsReservisionsScreen({super.key});
+  final String storeId;
+  const ServiceProviderSportsReservisionsScreen(
+      {super.key, required this.storeId});
 
   @override
   State<ServiceProviderSportsReservisionsScreen> createState() =>
@@ -68,7 +70,9 @@ class _ServiceProviderSportsReservisionsScreenState
           ),
           HandlingDataView(
               statusRequest: statusRequest,
-              widget: CustomGetServiceProviderSportsReservisions())
+              widget: CustomGetServiceProviderSportsReservisions(
+                storeId: widget.storeId,
+              ))
         ],
       ),
     ));

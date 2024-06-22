@@ -31,8 +31,6 @@ class _UpdateGroundScreenState extends ConsumerState<UpdateGroundScreen> {
   TextEditingController? futures;
   TextEditingController? fullname;
   TextEditingController? groundPlayersNum;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? address;
   TextEditingController? price;
   TextEditingController? phone;
@@ -44,8 +42,6 @@ class _UpdateGroundScreenState extends ConsumerState<UpdateGroundScreen> {
     fullname = TextEditingController(text: widget.groundMdoel.name);
     groundPlayersNum = TextEditingController(
         text: widget.groundMdoel.groundPlayersNum.toString());
-    lat = TextEditingController(text: widget.groundMdoel.lat.toString());
-    long = TextEditingController(text: widget.groundMdoel.long.toString());
 
     address = TextEditingController(text: widget.groundMdoel.address);
     price = TextEditingController(text: widget.groundMdoel.price.toString());
@@ -60,8 +56,6 @@ class _UpdateGroundScreenState extends ConsumerState<UpdateGroundScreen> {
     phone!.dispose();
     price!.dispose();
     address!.dispose();
-    lat!.dispose();
-    long!.dispose();
     groundPlayersNum!.dispose();
     super.dispose();
   }
@@ -79,8 +73,8 @@ class _UpdateGroundScreenState extends ConsumerState<UpdateGroundScreen> {
         groundOwnerId: widget.groundMdoel.groundOwnerId,
         groundPlayersNum: int.parse(groundPlayersNum!.text),
         groundnumber: phone!.text,
-        lat: double.parse(lat!.text),
-        long: double.parse(long!.text),
+        lat: double.parse(widget.groundMdoel.lat!.toString()),
+        long: double.parse(widget.groundMdoel.long!.toString()),
         price: int.parse(price!.text),
         region: region,
         image: groundImage == null ? widget.groundMdoel.image : "",
@@ -151,28 +145,6 @@ class _UpdateGroundScreenState extends ConsumerState<UpdateGroundScreen> {
                   },
                   name: "phone",
                   controller: phone!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
                   color: Pallete.lightgreyColor2,
                 ),
                 SizedBox(

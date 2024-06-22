@@ -49,7 +49,7 @@ class _ServiceProviderNutritionReservisionsScreenState
       child: Column(
         children: [
           CustomPlayUpperSecLogo(
-            title: "My Sports Reservisions",
+            title: "My Reservisions",
             color: Pallete.fontColor,
             size: size,
             onLogoTap: () {},

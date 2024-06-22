@@ -9,7 +9,8 @@ import '../../../../core/class/statusrequest.dart';
 import '../../../../core/providers/checkInternet.dart';
 
 class ServiceProviderOrdersScreen extends ConsumerStatefulWidget {
-  const ServiceProviderOrdersScreen({super.key});
+  final String storeId;
+  const ServiceProviderOrdersScreen({super.key, required this.storeId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -67,7 +68,9 @@ class _ServiceProviderOrdersScreenState
             ),
             HandlingDataView(
                 statusRequest: statusRequest,
-                widget: CustomGetServiceProviderRecivedOrders())
+                widget: CustomGetServiceProviderRecivedOrders(
+                  storeId: widget.storeId,
+                ))
           ],
         ),
       ),

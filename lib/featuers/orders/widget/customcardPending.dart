@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:kman/featuers/orders/screens/ordersdetails.dart';
 import 'package:kman/theme/pallete.dart';
 
@@ -47,7 +48,8 @@ class CustomcardPending extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: Text(
-                          "${orderModel.ordersDatetime}",
+                          Jiffy.parse(orderModel.ordersDatetime.toString())
+                              .fromNow(),
                           style: TextStyle(
                               fontSize: 9,
                               color: Pallete.primaryColor,

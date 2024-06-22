@@ -84,35 +84,33 @@ class OrderNutritionDetailsScreen extends ConsumerWidget {
                         elevation: 4,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        child: Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 17.0, top: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text("Order : ",
-                                          style: TextStyle(
-                                              fontSize: 19,
-                                              color: Pallete.primaryColor)),
-                                    ],
-                                  ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 17.0, top: 15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text("Order : ",
+                                        style: TextStyle(
+                                            fontSize: 19,
+                                            color: Pallete.primaryColor)),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: ListTile(
-                                    title: Text("${qrorderModel.offerTitle}"),
-                                    subtitle: Text(
-                                        "${qrorderModel.offerDescription}"),
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: ListTile(
+                                  title: Text("${qrorderModel.offerTitle}"),
+                                  subtitle:
+                                      Text("${qrorderModel.offerDescription}"),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         )),
                   ),

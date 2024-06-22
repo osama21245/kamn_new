@@ -139,7 +139,7 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
                           ),
                           SizedBox(height: 15.0),
                           Text(
-                            'Payment with mobile wallet',
+                            'Mobile wallet',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
                             ),
                           ),
                           Text(
-                            'Payment with visa',
+                            'Visa',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,

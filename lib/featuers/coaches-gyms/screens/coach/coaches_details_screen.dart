@@ -186,8 +186,11 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                         user.uid == widget.coacheModel!.userId
                                     ? IconButton(
                                         onPressed: () {
-                                          goToScreen(context,
-                                              const ServiceProviderOrdersScreen());
+                                          goToScreen(
+                                              context,
+                                              ServiceProviderOrdersScreen(
+                                                storeId: widget.coacheModel!.id,
+                                              ));
                                         },
                                         icon: const Icon(
                                           Icons.assignment_turned_in_outlined,

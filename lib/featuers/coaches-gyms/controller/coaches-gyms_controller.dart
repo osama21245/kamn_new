@@ -303,7 +303,6 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
   void setGymsLocations(
     BuildContext context,
     String name,
-    String gymId,
     String address,
     String image,
     String userId,
@@ -379,8 +378,8 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
         iteration++;
       });
     }
-    final res =
-        await _coachesGymsRepository.setGymLocations(gymLocationModel, gymId);
+    final res = await _coachesGymsRepository.setGymLocations(
+        gymLocationModel, mainGymId);
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.toString(), context), (r) async {

@@ -110,15 +110,15 @@ class ProfileDrawer extends ConsumerWidget {
                                   title: "Accept service providers",
                                 ),
                               ),
-                            if (user.state == "2")
-                              InkWell(
-                                onTap: () => Get.to(
-                                    () => const ServiceProviderOrdersScreen()),
-                                child: CustomDrawerText(
-                                  size: size,
-                                  title: "Orders",
-                                ),
-                              ),
+                            // if (user.state == "2")
+                            //   InkWell(
+                            //     onTap: () => Get.to(
+                            //         () => const ServiceProviderOrdersScreen()),
+                            //     child: CustomDrawerText(
+                            //       size: size,
+                            //       title: "Orders",
+                            //     ),
+                            //   ),
                             InkWell(
                               onTap: () =>
                                   Get.to(() => const UserMakeRequestScreen()),

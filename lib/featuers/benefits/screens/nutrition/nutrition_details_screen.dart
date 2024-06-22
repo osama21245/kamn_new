@@ -896,6 +896,9 @@ class _NutritionDetailsScreenState
               ],
             ),
           ),
+          SizedBox(
+            height: size.height * 0.03,
+          )
         ],
       )),
     ));

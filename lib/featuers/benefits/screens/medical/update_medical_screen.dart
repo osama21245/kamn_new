@@ -351,7 +351,7 @@ class _UpdateMedicalScreenState extends ConsumerState<UpdateMedicalScreen> {
                           borderRadius:
                               BorderRadius.circular(size.width * 0.02))),
                   child: Text(
-                    'Add Medical image',
+                    'Update image',
                     style: TextStyle(
                         color: Pallete.whiteColor,
                         fontFamily: "Muller",

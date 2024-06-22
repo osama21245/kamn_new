@@ -10,6 +10,7 @@ import 'package:kman/featuers/orders/widget/gym/custom_card_Pending_gym.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
+import '../../../../core/common/no_data_animation.dart';
 
 class CustomGetUserGymReservisions extends ConsumerWidget {
   CustomGetUserGymReservisions({
@@ -18,14 +19,12 @@ class CustomGetUserGymReservisions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.sizeOf(context);
     final user = ref.watch(usersProvider);
     return ref.watch(getUserGymReservisionsProvider(user!.uid)).when(
         data: (orders) => orders.isEmpty
-            ? LottieBuilder.asset(
-                fit: BoxFit.contain,
-                AppImageAsset.nodata,
-                repeat: true,
+            ? NoDataAnimation(
+                size: size,
               )
             : Expanded(
                 child: ListView.builder(
