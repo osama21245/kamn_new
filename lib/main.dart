@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
 
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: "AIzaSyDiNbvFUa6CnxtNpBYraqjO1NiXiYldhbg",
+            appId: "1:1036256826353:web:b66b9b0666f4f806f26a50",
+            messagingSenderId: "1036256826353",
+            projectId: "kman-ab86f",
+            storageBucket: "kman-ab86f.appspot.com"));
+  } else {
+    await Firebase.initializeApp();
+  }
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,

@@ -202,12 +202,13 @@ class AuthRepository {
           ingroup: []);
 
       await _users.doc(userCredential.user!.uid).set(userModel.toMap());
-      FirebaseMessaging.instance.subscribeToTopic("users");
-      FirebaseMessaging.instance.subscribeToTopic("users${userModel.uid}");
+      // FirebaseMessaging.instance.subscribeToTopic("users");
+      // FirebaseMessaging.instance.subscribeToTopic("users${userModel.uid}");
       return right(userModel);
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
+      print(e);
       return left(Failure(e.toString()));
     }
   }

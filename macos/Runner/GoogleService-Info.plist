@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1036256826353-qim0n6m3js3dtg7j0n8ag4mao0lovnps.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1036256826353-qim0n6m3js3dtg7j0n8ag4mao0lovnps</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1036256826353-bpv93fp334pq2jhbir8ia0kr1jn4ik0t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCA184hONqYgo-LUvPjQS8zR4cF_hc_vXs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1036256826353</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>cloud.osamagamil.kman</string>
+	<key>PROJECT_ID</key>
+	<string>kman-ab86f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kman-ab86f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1036256826353:ios:bf95b839e2e03b41f26a50</string>
+</dict>
+</plist>
