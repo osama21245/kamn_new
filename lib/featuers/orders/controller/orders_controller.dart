@@ -35,11 +35,16 @@ final getUserMedicalReservisionProvider = StreamProvider.autoDispose.family(
     (ref, String userid) => ref
         .watch(ordersControllerProvider.notifier)
         .getUserMedicalReservision(userid));
-
-final getServiceProviderRecivedOrdersProvider = StreamProvider.autoDispose
-    .family((ref, String userid) => ref
-        .watch(ordersControllerProvider.notifier)
-        .getServiceProviderRecivedOrders(userid));
+//
+final getServiceProviderRecivedOrdersProvider =
+    StreamProvider.autoDispose.family((ref, Tuple2 tuple) {
+  final userId = tuple.value1;
+  final storeId = tuple.value2;
+  final repo = ref
+      .watch(ordersControllerProvider.notifier)
+      .getServiceProviderRecivedOrders(userId, storeId);
+  return repo;
+});
 
 final getQrOrdersProvider = StreamProvider.autoDispose
     .family<List<QrOrderModel>, Tuple2<String, String>>((ref, tuple) {
@@ -63,10 +68,12 @@ final getNutritionQrOrdersProvider =
 
 //*************************service provider***************** */
 
-final getServiceProviderSportsQrOrderProvider =
-    StreamProvider.autoDispose.family((ref, String userId) {
+final getServiceProviderSportsQrOrderProvider = StreamProvider.autoDispose
+    .family<List<QrOrderModel>, Tuple2<String, String>>((ref, tuple) {
+  final userId = tuple.value1;
+  final storeId = tuple.value2;
   final repository = ref.watch(ordersControllerProvider.notifier);
-  return repository.getServiceProviderSportsQrOrder(userId);
+  return repository.getServiceProviderSportsQrOrder(userId, storeId);
 });
 
 final getServiceProviderNutritionQrOrdersProvider =
@@ -118,8 +125,9 @@ class OrdersController extends StateNotifier<StatusRequest> {
     return _ordersRepository.getMedicalReservisions(userid);
   }
 
-  Stream<List<OrderModel>> getServiceProviderRecivedOrders(String userid) {
-    return _ordersRepository.getServiceProviderRecivedOrders(userid);
+  Stream<List<OrderModel>> getServiceProviderRecivedOrders(
+      String userid, String storeId) {
+    return _ordersRepository.getServiceProviderRecivedOrders(userid, storeId);
   }
 
   Stream<List<QrOrderModel>> getQrOrder(String userid, String storeId) {
@@ -143,11 +151,8 @@ class OrdersController extends StateNotifier<StatusRequest> {
   //***********************service Provider *******************/
 
   Stream<List<QrOrderModel>> getServiceProviderSportsQrOrder(
-    String userid,
-  ) {
-    return _ordersRepository.getServiceProviderSportsQrOrder(
-      userid,
-    );
+      String userid, String storeId) {
+    return _ordersRepository.getServiceProviderSportsQrOrder(userid, storeId);
   }
 
   Stream<List<QrOrderModel>> getServiceProviderNutritionQrOrder(

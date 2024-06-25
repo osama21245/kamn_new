@@ -8,6 +8,7 @@ class TextFiled extends ConsumerWidget {
   Color color;
   bool? ispassword;
   bool? istakenum;
+  bool? keytypeisnumber;
   String? Function(String?)? validator;
   TextEditingController controller;
   TextFiled(
@@ -16,11 +17,12 @@ class TextFiled extends ConsumerWidget {
       required this.color,
       this.ispassword,
       this.istakenum,
+      this.keytypeisnumber = false,
       required this.controller,
       this.validator});
   bool showAndHidePass = false;
   void changestate() {
-    showAndHidePass = !showAndHidePass!;
+    showAndHidePass = !showAndHidePass;
   }
 
   @override
@@ -29,6 +31,8 @@ class TextFiled extends ConsumerWidget {
     return StatefulBuilder(
       builder: (BuildContext context, setState) {
         return TextFormField(
+          maxLines: null,
+          keyboardType: keytypeisnumber! ? TextInputType.phone : null,
           controller: controller,
           validator: validator,
           obscureText: showAndHidePass,
@@ -38,7 +42,6 @@ class TextFiled extends ConsumerWidget {
                 : InkWell(
                     onTap: () {
                       changestate();
-                      print("sss");
                       setState(() {});
                     },
                     child: Icon(

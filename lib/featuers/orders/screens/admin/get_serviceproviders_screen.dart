@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/featuers/add_serviceprovider/widget/custom_get_grounds_requests.dart';
-import 'package:kman/featuers/add_serviceprovider/widget/custom_get_medical_requests.dart';
+import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_medical.dart';
+import 'package:kman/featuers/benefits/widget/benefits_home/custom_get_nutrition.dart';
+import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
+import 'package:kman/featuers/coaches-gyms/widget/coaches-gyms_home/custom_get_gyms.dart';
+import '../../../../HandlingDataView.dart';
+import '../../../../core/class/statusrequest.dart';
+import '../../../../core/common/custom_uppersec.dart';
+import '../../../../core/providers/checkInternet.dart';
+import '../../../../theme/pallete.dart';
+import '../../../auth/controller/auth_controller.dart';
 
-import '../../../HandlingDataView.dart';
-import '../../../core/class/statusrequest.dart';
-import '../../../core/common/custom_uppersec.dart';
-import '../../../core/providers/checkInternet.dart';
-import '../../../theme/pallete.dart';
-import '../../coaches-gyms/widget/coaches-gyms_home/custom_get_coaches.dart';
-import '../widget/custom_get_coaches_requests.dart';
-import '../widget/custom_get_gyms_requests.dart';
-import '../widget/custom_get_nutrition_requests.dart';
-import '../widget/custom_get_sports.dart';
-
-class ServiceProviderRequestsScreen extends ConsumerStatefulWidget {
+class GetServiceProviderScreen extends ConsumerStatefulWidget {
   final String collection;
-  const ServiceProviderRequestsScreen({super.key, required this.collection});
+  const GetServiceProviderScreen({super.key, required this.collection});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ServiceProviderRequestsScreenState();
+      _GetServiceProviderScreenState();
 }
 
-class _ServiceProviderRequestsScreenState
-    extends ConsumerState<ServiceProviderRequestsScreen> {
+class _GetServiceProviderScreenState
+    extends ConsumerState<GetServiceProviderScreen> {
   StatusRequest statusRequest = StatusRequest.success;
   checkinternet() async {
     setState(() {
@@ -49,7 +46,7 @@ class _ServiceProviderRequestsScreenState
 
   @override
   Widget build(BuildContext context) {
-    //final user = ref.read(usersProvider);
+    final user = ref.read(usersProvider);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -58,12 +55,12 @@ class _ServiceProviderRequestsScreenState
             CustomUpperSec(
               size: size,
               color: Pallete.fontColor,
-              title: widget.collection,
+              title: "${widget.collection}",
             ),
             SizedBox(
               height: size.height * 0.02,
             ),
-            const Divider(
+            Divider(
               thickness: 3,
               color: Colors.black,
             ),
@@ -88,25 +85,26 @@ class _ServiceProviderRequestsScreenState
             HandlingDataView(
                 statusRequest: statusRequest,
                 widget: widget.collection == "Gyms"
-                    ? CustomGetGymsRequests()
+                    ? CustomGetGyms(
+                        fromOrders: true,
+                      )
                     : widget.collection == "Coaches"
-                        ? const CustomGetCoachesRequests()
+                        ? CustomGetCoaches(
+                            fromOrders: true,
+                          )
                         : widget.collection == "Medical"
-                            ? const CustomGetMedicalRequests(
+                            ? const CustomGetMedical(
                                 region: "All",
+                                fromOrders: true,
                               )
                             : widget.collection == "Nutrition"
-                                ? const CustomGetNutritionRequest(
+                                ? const CustomGetNutrition(
                                     region: "All",
+                                    fromOrders: true,
                                   )
-                                : widget.collection == "Sports shop"
-                                    ? const CustomGetSportsRequests(
-                                        region: "All",
-                                      )
-                                    : CustomGetGroundsRequests(
-                                        size: size,
-                                        collection: widget.collection,
-                                      ))
+                                : CustomGetCoaches(
+                                    fromOrders: true,
+                                  ))
           ],
         ),
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/benefits/screens/nutrition/nutrition_details_screen.dart';
 import 'package:kman/featuers/benefits/widget/benefits_home/custom_nutrition_card.dart';
 

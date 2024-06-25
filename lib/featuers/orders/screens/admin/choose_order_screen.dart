@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kman/featuers/orders/screens/get_serviceproviders_screen.dart';
-import '../../../core/class/orders_categoriy.dart';
-import '../../../core/common/custom_uppersec.dart';
-import '../../../theme/pallete.dart';
-import '../../play/widget/play_home/custom_home_card.dart';
+import 'package:kman/featuers/orders/screens/admin/get_serviceproviders_screen.dart';
+import '../../../../core/class/orders_categoriy.dart';
+import '../../../../core/common/custom_uppersec.dart';
+import '../../../../theme/pallete.dart';
+import '../../../play/widget/play_home/custom_home_card.dart';
 
 class ChooseOrderScreen extends StatelessWidget {
   const ChooseOrderScreen({super.key});

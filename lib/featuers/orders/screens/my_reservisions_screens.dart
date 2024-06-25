@@ -26,10 +26,6 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
   StatusRequest statusRequest = StatusRequest.success;
 
   checkinternet() async {
-    setState(() {
-      statusRequest = StatusRequest.loading2;
-    });
-
     if (await checkInternet()) {
       setState(() {
         statusRequest = StatusRequest.success;
@@ -65,7 +61,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.13),
-            child: Divider(
+            child: const Divider(
               thickness: 2,
               color: Color.fromARGB(94, 146, 146, 146),
             ),
@@ -82,7 +78,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: status == MyReservisionFilterStatus.Coaches
-                          ? Border(
+                          ? const Border(
                               bottom: BorderSide(
                                   width: 2, color: Pallete.fontColor))
                           : null),
@@ -107,7 +103,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: status == MyReservisionFilterStatus.Gyms
-                          ? Border(
+                          ? const Border(
                               bottom: BorderSide(
                                   width: 2, color: Pallete.fontColor))
                           : null),
@@ -132,7 +128,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: status == MyReservisionFilterStatus.Medical
-                          ? Border(
+                          ? const Border(
                               bottom: BorderSide(
                                   width: 2, color: Pallete.fontColor))
                           : null),
@@ -157,7 +153,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: status == MyReservisionFilterStatus.Sports
-                          ? Border(
+                          ? const Border(
                               bottom: BorderSide(
                                   width: 2, color: Pallete.fontColor))
                           : null),
@@ -182,7 +178,7 @@ class _MyReservisionsScreensState extends State<MyReservisionsScreens> {
                 child: Container(
                   decoration: BoxDecoration(
                       border: status == MyReservisionFilterStatus.Nutrition
-                          ? Border(
+                          ? const Border(
                               bottom: BorderSide(
                                   width: 2, color: Pallete.fontColor))
                           : null),

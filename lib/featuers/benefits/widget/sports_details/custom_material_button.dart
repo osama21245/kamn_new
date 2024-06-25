@@ -1,20 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kman/featuers/auth/controller/auth_controller.dart';
 
 import '../../../../theme/pallete.dart';
 
-class CustomMaterialButton extends StatelessWidget {
+class CustomMaterialButton extends ConsumerWidget {
   final Color color;
   final Size size;
+  final String serviceProviderId;
   final String title;
+  final void Function() fun;
   const CustomMaterialButton(
       {super.key,
       required this.color,
+      required this.serviceProviderId,
+      required this.fun,
       required this.size,
       required this.title});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.read(usersProvider);
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(size.width * 0.02),
@@ -29,14 +36,28 @@ class CustomMaterialButton extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              user!.uid == serviceProviderId
+                  ? IconButton(
+                      onPressed: fun,
+                      icon: const Icon(
+                        Icons.assignment_turned_in_outlined,
+                        color: Pallete.whiteColor,
+                      ))
+                  : Container(
+                      child: Text("      "),
+                    ),
+              SizedBox(
+                width: user!.uid == serviceProviderId
+                    ? size.width * 0.16
+                    : size.width * 0.23,
+              ),
               Text(
                 title,
                 style: TextStyle(
                     fontFamily: "Muller",
                     color: Pallete.whiteColor,
-                    fontSize: size.width * 0.04,
+                    fontSize: size.width * 0.053,
                     fontWeight: FontWeight.w600),
               ),
             ],

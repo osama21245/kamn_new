@@ -10,6 +10,7 @@ import 'package:kman/featuers/orders/widget/gym/custom_card_Pending_gym.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
+import '../../../../core/common/no_data_animation.dart';
 
 class CustomGetUserGymReservisions extends ConsumerWidget {
   CustomGetUserGymReservisions({
@@ -18,26 +19,30 @@ class CustomGetUserGymReservisions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.sizeOf(context);
     final user = ref.watch(usersProvider);
     return ref.watch(getUserGymReservisionsProvider(user!.uid)).when(
-        data: (orders) => Expanded(
-              child: ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, i) {
-                    final order = orders[i];
-                    return InkWell(
-                        onTap: () => Get.to(() => OrderGymDetailsScreen(
-                              fromserviceProviderScreen: false,
-                              orderModel: order,
-                            )),
-                        child: CustomcardPendingGym(
-                          orderModel: order,
-                          size: size,
-                          fromserviceProviderScreen: false,
-                        ));
-                  }),
-            ),
+        data: (orders) => orders.isEmpty
+            ? NoDataAnimation(
+                size: size,
+              )
+            : Expanded(
+                child: ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (context, i) {
+                      final order = orders[i];
+                      return InkWell(
+                          onTap: () => Get.to(() => OrderGymDetailsScreen(
+                                fromserviceProviderScreen: false,
+                                orderModel: order,
+                              )),
+                          child: CustomcardPendingGym(
+                            orderModel: order,
+                            size: size,
+                            fromserviceProviderScreen: false,
+                          ));
+                    }),
+              ),
         error: (error, StackTrace) {
           print(error);
 

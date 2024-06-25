@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:kman/core/constants/constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/homemain.dart';
 import 'package:kman/models/coache_model.dart';
@@ -70,6 +71,9 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
         _ref = ref,
         _storageRepository = storageRepository,
         super(StatusRequest.success);
+
+  double lat = 0.0;
+  double long = 0.0;
 
   Future<List<CoacheModel>> getCoaches() {
     return _coachesGymsRepository.getCoaches();
@@ -177,7 +181,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
           path: "Coach", id: coachmodel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        coachmodel.image = r;
+        coachmodel.copyWith(image: r);
       });
     }
     final res = await _coachesGymsRepository.updateCoach(coachmodel);
@@ -263,46 +267,46 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     });
   }
 
-  void setGyms(BuildContext context, File filelogo, String name, bool ismix,
+  void setGyms(BuildContext context, File? filelogo, String name, bool ismix,
       bool fromAsk) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
+    final user = _ref.read(usersProvider);
 
-    String logo = "";
+    String logo = Constants.store1;
 
-    final res = await _storageRepository.storeFile(
-        path: "Gyms", id: id, file: filelogo);
+    if (filelogo != null) {
+      final res = await _storageRepository.storeFile(
+          path: "Gyms", id: id, file: filelogo);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      logo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        logo = r;
+      });
+    }
+
 //set data
-    if (logo != "") {
-      GymModel gymModel = GymModel(
+    GymModel gymModel = GymModel(
         id: id,
         name: name,
         image: logo,
         ismix: ismix,
-      );
-      final res = await _coachesGymsRepository.setGym(gymModel, fromAsk);
-      state = StatusRequest.success;
+        userId: fromAsk ? user!.uid : "");
+    final res = await _coachesGymsRepository.setGym(gymModel, fromAsk);
+    state = StatusRequest.success;
 
-      res.fold((l) => showSnackBar(l.toString(), context), (r) async {
-        Get.offAll(() => const HomeMain());
-        showSnackBar("Your reserve Added Succefuly", context);
-      });
-    }
+    res.fold((l) => showSnackBar(l.toString(), context), (r) async {
+      Get.offAll(() => const HomeMain());
+      showSnackBar("Your reserve Added Succefuly", context);
+    });
   }
 
   void setGymsLocations(
     BuildContext context,
     String name,
-    String gymId,
     String address,
     String image,
+    String userId,
     String mainGymId,
-    double lat,
-    double long,
     String facebooklink,
     String dynamicLink,
     String region,
@@ -322,7 +326,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       city: "Alexandria",
       region: region,
       name: name,
-      userId: "",
+      userId: userId,
       gallery: gallery,
       fitnessisMix: [],
       fitnessisSpecial: [],
@@ -374,8 +378,8 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
         iteration++;
       });
     }
-    final res =
-        await _coachesGymsRepository.setGymLocations(gymLocationModel, gymId);
+    final res = await _coachesGymsRepository.setGymLocations(
+        gymLocationModel, mainGymId);
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.toString(), context), (r) async {
@@ -394,77 +398,78 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       String whatssAppNumber,
       String categoriry,
       String experience,
-      File fileCoacheImage,
+      File? fileCoacheImage,
       List<File> fileCvs,
       String benefits,
       bool fromask) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
-    String photo = "";
+    String photo = Constants.defpro;
     int iteration = 0;
     final user = _ref.read(usersProvider);
     List<String> cvs = [];
 
-    final res = await _storageRepository.storeFile(
-        path: "Coach", id: id, file: fileCoacheImage);
-
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      photo = r;
-    });
-
-    if (photo != "") {
-      CoacheModel coacheModel = CoacheModel(
-        whatsAppNum: whatssAppNumber,
-        instgram: instgramLink,
-        faceBook: facebooklink,
-        dynamicLink: dynamicLink,
-        id: id,
-        name: name,
-        rating: 0,
-        userId: fromask ? user!.uid : "",
-        image: photo,
-        education: education,
-        categoriry: categoriry,
-        experience: experience,
-        benefits: benefits,
-        gallery: cvs,
-        onlineSpecial: [],
-        onlinepoints: [],
-        onlineprices: [],
-        onlineplanDescriptions: [],
-        onlinePlanName: [],
-        onlinediscount: [],
-        onlineisGroup: [],
-        onlineReservisionTimes: [],
-        offlineSpecial: [],
-        offlinepoints: [],
-        offlineprices: [],
-        offlineplanDescriptions: [],
-        offlinePlanName: [],
-        offlinediscount: [],
-        offlineisGroup: [],
-        offlineReservisionTimes: [],
-      );
-
-      for (var img in fileCvs) {
-        String imgId = Uuid().v4();
-
-        final res = await _storageRepository.storeFile(
-            path: "products", id: "$id$iteration", file: img);
-        res.fold((l) => showSnackBar(l.toString(), context), (r) {
-          cvs.add(r);
-          iteration++;
-        });
-      }
-
-      final res = await _coachesGymsRepository.setCoache(coacheModel, fromask);
-      state = StatusRequest.success;
+    if (fileCoacheImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: "Coach", id: id, file: fileCoacheImage);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        setPricesCoaches(id, context);
-        showSnackBar("Your reserve Added Succefuly", context);
+        photo = r;
       });
     }
+
+    CoacheModel coacheModel = CoacheModel(
+      whatsAppNum: whatssAppNumber,
+      instgram: instgramLink,
+      faceBook: facebooklink,
+      dynamicLink: dynamicLink,
+      id: id,
+      name: name,
+      rating: 0,
+      userId: fromask ? user!.uid : "",
+      image: photo,
+      education: education,
+      categoriry: categoriry,
+      experience: experience,
+      benefits: benefits,
+      gallery: cvs,
+      onlineSpecial: [],
+      onlinepoints: [],
+      onlineprices: [],
+      onlineplanDescriptions: [],
+      onlinePlanName: [],
+      onlinediscount: [],
+      onlineisGroup: [],
+      onlineReservisionTimes: [],
+      offlineSpecial: [],
+      offlinepoints: [],
+      offlineprices: [],
+      offlineplanDescriptions: [],
+      offlinePlanName: [],
+      offlinediscount: [],
+      offlineisGroup: [],
+      offlineReservisionTimes: [],
+    );
+
+    for (var img in fileCvs) {
+      String imgId = Uuid().v4();
+
+      final res = await _storageRepository.storeFile(
+          path: "products", id: "$id$iteration", file: img);
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        cvs.add(r);
+        iteration++;
+      });
+    }
+
+    final res = await _coachesGymsRepository.setCoache(coacheModel, fromask);
+    state = StatusRequest.success;
+
+    res.fold((l) => showSnackBar(l.toString(), context), (r) {
+      Get.offAll(() => HomeMain());
+      setPricesCoaches(id, context);
+      showSnackBar("Your reserve Added Succefuly", context);
+    });
   }
 
 //****************************for Admin*******************************************************
@@ -484,7 +489,6 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
   ) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
-    String photo = "";
     final user = _ref.read(usersProvider);
 
     CoacheModel coacheModel = CoacheModel(
@@ -496,7 +500,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
       name: name,
       rating: 0,
       userId: user!.uid,
-      image: photo,
+      image: fileCoacheImage,
       education: education,
       categoriry: categoriry,
       experience: experience,
@@ -532,23 +536,18 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
     BuildContext context,
     String image,
     String name,
+    String userId,
     bool ismix,
   ) async {
     state = StatusRequest.loading;
     String id = Uuid().v1();
 
     GymModel gymModel = GymModel(
-      id: id,
-      name: name,
-      image: image,
-      ismix: ismix,
-    );
-    final res = await _coachesGymsRepository.setGym(gymModel, true);
+        id: id, name: name, image: image, ismix: ismix, userId: userId);
+    final res = await _coachesGymsRepository.setGym(gymModel, false);
     state = StatusRequest.success;
 
     res.fold((l) => showSnackBar(l.toString(), context), (r) async {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeMain()));
       showSnackBar("Your reserve Added Succefuly", context);
     });
   }
@@ -559,6 +558,7 @@ class CoachesGymsController extends StateNotifier<StatusRequest> {
   ) async {
     final res = await _coachesGymsRepository.deleteCoachRequest(coachId);
     res.fold((l) => null, (r) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
     });
   }

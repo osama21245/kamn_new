@@ -2,7 +2,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:kman/models/grounds_model.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:kman/theme/pallete.dart';
 
@@ -13,8 +12,7 @@ class CustomGroundReservisionCard extends StatelessWidget {
   final Color color;
 
   const CustomGroundReservisionCard(
-      {Key? key, required this.color, required this.reserveModel})
-      : super(key: key);
+      {super.key, required this.color, required this.reserveModel});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +57,7 @@ class CustomGroundReservisionCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    '${reserveModel.category}',
+                    reserveModel.category,
                     style: TextStyle(
                         color: Pallete.whiteColor,
                         fontFamily: "Muller",

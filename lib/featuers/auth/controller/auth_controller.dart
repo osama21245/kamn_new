@@ -297,12 +297,18 @@ class AuthController extends StateNotifier<StatusRequest> {
   void updateUserStatus(bool isonline, BuildContext context) async {
     final uid = _ref.read(usersProvider)!.uid;
     final res = await _authRepository.updateUserState(uid, isonline);
-    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+    res.fold((l) => showSnackBar(l.message, context), (r) async {});
   }
 
   void updateUserServiceStatus(
       String state, String userId, BuildContext context) async {
+    final user = _ref.read(usersProvider);
     final res = await _authRepository.updateUserServiceState(userId, state);
-    res.fold((l) => showSnackBar(l.message, context), (r) => null);
+    res.fold((l) => showSnackBar(l.message, context), (r) async {
+      await _ref
+          .read(usersProvider.notifier)
+          .update((u) => user!.copyWith(state: state));
+      await _authRepository.saveUserModelToPrefs(user!.copyWith(state: state));
+    });
   }
 }

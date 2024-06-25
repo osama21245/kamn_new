@@ -9,6 +9,8 @@ import 'package:kman/models/grounds_model.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:kman/models/user_model.dart';
 
+import '../../../models/inbox_model.dart';
+
 final UserRepositoryProvider =
     Provider((ref) => UserRepository(firestore: ref.watch(FirestoreProvider)));
 
@@ -20,6 +22,9 @@ class UserRepository {
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
+
+  CollectionReference get _inBox =>
+      _firestore.collection(FirebaseConstants.inBoxCollection);
 
   CollectionReference get _reserve =>
       _firestore.collection(FirebaseConstants.reserveCollection);
@@ -96,6 +101,29 @@ class UserRepository {
   Future<UserModel> getUserData(String userId) {
     return _users.doc(userId).get().then((value) {
       return UserModel.fromMap(value.data() as Map<String, dynamic>);
+    });
+  }
+
+//inBox
+  FutureVoid sendInboxToUser(InBoxModel inBoxModel) async {
+    try {
+      return right(_inBox.doc(inBoxModel.id).set(inBoxModel.toMap()));
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  Future<List<InBoxModel>> getInBoxMessages(String userId) {
+    return _inBox
+        .where("userId", isEqualTo: userId)
+        .orderBy("sentAt", descending: true)
+        .get()
+        .then((event) {
+      List<InBoxModel> inBox = [];
+      for (var document in event.docs) {
+        inBox.add(InBoxModel.fromMap(document.data() as Map<String, dynamic>));
+      }
+      return inBox;
     });
   }
 }

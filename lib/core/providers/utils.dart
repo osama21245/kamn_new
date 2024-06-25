@@ -3,31 +3,61 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../models/qr_order_model.dart';
 
 void showSnackBar(String text, BuildContext context) {
+  final snackBar = SnackBar(
+    content: Text(text),
+    behavior: SnackBarBehavior.floating,
+    animation: CurvedAnimation(
+      parent: AnimationController(
+        vsync: Scaffold.of(context),
+        duration: Duration(milliseconds: 500),
+      )..forward(),
+      curve: Curves.easeIn,
+    ),
+  );
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(text)));
+    ..showSnackBar(snackBar);
 }
 
 Future<FilePickerResult?> picImage() async {
-  final image = await FilePicker.platform.pickFiles(type: FileType.image);
-  return image;
+  try {
+    if (await requestStoragePermission()) {
+      final image = await FilePicker.platform.pickFiles(type: FileType.image);
+      if (image == null) {
+        // User canceled the picker
+        return null;
+      }
+      return image;
+    } else {}
+  } catch (e) {
+    // Handle any errors that occur during file picking
+    print("An error occurred while picking the image: $e");
+    return null;
+  }
 }
 
 Future<File?> pickImageFromGallery(BuildContext context) async {
-  File? image;
-  try {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  if (await requestStoragePermission()) {
+    File? image;
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    if (pickedImage != null) {
-      image = File(pickedImage.path);
+      if (pickedImage != null) {
+        image = File(pickedImage.path);
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
     }
-  } catch (e) {
-    showSnackBar(e.toString(), context);
+    return image;
+  } else {
+    showSnackBar("You have give kamn a permission", context);
   }
-  return image;
 }
 
 Future<File?> pickVideoFromGallery(BuildContext context) async {
@@ -45,15 +75,26 @@ Future<File?> pickVideoFromGallery(BuildContext context) async {
   return video;
 }
 
-// Future<GiphyGif?> pickGIF(BuildContext context) async {
-//   GiphyGif? gif;
-//   try {
-//     gif = await Giphy.getGif(
-//       context: context,
-//       apiKey: 'pwXu0t7iuNVm8VO5bgND2NzwCpVH9S0F',
-//     );
-//   } catch (e) {
-//     showSnackBar(context: context, content: e.toString());
-//   }
-//   return gif;
-// }
+Future<bool> requestStoragePermission() async {
+  if (await Permission.storage.request().isGranted) {
+    return true;
+  } else {
+    // You can show a dialog explaining why you need the permission and request again
+    return false;
+  }
+}
+
+QrOrderModel qrOrderCommanModel = QrOrderModel(
+    orderid: "",
+    storeId: "",
+    offerId: "",
+    userId: "",
+    offerTitle: "",
+    offerDescription: "",
+    offerPrice: "",
+    offerDiscount: "",
+    category: "",
+    image: "",
+    serviceProviderId: "",
+    qrLink: "",
+    date: DateTime.now());

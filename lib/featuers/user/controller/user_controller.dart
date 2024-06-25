@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kman/core/class/statusrequest.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
+import 'package:kman/models/inbox_model.dart';
 import 'package:kman/models/reserved_model.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/providers/storage_repository.dart';
 import '../../../core/providers/utils.dart';
 import '../../../models/user_model.dart';
@@ -18,6 +21,12 @@ final getUserJoindGroundsProvider = FutureProvider.family((ref, String uid) =>
 
 final getUserDataProviderr = FutureProvider.family((ref, String uid) =>
     ref.watch(userControllerProvider.notifier).getUserData(uid));
+
+//inBox
+
+final getInBoxMessagesProviderr = FutureProvider.family.autoDispose(
+    (ref, String uid) =>
+        ref.watch(userControllerProvider.notifier).getInBoxMessages(uid));
 
 final userControllerProvider =
     StateNotifierProvider<UserController, StatusRequest>((ref) =>
@@ -64,16 +73,49 @@ class UserController extends StateNotifier<StatusRequest> {
     });
   }
 
-  // Future<List<ReserveModel>> getUserResevisions() {
-  //   final user = _ref.watch(usersProvider);
-  //   return _userRepository.getUserResevisions(user!.uid);
-  // }
-
   Future<List<ReserveModel>> getuserJoindGrounds(String uid) {
     return _userRepository.getUserJoinedGrounds(uid);
   }
 
   Future<UserModel> getUserData(String userId) {
     return _userRepository.getUserData(userId);
+  }
+
+  //inBox
+  void sendInboxToUser(
+      {required String title,
+      required String description,
+      required File? imageFile,
+      required bool defImage,
+      required String userId,
+      required BuildContext context}) async {
+    String image = "";
+    if (defImage) {
+      image = Constants.bannerDefault;
+    }
+    final id = Uuid().v1();
+    if (imageFile != null) {
+      final resImage = await _storageRepository.storeFile(
+          path: "Inbox", id: id, file: imageFile);
+
+      resImage.fold((l) => showSnackBar(l.toString(), context), (r) {
+        image = r;
+      });
+    }
+
+    InBoxModel inBoxModel = InBoxModel(
+        id: id,
+        title: title,
+        image: image,
+        description: description,
+        userId: userId,
+        sentAt: DateTime.now());
+    final res = await _userRepository.sendInboxToUser(inBoxModel);
+
+    res.fold((l) => showSnackBar(l.message, context), (r) {});
+  }
+
+  Future<List<InBoxModel>> getInBoxMessages(String userId) {
+    return _userRepository.getInBoxMessages(userId);
   }
 }

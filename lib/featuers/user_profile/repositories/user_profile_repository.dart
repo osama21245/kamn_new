@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import '../../../core/constants/firebase_constants.dart';
-import '../../../core/enums/enums.dart';
 import '../../../core/enums/message_enum.dart';
 import '../../../core/faliure.dart';
 import '../../../models/chat_model.dart';
@@ -10,7 +9,6 @@ import '../../../models/message_model.dart';
 import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
 import '../../../core/providers/firebase_providers.dart';
-import '../../../core/type_def.dart';
 import '../../chats/repositories/messages_reply.dart';
 
 final userProfileRepositoryProvider = Provider((ref) {
@@ -24,6 +22,9 @@ class UserProfileRepository {
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
+
+  CollectionReference get _inBox =>
+      _firestore.collection(FirebaseConstants.inBoxCollection);
 
   CollectionReference get _posts =>
       _firestore.collection(FirebaseConstants.postsCollection);

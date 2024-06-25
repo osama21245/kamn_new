@@ -3,11 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
+import 'package:kman/featuers/play/screens/refuse_ground_request.dart';
+import 'package:kman/featuers/play/screens/update_ground_screen.dart';
 import 'package:kman/featuers/play/widget/ground_details/custom_ground_middlesec.dart';
 import 'package:kman/featuers/play/widget/play/custom_play_grident.dart';
+import 'package:kman/featuers/user/controller/user_controller.dart';
 import 'package:kman/models/grounds_model.dart';
 import '../../../core/common/custom_elevated_button.dart';
+import '../../../core/common/custom_icon_uppersec.dart';
 import '../../../core/common/custom_uppersec.dart';
+import '../../../core/function/goTo.dart';
 import '../../../edit_collaborator_state_screen.dart';
 import '../../../theme/pallete.dart';
 import '../widget/ground_details/custom_ground_body.dart';
@@ -53,13 +58,22 @@ class GroundDetailsScreen extends ConsumerWidget {
 
       ref
           .watch(playControllerProvider.notifier)
-          .deleteGroundRequest(groundModel!.id, collection, context);
-    }
+          .deleteGroundRequest(groundModel.id, collection, context);
 
-    refusesGround() {
+      //send message to user
+      ref.watch(userControllerProvider.notifier).sendInboxToUser(
+          title: "Congratulations",
+          description: "Your service has been added successfully to kamn",
+          imageFile: null,
+          userId: groundModel.groundOwnerId,
+          defImage: true,
+          context: context);
+
+      //update user state
+
       ref
-          .watch(playControllerProvider.notifier)
-          .deleteGroundRequest(groundModel!.id, collection, context);
+          .watch(authControllerProvider.notifier)
+          .updateUserServiceStatus("9", groundModel.groundOwnerId, context);
     }
 
     final user = ref.watch(usersProvider);
@@ -77,11 +91,26 @@ class GroundDetailsScreen extends ConsumerWidget {
                             builder: (context) =>
                                 GroundOwnerReservisionsScreen()))
                         : () {},
-                    child: CustomUpperSec(
-                      color: color,
-                      size: size,
-                      title: "Play",
-                    ),
+                    child: groundModel.groundOwnerId == user.uid ||
+                            user.state == "1"
+                        ? CustomIconUpperSec(
+                            size: size,
+                            color: Pallete.fontColor,
+                            title: "Sport",
+                            onTapAction: () {
+                              goToScreen(
+                                  context,
+                                  UpdateGroundScreen(
+                                    groundMdoel: groundModel,
+                                    collection: collection,
+                                  ));
+                            },
+                          )
+                        : CustomUpperSec(
+                            color: color,
+                            size: size,
+                            title: "Play",
+                          ),
                   ),
                   SizedBox(
                     height: size.height * 0.02,
@@ -92,17 +121,19 @@ class GroundDetailsScreen extends ConsumerWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      if (user!.state == "1")
+                      if (user.state == "1") {
                         Get.to(() => EditCollaboratorStateScreen(
                             collection: collection, id: groundModel.id));
+                      }
                     },
                     child: CustomGroundMiddleSec(
                         color: color,
                         size: size,
                         collection: collection,
-                        title: groundModel.groundOwnerId == ""
-                            ? "Not active"
-                            : groundModel.name,
+                        title:
+                            groundModel.groundOwnerId == "" && user.state == "1"
+                                ? "Not active"
+                                : groundModel.name,
                         rating: groundModel.rating),
                   ),
                   CustomGroundBody(
@@ -132,7 +163,11 @@ class GroundDetailsScreen extends ConsumerWidget {
                         title: "Refuse",
                         sizeofwidth: size.width * 0.3,
                         sizeofhight: size.height * 0.03,
-                        onTap: () => refusesGround())
+                        onTap: () => goToScreen(
+                            context,
+                            RefuseGroundRequestScreen(
+                                groundModel: groundModel,
+                                collection: collection)))
                   ],
                 )
             ],

@@ -58,7 +58,7 @@ class _CustomMedicalTimesCardState
     Size size = MediaQuery.of(context).size;
     final user = ref.watch(usersProvider);
     return Container(
-      height: size.height * 0.13,
+      height: size.height * 0.135,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: listdaysOfWeek.length,
@@ -66,12 +66,15 @@ class _CustomMedicalTimesCardState
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
-                onTap: user!.state =="1" || user!.uid == widget.medicalModel.userId? () => Get.to(() => CustomUpdateTime(
-                    index: i,
-                    fromDays: widget.fromDays,
-                    toDays: widget.toDays,
-                    day: listdaysOfWeek[i],
-                    medicalModel: widget.medicalModel)):(){},
+                onTap: user!.state == "1" ||
+                        user!.uid == widget.medicalModel.userId
+                    ? () => Get.to(() => CustomUpdateTime(
+                        index: i,
+                        fromDays: widget.fromDays,
+                        toDays: widget.toDays,
+                        day: listdaysOfWeek[i],
+                        medicalModel: widget.medicalModel))
+                    : () {},
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
                   child: Container(
@@ -79,13 +82,15 @@ class _CustomMedicalTimesCardState
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(144, 255, 255, 255),
                         borderRadius: BorderRadius.circular(size.width * 0.02)),
-                    child: Column(
-                      children: [
-                        Text("${listdaysOfWeek[i]}"),
-                        Divider(),
-                        Text("From: ${widget.fromDays[i]}"),
-                        Text("To: ${widget.toDays[i]}"),
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Text("${listdaysOfWeek[i]}"),
+                          Divider(),
+                          Text("From: ${widget.fromDays[i]}"),
+                          Text("To: ${widget.toDays[i]}"),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -10,6 +10,7 @@ import 'package:kman/featuers/orders/widget/customcardPending.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../../core/common/error_text.dart';
 import '../../../../../core/constants/imgaeasset.dart';
+import '../../../../core/common/no_data_animation.dart';
 
 class CustomGetUserMedicalReservisions extends ConsumerWidget {
   CustomGetUserMedicalReservisions({
@@ -18,25 +19,29 @@ class CustomGetUserMedicalReservisions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.sizeOf(context);
     final user = ref.watch(usersProvider);
     return ref.watch(getUserMedicalReservisionProvider(user!.uid)).when(
-        data: (medicalReservisions) => Expanded(
-              child: ListView.builder(
-                  itemCount: medicalReservisions.length,
-                  itemBuilder: (context, i) {
-                    final medicalReservision = medicalReservisions[i];
-                    return InkWell(
-                        onTap: () => Get.to(SureMedicalReservision(
-                              medicalReservisionModel: medicalReservision,
-                            )),
-                        child: CustomcardMedicalReservisions(
-                          medicalReservisionModel: medicalReservision,
-                          size: size,
-                          fromserviceProviderScreen: false,
-                        ));
-                  }),
-            ),
+        data: (medicalReservisions) => medicalReservisions.isEmpty
+            ? NoDataAnimation(
+                size: size,
+              )
+            : Expanded(
+                child: ListView.builder(
+                    itemCount: medicalReservisions.length,
+                    itemBuilder: (context, i) {
+                      final medicalReservision = medicalReservisions[i];
+                      return InkWell(
+                          onTap: () => Get.to(SureMedicalReservision(
+                                medicalReservisionModel: medicalReservision,
+                              )),
+                          child: CustomcardMedicalReservisions(
+                            medicalReservisionModel: medicalReservision,
+                            size: size,
+                            fromserviceProviderScreen: false,
+                          ));
+                    }),
+              ),
         error: (error, StackTrace) {
           print(error);
 

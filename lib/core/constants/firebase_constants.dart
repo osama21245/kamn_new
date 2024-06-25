@@ -7,4 +7,5 @@ class FirebaseConstants {
   static const appStateCollection = 'app_state';
   static const postsMotivationCollection = "postsMotivation";
   static const postsCollection = "post";
+  static const inBoxCollection = "inBox";
 }

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:kman/my_account.dart';
 import 'package:kman/online_support.dart';
 import 'package:kman/theme/pallete.dart';
-
 import 'core/constants/firebase_constants.dart';
 import 'drawer/profile_drawer.dart';
 import 'featuers/feed/screens/motivation_screen.dart';
@@ -116,7 +115,19 @@ class _HomeMainState extends State<HomeMain> {
                       backgroundColor: Pallete.fontColor,
                     ),
                     drawer: ProfileDrawer(),
-                    body: screens.elementAt(_currentIndex),
+                    body: PageTransitionSwitcher(
+                      duration: Duration(milliseconds: 650),
+                      transitionBuilder: (Widget child,
+                          Animation<double> primaryAnimation,
+                          Animation<double> secondaryAnimation) {
+                        return FadeThroughTransition(
+                          animation: primaryAnimation,
+                          secondaryAnimation: secondaryAnimation,
+                          child: child,
+                        );
+                      },
+                      child: screens.elementAt(_currentIndex),
+                    ),
                   ),
           );
         } else {

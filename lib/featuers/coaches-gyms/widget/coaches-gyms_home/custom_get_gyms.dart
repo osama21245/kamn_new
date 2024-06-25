@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -20,15 +21,26 @@ class CustomGetGyms extends ConsumerWidget {
                   itemCount: gyms.length,
                   itemBuilder: (context, i) {
                     final gym = gyms[i];
-                    return InkWell(
-                        onTap: () => Get.to(() => GymLocationsScreen(
-                              collection: "gym",
+                    return OpenContainer(
+                        transitionType: ContainerTransitionType.fade,
+                        transitionDuration: Duration(seconds: 1),
+                        openBuilder: (BuildContext context, VoidCallback _) {
+                          return GymLocationsScreen(
+                            collection: "gym",
+                            gymModel: gym,
+                            fromAsk: false,
+                          );
+                        },
+                        closedElevation: 0.0,
+                        closedShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        closedColor: Color.fromARGB(0, 245, 246, 247),
+                        closedBuilder: (BuildContext context,
+                                VoidCallback openContainer) =>
+                            CustomGymCard(
                               gymModel: gym,
-                              fromAsk: false,
-                            )),
-                        child: CustomGymCard(
-                          gymModel: gym,
-                        ));
+                            ));
                   }),
             ),
         error: (error, StackTrace) {

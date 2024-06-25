@@ -122,15 +122,15 @@ class _ReservisionScreenState extends ConsumerState<ReservisionScreen> {
     super.initState();
   }
 
-  void reservision(WidgetRef ref, BuildContext context,
-      ReserveModel reserveModel, int points) {
-    ref
-        .watch(playControllerProvider.notifier)
-        .reserve(context, reserveModel, points, widget.groundOwnerId);
-  }
-
   @override
   Widget build(BuildContext context) {
+    void reservision(WidgetRef ref, BuildContext context,
+        ReserveModel reserveModel, int points) {
+      ref
+          .watch(playControllerProvider.notifier)
+          .reserve(context, reserveModel, points, widget.groundOwnerId);
+    }
+
     StatusRequest statusRequest = ref.watch(playControllerProvider);
     final userId = ref.watch(usersProvider)!.uid;
     final user = ref.watch(usersProvider);

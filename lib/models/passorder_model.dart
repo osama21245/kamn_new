@@ -2,9 +2,9 @@
 import 'dart:convert';
 
 class PassOrderModel {
-  final int discount;
+  final dynamic discount;
   final int totalPrice;
-  final int price;
+  final dynamic price;
   final String seviceProviderId;
   final String serviceProviderName;
   final String ordername;
@@ -26,7 +26,7 @@ class PassOrderModel {
   });
 
   PassOrderModel copyWith({
-    int? discount,
+    double? discount,
     int? totalPrice,
     int? price,
     String? seviceProviderId,
@@ -69,7 +69,7 @@ class PassOrderModel {
 
   factory PassOrderModel.fromMap(Map<String, dynamic> map) {
     return PassOrderModel(
-      discount: map['discount'] as int,
+      discount: map['discount'] as double,
       totalPrice: map['totalPrice'] as int,
       price: map['price'] as int,
       seviceProviderId: map['seviceProviderId'] as String,

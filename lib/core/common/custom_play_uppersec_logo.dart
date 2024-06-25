@@ -37,6 +37,7 @@ class CustomPlayUpperSecLogo extends StatelessWidget {
                   onPressed: () {},
                   icon: Image.asset(
                     "assets/page-1/images/kamn_noBG.png",
+                    width: size.width * 0.1,
                     fit: BoxFit.contain,
                   ))
             ],

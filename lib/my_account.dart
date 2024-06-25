@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:kman/HandlingDataView.dart';
 import 'package:kman/core/providers/utils.dart';
 import 'package:kman/edit_account.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/home/widget/custom_account_middlesec.dart';
 import 'package:kman/theme/pallete.dart';
-
 import 'featuers/home/widget/custom_account_grident.dart';
 import 'featuers/home/widget/custom_uppersec_account.dart';
 
@@ -23,6 +23,12 @@ class MyAccount extends ConsumerWidget {
     void copyId() {
       Clipboard.setData(ClipboardData(text: user!.uid));
       showSnackBar("Text Copy To Clipboard", context);
+    }
+
+    void setadmin() {
+      ref
+          .watch(authControllerProvider.notifier)
+          .updateUserServiceStatus("1", user!.uid, context);
     }
 
     return SafeArea(
@@ -85,29 +91,31 @@ class MyAccount extends ConsumerWidget {
             SizedBox(
               height: size.height * 0.04,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-              child: ElevatedButton(
-                onPressed: () => Get.to(() => EditAccountScreen(
-                      usermodel: user,
-                    )),
-                child: Text(
-                  'Edit',
-                  style: TextStyle(
-                      color: Pallete.whiteColor,
-                      fontFamily: "Muller",
-                      fontSize: size.width * 0.05,
-                      fontWeight: FontWeight.w600),
+            if (user.isAuthanticated)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+                child: ElevatedButton(
+                  onPressed: () => setadmin(),
+                  // () => Get.to(() => EditAccountScreen(
+                  //       usermodel: user,
+                  //     )),
+                  child: Text(
+                    'Edit',
+                    style: TextStyle(
+                        color: Pallete.whiteColor,
+                        fontFamily: "Muller",
+                        fontSize: size.width * 0.05,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      fixedSize: Size(size.width, size.height * 0.055),
+                      backgroundColor: Pallete.fontColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.02))),
                 ),
-                style: ElevatedButton.styleFrom(
-                    elevation: 5,
-                    fixedSize: Size(size.width, size.height * 0.055),
-                    backgroundColor: Pallete.fontColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(size.width * 0.02))),
               ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/common/booking_dataTime_converted.dart';
 import 'package:kman/featuers/orders/screens/my_reservisions/orders_coach_details.dart';
-import 'package:kman/featuers/orders/screens/ordersdetails.dart';
 import 'package:kman/theme/pallete.dart';
 
 import '../../../../models/order_model.dart';
@@ -26,12 +25,13 @@ class CustomcardPendingCoach extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(size.width * 0.01),
       child: Card(
-        color: Colors.white,
         elevation: 6,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

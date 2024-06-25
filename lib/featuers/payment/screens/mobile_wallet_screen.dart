@@ -4,13 +4,18 @@ import 'package:kman/featuers/orders/controller/orders_controller.dart';
 import 'package:kman/models/passorder_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../core/constants/collection_constants.dart';
+import '../../../models/qr_order_model.dart';
+
 class MobileWalletScreen extends ConsumerStatefulWidget {
   String url;
   String collection;
+  QrOrderModel qrOrderModel;
   PassOrderModel passOrderModel;
   MobileWalletScreen(
       {super.key,
       required this.url,
+      required this.qrOrderModel,
       required this.passOrderModel,
       required this.collection});
 
@@ -21,7 +26,21 @@ class MobileWalletScreen extends ConsumerStatefulWidget {
 
 class _MobileWalletScreenState extends ConsumerState<MobileWalletScreen> {
   setorder(BuildContext context) {
-    if (widget.collection != "medical") {
+    if (widget.collection == Collections.nutritionCollection ||
+        widget.collection == Collections.sportsCollection) {
+      ref.watch(ordersControllerProvider.notifier).setQrOrderItem(
+            context,
+            widget.qrOrderModel.storeId,
+            widget.qrOrderModel.serviceProviderId,
+            widget.qrOrderModel.qrLink,
+            widget.qrOrderModel.image,
+            widget.qrOrderModel.offerTitle,
+            widget.qrOrderModel.offerPrice,
+            widget.qrOrderModel.offerDiscount,
+            widget.qrOrderModel.offerId,
+            widget.collection,
+          );
+    } else if (widget.collection != "medical") {
       ref.watch(ordersControllerProvider.notifier).setOrder(
           context,
           widget.passOrderModel.discount,

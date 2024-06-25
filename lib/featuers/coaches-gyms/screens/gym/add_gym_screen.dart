@@ -42,7 +42,7 @@ class _AddgymScreenState extends ConsumerState<AddgymScreen> {
   setGym(WidgetRef ref) {
     var Formdata = formstate.currentState;
     if (Formdata!.validate()) {
-      ref.watch(coachesGymsControllerProvider.notifier).setGyms(context, logo!,
+      ref.watch(coachesGymsControllerProvider.notifier).setGyms(context, logo,
           fullname!.text, gym == "Mix" ? true : false, widget.fromAsk);
     }
   }

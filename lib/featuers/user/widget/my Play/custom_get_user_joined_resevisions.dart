@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
-import 'package:kman/featuers/play/screens/play_home_screen.dart';
-import 'package:kman/featuers/user/controller/user_controller.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/imgaeasset.dart';
@@ -49,8 +47,6 @@ class CustomGetUserJoinedReservisions extends ConsumerWidget {
           );
         },
         error: (error, StackTrace) {
-          print(error);
-
           return ErrorText(error: error.toString());
         },
         loading: () => LottieBuilder.asset(

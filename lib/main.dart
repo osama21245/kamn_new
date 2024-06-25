@@ -27,6 +27,17 @@ void main() async {
     await Firebase.initializeApp();
   }
 
+  await Firebase.initializeApp(
+      // options: const FirebaseOptions(
+      //     apiKey: "AIzaSyDiNbvFUa6CnxtNpBYraqjO1NiXiYldhbg",
+      //     authDomain: "kman-ab86f.firebaseapp.com",
+      //     projectId: "kman-ab86f",
+      //     storageBucket: "kman-ab86f.appspot.com",
+      //     messagingSenderId: "1036256826353",
+      //     appId: "1:1036256826353:web:b66b9b0666f4f806f26a50",
+      //     measurementId: "G-WEXFG4Q7ES"),
+      );
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,

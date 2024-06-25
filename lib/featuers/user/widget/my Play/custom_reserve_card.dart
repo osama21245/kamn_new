@@ -1,21 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/core/common/custom_elevated_button.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
-
-import 'package:kman/models/grounds_model.dart';
 import 'package:kman/theme/pallete.dart';
-
 import '../../../../models/reserved_model.dart';
-import '../../../play/widget/play/showrating.dart';
 
 class CustomReserveCard extends ConsumerWidget {
-  ReserveModel reserveModel;
-  Color color;
+  final ReserveModel reserveModel;
+  final Color color;
 
-  CustomReserveCard({Key? key, required this.color, required this.reserveModel})
+  const CustomReserveCard(
+      {Key? key, required this.color, required this.reserveModel})
       : super(key: key);
 
   @override
@@ -38,7 +33,7 @@ class CustomReserveCard extends ConsumerWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(size.width * 0.05),
-                  color: Color.fromARGB(15, 83, 83, 83)),
+                  color: const Color.fromARGB(15, 83, 83, 83)),
             ),
             Positioned.fill(
                 child: Opacity(
@@ -54,7 +49,9 @@ class CustomReserveCard extends ConsumerWidget {
                               ? "assets/page-1/images/volleyball.jpg"
                               : reserveModel.category == "Tennis"
                                   ? "assets/page-1/images/tennis.jpg"
-                                  : "assets/page-1/images/football.jpg",
+                                  : reserveModel.category == "Swiming"
+                                      ? "assets/page-1/images/swimming2.jpg"
+                                      : "assets/page-1/images/football.jpg",
                   fit: BoxFit.cover,
                   width: size.width,
                 ),
@@ -72,7 +69,7 @@ class CustomReserveCard extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          '${reserveModel.category}',
+                          reserveModel.category,
                           style: TextStyle(
                               color: color,
                               fontFamily: "Inter",
@@ -124,7 +121,7 @@ class CustomReserveCard extends ConsumerWidget {
                                             fontWeight: FontWeight.w600)),
                                     Text("     ${reserveModel.day}",
                                         style: TextStyle(
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 157, 255, 255, 255),
                                             fontFamily: "Inter",
                                             fontSize: size.width * 0.035,
@@ -141,7 +138,7 @@ class CustomReserveCard extends ConsumerWidget {
                                             fontWeight: FontWeight.w600)),
                                     Text("  ${reserveModel.time}",
                                         style: TextStyle(
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 157, 255, 255, 255),
                                             fontFamily: "Inter",
                                             fontSize: size.width * 0.035,
@@ -157,9 +154,15 @@ class CustomReserveCard extends ConsumerWidget {
                                   borderRadius:
                                       BorderRadius.circular(size.width * 0.07)),
                               child: Text(
-                                "${reserveModel.collaborations.contains(user!.uid) ? "Leave" : !reserveModel.collaborations.contains(user!.uid) ? "Join" : "Details"}",
+                                reserveModel.collaborations.contains(user!.uid)
+                                    ? "Leave"
+                                    : !reserveModel.collaborations
+                                            .contains(user!.uid)
+                                        ? "Join"
+                                        : "Details",
                                 style: TextStyle(
-                                    color: Color.fromARGB(193, 255, 255, 255),
+                                    color: const Color.fromARGB(
+                                        193, 255, 255, 255),
                                     fontFamily: "Inter",
                                     fontSize: size.width * 0.03,
                                     fontWeight: FontWeight.w600),

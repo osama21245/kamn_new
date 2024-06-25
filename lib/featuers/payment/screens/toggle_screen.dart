@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/class/statusrequest.dart';
+import 'package:kman/core/providers/utils.dart';
 import 'package:kman/featuers/payment/controller/payment_controller.dart';
 import 'package:kman/models/qr_order_model.dart';
 import '../../../HandlingDataView.dart';
@@ -42,8 +43,8 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
   @override
   Widget build(BuildContext context) {
     getId(WidgetRef ref, String price) {
-      ref.watch(paymentControllerProvider.notifier).getid(
-          widget.passOrderModel, widget.qrOrderModel!, widget.collection);
+      ref.watch(paymentControllerProvider.notifier).getid(widget.passOrderModel,
+          widget.qrOrderModel ?? qrOrderCommanModel, widget.collection);
     }
 
     valuPayment(WidgetRef ref, String price) {
@@ -109,6 +110,7 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
                 child: InkWell(
                   onTap: () {
                     Get.to(TakeWalletNumScren(
+                      qrOrderModel: widget.qrOrderModel ?? qrOrderCommanModel,
                       collection: widget.collection,
                       passOrderModel: widget.passOrderModel,
                       price: widget.passOrderModel.totalPrice,
@@ -137,7 +139,7 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
                           ),
                           SizedBox(height: 15.0),
                           Text(
-                            'Payment with mobile wallet',
+                            'Mobile wallet',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -178,7 +180,7 @@ class _ToggleScreenState extends ConsumerState<ToggleScreen> {
                             ),
                           ),
                           Text(
-                            'Payment with visa',
+                            'Visa',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,

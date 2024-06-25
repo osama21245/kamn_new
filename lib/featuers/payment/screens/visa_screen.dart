@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/orders/controller/orders_controller.dart';
 import 'package:kman/models/passorder_model.dart';
 import 'package:kman/models/qr_order_model.dart';
@@ -46,12 +46,12 @@ class _VisaScreenState extends ConsumerState<VisaScreen> {
     } else if (widget.collection != "medical") {
       ref.watch(ordersControllerProvider.notifier).setOrder(
           context,
-          widget.passOrderModel.discount,
-          widget.passOrderModel.totalPrice,
+          widget.passOrderModel.discount.toInt(),
+          widget.passOrderModel.totalPrice.toInt(),
           "Visa",
           widget.passOrderModel.seviceProviderId,
           widget.passOrderModel.serviceProviderName,
-          widget.passOrderModel.price,
+          widget.passOrderModel.price.toInt(),
           widget.passOrderModel.ordername,
           widget.passOrderModel.orderDescription,
           widget.passOrderModel.mixOrSeparateOrGroupOrPrivet,
@@ -101,6 +101,9 @@ class _VisaScreenState extends ConsumerState<VisaScreen> {
               widget.url = request.url;
               print(
                   "=========================================================osama =========================================");
+            } else {
+              print(
+                  "=========================================================no pay osama =========================================");
             }
             return NavigationDecision.navigate;
           },

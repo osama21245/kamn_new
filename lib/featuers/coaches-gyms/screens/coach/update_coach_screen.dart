@@ -102,7 +102,7 @@ class _UpdateCoachScreenState extends ConsumerState<UpdateCoachScreen> {
       // may cause Erorr null check because logo!
       ref
           .watch(coachesGymsControllerProvider.notifier)
-          .updateCoach(coachModel, coachImage!, context);
+          .updateCoach(coachModel, coachImage, context);
     }
   }
 
@@ -120,206 +120,218 @@ class _UpdateCoachScreenState extends ConsumerState<UpdateCoachScreen> {
     Size size = MediaQuery.of(context).size;
     StatusRequest statusRequest = ref.watch(coachesGymsControllerProvider);
     return Scaffold(
-      body: Form(
-        key: formstate,
-        child: SafeArea(
-            child: HandlingDataView(
-          statusRequest: statusRequest,
-          widget: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.07, vertical: size.height * 0.05),
-            child: ListView(
-              children: [
-                Text(
-                  "Finish Coach Setup",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Pallete.fontColor,
-                      fontFamily: "Muller",
-                      fontSize: size.width * 0.07,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: size.height * 0.012,
-                ),
-                Text(
-                  "Please complete the following information to \n Fisnsh Your Coach Setup",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Pallete.greyColor,
-                      fontFamily: "Muller",
-                      fontSize: size.width * 0.037,
-                      fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 500, "");
-                  },
-                  name: "Full Name",
-                  controller: fullname!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  name: "whatAppNumber",
-                  controller: whatssAppnum!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: size.height * 0.02, bottom: size.height * 0.02),
-                  child: CustomFinishMiddleSec(
-                      color: Pallete.fontColor,
-                      collection: "Finish Submet",
-                      size: size),
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 500, "");
-                  },
-                  name: "categoriry",
-                  controller: categoriry!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 500, "");
-                  },
-                  name: "education",
-                  controller: education!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 500, "");
-                  },
-                  name: "experince",
-                  controller: experince!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 4, 500, "");
-                  },
-                  name: "benefits",
-                  controller: benefits!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  name: "instgramLink",
-                  controller: instgramLink!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                TextFiled(
-                  name: "faceBookLink",
-                  controller: facebookLink!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                TextFiled(
-                  name: "dynamicLink",
-                  controller: dynamicLink!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.016,
-                ),
-                coachImage == null
-                    ? Container(
-                        height: size.height * 0.15,
-                        width: size.width,
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Pallete.greyColor, width: 2),
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02)),
-                        child: Center(
-                            child: Text(
-                          "Enter Coach Images",
-                          style: TextStyle(
-                              color: Pallete.greyColor,
-                              fontFamily: "Muller",
-                              fontSize: size.width * 0.05,
-                              fontWeight: FontWeight.w600),
-                        )))
-                    : Image.file(coachImage!),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: ElevatedButton(
-                    onPressed: () => pickimagefromGallery(context),
-                    child: Text(
-                      'Add Coach image',
-                      style: TextStyle(
-                          color: Pallete.whiteColor,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: coachImage != null
-                            ? Pallete.primaryColor
-                            : Pallete.greyColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02))),
+      body: SafeArea(
+          child: HandlingDataView(
+        statusRequest: statusRequest,
+        widget: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.07, vertical: size.height * 0.05),
+          child: ListView(
+            children: [
+              Text(
+                "Finish Coach Setup",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Pallete.fontColor,
+                    fontFamily: "Muller",
+                    fontSize: size.width * 0.07,
+                    fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: size.height * 0.012,
+              ),
+              Text(
+                "Please complete the following information to \n Fisnsh Your Coach Setup",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Pallete.greyColor,
+                    fontFamily: "Muller",
+                    fontSize: size.width * 0.037,
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                height: size.height * 0.016,
+              ),
+              Form(
+                  key: formstate,
+                  child: Column(
+                    children: [
+                      TextFiled(
+                        validator: (val) {
+                          return validinput(val!, 4, 500, "");
+                        },
+                        name: "Full Name",
+                        controller: fullname!,
+                        color: Pallete.lightgreyColor2,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.023,
+                      ),
+                      TextFiled(
+                        validator: (val) {
+                          return validinput(val!, 4, 500, "");
+                        },
+                        name: "categoriry",
+                        controller: categoriry!,
+                        color: Pallete.lightgreyColor2,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.023,
+                      ),
+                      TextFiled(
+                        validator: (val) {
+                          return validinput(val!, 4, 500, "");
+                        },
+                        name: "education",
+                        controller: education!,
+                        color: Pallete.lightgreyColor2,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.023,
+                      ),
+                      TextFiled(
+                        validator: (val) {
+                          return validinput(val!, 4, 500, "");
+                        },
+                        name: "experince",
+                        controller: experince!,
+                        color: Pallete.lightgreyColor2,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.023,
+                      ),
+                      TextFiled(
+                        validator: (val) {
+                          return validinput(val!, 4, 500, "");
+                        },
+                        name: "benefits",
+                        controller: benefits!,
+                        color: Pallete.lightgreyColor2,
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: size.height * 0.02, bottom: size.height * 0.02),
+                child: CustomFinishMiddleSec(
+                    color: Pallete.fontColor,
+                    collection: "Optional",
+                    size: size),
+              ),
+              TextFiled(
+                name: "Your facebook page (Optional)",
+                controller: facebookLink!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              TextFiled(
+                name: "Your instgram page (Optional)",
+                controller: instgramLink!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              TextFiled(
+                keytypeisnumber: true,
+                name: "Your whatsApp Number (Optional)",
+                controller: whatssAppnum!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              TextFiled(
+                name: "Any other social link (Optional)",
+                controller: dynamicLink!,
+                color: Pallete.lightgreyColor2,
+              ),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: size.height * 0.02, bottom: size.height * 0.02),
+                child: CustomFinishMiddleSec(
+                    color: Pallete.fontColor,
+                    collection: "Finish Submet",
+                    size: size),
+              ),
+              coachImage == null
+                  ? Container(
+                      height: size.height * 0.15,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Pallete.greyColor, width: 2),
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.02)),
+                      child: Center(
+                          child: Text(
+                        "Enter Coach Images",
+                        style: TextStyle(
+                            color: Pallete.greyColor,
+                            fontFamily: "Muller",
+                            fontSize: size.width * 0.05,
+                            fontWeight: FontWeight.w600),
+                      )))
+                  : Image.file(coachImage!),
+              SizedBox(
+                height: size.height * 0.023,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                child: ElevatedButton(
+                  onPressed: () => pickimagefromGallery(context),
+                  child: Text(
+                    'Add image',
+                    style: TextStyle(
+                        color: Pallete.whiteColor,
+                        fontFamily: "Muller",
+                        fontSize: size.width * 0.05,
+                        fontWeight: FontWeight.w600),
                   ),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      fixedSize: Size(size.width, size.height * 0.06),
+                      backgroundColor: coachImage != null
+                          ? Pallete.primaryColor
+                          : Pallete.greyColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.02))),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
-                  child: ElevatedButton(
-                    onPressed: () => updateCoach(ref),
-                    child: Text(
-                      'Finish',
-                      style: TextStyle(
-                          color: Pallete.whiteColor,
-                          fontFamily: "Muller",
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 5,
-                        fixedSize: Size(size.width, size.height * 0.06),
-                        backgroundColor: Pallete.primaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(size.width * 0.02))),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+                child: ElevatedButton(
+                  onPressed: () => updateCoach(ref),
+                  child: Text(
+                    'Finish',
+                    style: TextStyle(
+                        color: Pallete.whiteColor,
+                        fontFamily: "Muller",
+                        fontSize: size.width * 0.05,
+                        fontWeight: FontWeight.w600),
                   ),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      fixedSize: Size(size.width, size.height * 0.06),
+                      backgroundColor: Pallete.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.02))),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        )),
-      ),
+        ),
+      )),
     );
   }
 }

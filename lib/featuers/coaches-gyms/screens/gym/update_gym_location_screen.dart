@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kman/core/class/statusrequest.dart';
@@ -7,7 +5,6 @@ import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.da
 import 'package:kman/models/gym_locations_model.dart';
 import '../../../../../HandlingDataView.dart';
 import '../../../../../core/common/textfield.dart';
-import '../../../../../core/providers/utils.dart';
 import '../../../../../core/providers/valid.dart';
 import '../../../../../theme/pallete.dart';
 import '../../../../core/class/alex_regions_lists.dart';
@@ -26,10 +23,7 @@ class _UpdateGymLocationScreenState
     extends ConsumerState<UpdateGymLocationScreen> {
   GlobalKey<FormState> formstate = GlobalKey<FormState>();
   TextEditingController? fullname;
-
   TextEditingController? whatssAppnum;
-  TextEditingController? lat;
-  TextEditingController? long;
   TextEditingController? address;
   TextEditingController? instgramLink;
   TextEditingController? facebookLink;
@@ -44,8 +38,7 @@ class _UpdateGymLocationScreenState
     dynamicLink = TextEditingController(text: widget.gymModel.dynamicLink);
     fullname = TextEditingController(text: widget.gymModel.name);
     address = TextEditingController(text: widget.gymModel.address.toString());
-    lat = TextEditingController(text: widget.gymModel.lat.toString());
-    long = TextEditingController(text: widget.gymModel.long.toString());
+
     super.initState();
   }
 
@@ -54,12 +47,9 @@ class _UpdateGymLocationScreenState
     dynamicLink!.dispose();
     facebookLink!.dispose();
     whatssAppnum!.dispose();
-    lat!.dispose();
-    long!.dispose();
     address!.dispose();
     instgramLink!.dispose();
     fullname!.dispose();
-
     super.dispose();
   }
 
@@ -79,8 +69,8 @@ class _UpdateGymLocationScreenState
         address: address!.text,
         city: widget.gymModel.city,
         ismix: gym == "Mix" ? true : false,
-        lat: double.parse(lat!.text),
-        long: double.parse(long!.text),
+        lat: widget.gymModel.lat,
+        long: widget.gymModel.long,
         mainGymId: widget.gymModel.mainGymId,
         region: region,
         gallery: widget.gymModel.gallery,
@@ -166,28 +156,6 @@ class _UpdateGymLocationScreenState
                 ),
                 SizedBox(
                   height: size.height * 0.016,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "lat",
-                  controller: lat!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
-                ),
-                TextFiled(
-                  validator: (val) {
-                    return validinput(val!, 1, 500, "");
-                  },
-                  name: "long",
-                  controller: long!,
-                  color: Pallete.lightgreyColor2,
-                ),
-                SizedBox(
-                  height: size.height * 0.023,
                 ),
                 TextFiled(
                   validator: (val) {

@@ -1,19 +1,15 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/benefits/controller/benefits_controller.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
 import '../../../../models/offers_items_model.dart';
 import '../../../../models/passorder_model.dart';
 import '../../../../models/qr_order_model.dart';
 import '../../../../models/sports_model.dart';
 import '../../../../theme/pallete.dart';
-import '../../../orders/controller/orders_controller.dart';
 import '../../../payment/screens/toggle_screen.dart';
 
 class CustomSportsOffersItemCard extends ConsumerStatefulWidget {
@@ -67,9 +63,9 @@ class _CustomSportsOffersItemCardState
           horizontal: size.width * 0.02, vertical: size.width * 0.012),
       child: Container(
           decoration: BoxDecoration(
-              color: Color.fromARGB(94, 255, 255, 255),
+              color: const Color.fromARGB(94, 255, 255, 255),
               borderRadius: BorderRadius.circular(size.width * 0.02)),
-          height: size.height * 0.1,
+          height: size.height * 0.13,
           child: Row(
             children: [
               Expanded(
@@ -90,7 +86,7 @@ class _CustomSportsOffersItemCardState
                   flex: 2,
                   child: ListTile(
                     title: Text(
-                      "${widget.offersModel.title}",
+                      widget.offersModel.title,
                       style: TextStyle(
                           color: Pallete.whiteColor,
                           fontFamily: "Muller",
@@ -110,7 +106,7 @@ class _CustomSportsOffersItemCardState
                               "Price:",
                               style: TextStyle(
                                 fontFamily: "Muller",
-                                color: Color.fromARGB(255, 250, 220, 52),
+                                color: const Color.fromARGB(255, 250, 220, 52),
                                 fontSize: size.width * 0.03,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -137,7 +133,7 @@ class _CustomSportsOffersItemCardState
                               "Discount:",
                               style: TextStyle(
                                 fontFamily: "Muller",
-                                color: Color.fromARGB(255, 250, 220, 52),
+                                color: const Color.fromARGB(255, 250, 220, 52),
                                 fontSize: size.width * 0.03,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -164,7 +160,7 @@ class _CustomSportsOffersItemCardState
                               "Final Price:",
                               style: TextStyle(
                                 fontFamily: "Muller",
-                                color: Color.fromARGB(255, 250, 220, 52),
+                                color: const Color.fromARGB(255, 250, 220, 52),
                                 fontSize: size.width * 0.03,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -195,7 +191,7 @@ class _CustomSportsOffersItemCardState
                       Text(
                         "Discount ${widget.offersModel.discount}%",
                         style: TextStyle(
-                            color: Color.fromARGB(230, 252, 252, 252),
+                            color: const Color.fromARGB(230, 252, 252, 252),
                             fontFamily: "Muller",
                             fontSize: size.width * 0.025,
                             fontWeight: FontWeight.w500),
@@ -205,7 +201,7 @@ class _CustomSportsOffersItemCardState
                             horizontal: size.width * 0.017),
                         child: ElevatedButton(
                           onPressed: widget.sportsmodel.servicePrividerId ==
-                                  user!.uid
+                                  user.uid
                               ? () => deleteOffer()
                               : () {
                                   PassOrderModel passOrderModel = PassOrderModel(
@@ -213,12 +209,15 @@ class _CustomSportsOffersItemCardState
                                           widget.offersModel.discount),
                                       totalPrice:
                                           (int.parse(widget.offersModel.price) -
-                                                  ((int.parse(widget.offersModel
-                                                              .discount) /
-                                                          100) *
-                                                      int.parse(widget
-                                                          .offersModel.price)))
-                                              .toInt(),
+                                                      ((int.parse(widget
+                                                                  .offersModel
+                                                                  .discount) /
+                                                              100) *
+                                                          int.parse(widget
+                                                              .offersModel
+                                                              .price)))
+                                                  .toInt() *
+                                              100,
                                       price:
                                           int.parse(widget.offersModel.price),
                                       seviceProviderId:
@@ -237,20 +236,6 @@ class _CustomSportsOffersItemCardState
                                           collection:
                                               Collections.sportsCollection)));
                                 },
-                          child: Text(
-                            widget.sportsmodel.servicePrividerId == user!.uid
-                                ? "Delete"
-                                : "Use",
-                            style: TextStyle(
-                                color: Pallete.whiteColor,
-                                fontFamily: "Muller",
-                                fontSize:
-                                    widget.sportsmodel.servicePrividerId ==
-                                            user.uid
-                                        ? size.width * 0.029
-                                        : size.width * 0.034,
-                                fontWeight: FontWeight.w600),
-                          ),
                           style: ElevatedButton.styleFrom(
                               fixedSize: Size(size.width, size.height * 0.02),
                               backgroundColor:
@@ -261,6 +246,20 @@ class _CustomSportsOffersItemCardState
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       size.width * 0.02))),
+                          child: Text(
+                            widget.sportsmodel.servicePrividerId == user.uid
+                                ? "Delete"
+                                : "Use",
+                            style: TextStyle(
+                                color: Pallete.whiteColor,
+                                fontFamily: "Muller",
+                                fontSize:
+                                    widget.sportsmodel.servicePrividerId ==
+                                            user.uid
+                                        ? size.width * 0.016
+                                        : size.width * 0.021,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       )
                     ],

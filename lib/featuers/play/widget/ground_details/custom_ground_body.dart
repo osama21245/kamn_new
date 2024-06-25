@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/models/grounds_model.dart';
+import '../../../../core/function/awesome_dialog.dart';
 import '../../../../theme/pallete.dart';
 import '../../controller/play_controller.dart';
 import '../../screens/reservision_screen.dart';
@@ -22,10 +23,14 @@ class CustomGroundBody extends ConsumerWidget {
       required this.color})
       : super(key: key);
 
-  void gpsTracking(WidgetRef ref, BuildContext context) {
-    ref
-        .watch(playControllerProvider.notifier)
-        .gpsTracking(groundModel.long, groundModel.lat, context);
+  void gpsTracking(WidgetRef ref, BuildContext context, Size size) {
+    if (groundModel.lat == 0.0 && groundModel.long == 0.0) {
+      showAwesomeDialog(context, "This store\n has no location added", size);
+    } else {
+      ref
+          .watch(playControllerProvider.notifier)
+          .gpsTracking(groundModel.long, groundModel.lat, context);
+    }
   }
 
   @override
@@ -145,7 +150,7 @@ class CustomGroundBody extends ConsumerWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () => gpsTracking(ref, context),
+                  onPressed: () => gpsTracking(ref, context, size),
                   child: Text("GPS", style: TextStyle(color: color)),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Pallete.whiteColor,

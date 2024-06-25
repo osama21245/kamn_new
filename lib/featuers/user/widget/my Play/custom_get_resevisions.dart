@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
-import 'package:kman/featuers/play/widget/play/custom_play_card.dart';
 import 'package:kman/featuers/user/widget/my%20Play/custom_ground_reservision_card.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/constants/imgaeasset.dart';
 import '../../../play/screens/reservision_details_screen.dart';
 import '../../screens/myplay_screen.dart';
-import 'custom_reserve_card.dart';
 
 class CustomGetReservisions extends ConsumerWidget {
   Color color;

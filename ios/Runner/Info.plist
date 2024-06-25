@@ -51,5 +51,9 @@
         <string>YOUR_CAMERA_DESCRIPTION</string>
         <key>NSMicrophoneUsageDescription</key>
         <string>YOUR_MICROPHONE_DESCRIPTION</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+        <string>We need your location to provide better services.</string>
+        <key>NSLocationAlwaysUsageDescription</key>
+        <string>We need your location to provide better services even when the app is in background.</string>
 	</dict>
 </plist>

@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kman/core/class/statusrequest.dart';
-import 'package:kman/core/constants/services/collection_constants.dart';
+import 'package:kman/core/constants/constants.dart';
+import 'package:kman/core/constants/collection_constants.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/homemain.dart';
 import 'package:kman/models/medical_model.dart';
@@ -297,7 +297,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Medical", id: medicalModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        medicalModel.image = r;
+        medicalModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateMedical(medicalModel);
@@ -315,7 +315,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Nutrition", id: nutritionModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        nutritionModel.image = r;
+        nutritionModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateNutrition(nutritionModel);
@@ -333,7 +333,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           path: "Sports", id: sportsModel.id, file: logo);
 
       res.fold((l) => showSnackBar(l.toString(), context), (r) {
-        sportsModel.image = r;
+        sportsModel.copyWith(image: r);
       });
     }
     final res = await _benefitsRepository.updateSports(sportsModel);
@@ -452,14 +452,8 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     }
   }
 
-  setNutritionOffers(
-      String title,
-      String description,
-      String price,
-      String discount,
-      String nutritionId,
-      BuildContext context,
-      File filelogo) async {
+  setNutritionOffers(String title, String description, String discount,
+      String nutritionId, BuildContext context, File filelogo) async {
     final id = Uuid().v1();
     String logo = "";
     state = StatusRequest.loading;
@@ -520,21 +514,18 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setMedical(
       BuildContext context,
-      File filelogo,
-      int price,
+      File? filelogo,
       String name,
       String experience,
       String benefits,
       String specialization,
       String education,
-      int discount,
+      String discount,
       String facebooklink,
       String region,
       String dynamicLink,
       String instgramLink,
       String whatssAppNumber,
-      double lat,
-      double long,
       List<File> fileGallery,
       bool fromAsk) async {
     state = StatusRequest.loading;
@@ -542,16 +533,17 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     String id = Uuid().v1();
     int iteration = 0;
     final user = _ref.read(usersProvider);
-    String logo = "";
+    String logo = Constants.store1;
 
     //get image
+    if (filelogo != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.medicalCollection, id: id, file: filelogo);
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.medicalCollection, id: id, file: filelogo);
-
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      logo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        logo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       String imgId = Uuid().v4();
@@ -573,7 +565,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
           from: listmedicalinitialTimesfrom,
           to: listmedicalinitialTimesto,
           gallery: gallery,
-          price: price,
           id: id,
           userId: fromAsk ? user!.uid : "",
           image: logo,
@@ -599,7 +590,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setNutrition(
       BuildContext context,
-      File fileNutritionImage,
+      File? fileNutritionImage,
       String name,
       String about,
       String specialization,
@@ -608,8 +599,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
       String region,
       String whatsAppNumber,
       String dynamicLink,
-      double lat,
-      double long,
       int discount,
       List<File> fileGallery,
       bool fromAsk) async {
@@ -617,18 +606,20 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final user = _ref.read(usersProvider);
     String id = Uuid().v1();
     List<String> gallery = [];
-    String photo = "";
+    String photo = Constants.store1;
     int iteration = 0;
     //get image
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.nutritionCollection,
-        id: id,
-        file: fileNutritionImage);
+    if (fileNutritionImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.nutritionCollection,
+          id: id,
+          file: fileNutritionImage);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      photo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        photo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       final res = await _storageRepository.storeFile(
@@ -673,15 +664,13 @@ class BenefitsController extends StateNotifier<StatusRequest> {
 
   void setSports(
       BuildContext context,
-      File fileSportsImage,
+      File? fileSportsImage,
       String name,
       String about,
       String faceBook,
       String instgram,
       String whatsAppNumber,
       String dynamicLink,
-      double lat,
-      double long,
       int discount,
       List<File> fileGallery,
       String region,
@@ -690,16 +679,18 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     String id = Uuid().v1();
     int iteration = 0;
     final user = _ref.read(usersProvider);
-    String photo = "";
+    String photo = Constants.store1;
     List<String> gallery = [];
     // // get image
 
-    final res = await _storageRepository.storeFile(
-        path: Collections.sportsCollection, id: id, file: fileSportsImage);
+    if (fileSportsImage != null) {
+      final res = await _storageRepository.storeFile(
+          path: Collections.sportsCollection, id: id, file: fileSportsImage);
 
-    res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      photo = r;
-    });
+      res.fold((l) => showSnackBar(l.toString(), context), (r) {
+        photo = r;
+      });
+    }
 
     for (var img in fileGallery) {
       final res = await _storageRepository.storeFile(
@@ -756,13 +747,12 @@ class BenefitsController extends StateNotifier<StatusRequest> {
   void setMedicalRequest(
     BuildContext context,
     String image,
-    int price,
     String name,
     String experience,
     String benefits,
     String specialization,
     String education,
-    int discount,
+    String discount,
     String facebooklink,
     String region,
     String dynamicLink,
@@ -787,7 +777,6 @@ class BenefitsController extends StateNotifier<StatusRequest> {
         from: listmedicalinitialTimesfrom,
         to: listmedicalinitialTimesto,
         gallery: gallery,
-        price: price,
         id: id,
         userId: user!.uid,
         image: image,
@@ -849,13 +838,12 @@ class BenefitsController extends StateNotifier<StatusRequest> {
       dynamicLink: dynamicLink,
       whatsApp: whatsAppNumber,
     );
-    state = StatusRequest.success;
 
     final res = await _benefitsRepository.setSports(sportsModel, false);
     res.fold((l) => showSnackBar(l.toString(), context), (r) {
-      //  Get.offAll(() => HomeMain());
-      showSnackBar("Your sport Added Succefuly", context);
+      showSnackBar(" sport Added Succefuly", context);
     });
+    state = StatusRequest.success;
   }
 
   void setNutritionRequest(
@@ -912,6 +900,7 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final res = await _benefitsRepository.deleteMedicalRequest(medicalId);
     res.fold((l) => null, (r) {
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 
@@ -919,12 +908,14 @@ class BenefitsController extends StateNotifier<StatusRequest> {
     final res = await _benefitsRepository.deleteNutritionRequest(nutritionId);
     res.fold((l) => null, (r) {
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
     });
   }
 
   void deleteSportsRequest(String sportId, BuildContext context) async {
     final res = await _benefitsRepository.deleteSportsRequest(sportId);
     res.fold((l) => null, (r) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
     });
   }

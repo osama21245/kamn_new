@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:kman/core/function/goTo.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/coaches-gyms/widget/locations/custom_get_locations.dart';
 import '../../../../HandlingDataView.dart';
@@ -10,8 +11,10 @@ import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/providers/checkInternet.dart';
 import '../../../../models/gym_model.dart';
 import '../../../../theme/pallete.dart';
+import '../../../user/controller/user_controller.dart';
 import '../../controller/coaches-gyms_controller.dart';
 import 'gym_location_add_screen.dart';
+import 'refuse_gym_request.dart';
 
 class GymLocationsScreen extends ConsumerStatefulWidget {
   final GymModel gymModel;
@@ -32,15 +35,27 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
   acceptGym(
     BuildContext context,
   ) {
-    ref.watch(coachesGymsControllerProvider.notifier).setGymsRequests(context,
-        widget.gymModel.image, widget.gymModel.name, widget.gymModel.ismix);
+    ref.watch(coachesGymsControllerProvider.notifier).setGymsRequests(
+        context,
+        widget.gymModel.image,
+        widget.gymModel.name,
+        widget.gymModel.userId,
+        widget.gymModel.ismix);
+
+    // send message to user
+    ref.watch(userControllerProvider.notifier).sendInboxToUser(
+        title: "Congratulations",
+        description: "Your service has been added successfully to kamn",
+        imageFile: null,
+        userId: widget.gymModel.userId,
+        defImage: true,
+        context: context);
+//update user state
 
     ref
-        .watch(coachesGymsControllerProvider.notifier)
-        .deletegymRequest(widget.gymModel.id, context);
-  }
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("5", widget.gymModel.userId, context);
 
-  refusegym() {
     ref
         .watch(coachesGymsControllerProvider.notifier)
         .deletegymRequest(widget.gymModel.id, context);
@@ -75,33 +90,39 @@ class _GymLocationsScreenState extends ConsumerState<GymLocationsScreen> {
     final user = ref.read(usersProvider);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: user!.state == "1"
-          ? FloatingActionButton(
-              onPressed: () => Get.to(() => AddgymsLocationsScreen(
-                    image: widget.gymModel.image,
-                    gymId: widget.gymModel.id,
-                  )),
-              child: Icon(Icons.add),
-            )
-          : null,
+      floatingActionButton:
+          user!.state == "1" || widget.gymModel.userId == user.uid
+              ? FloatingActionButton(
+                  onPressed: () => Get.to(() => AddgymsLocationsScreen(
+                        serviceProviderId: widget.gymModel.userId,
+                        image: widget.gymModel.image,
+                        gymId: widget.gymModel.id,
+                      )),
+                  child: Icon(Icons.add),
+                )
+              : null,
       body: widget.fromAsk
-          ? Column(
-              children: [
-                CustomElevatedButton(
-                    size: size,
-                    color: Pallete.greenButton,
-                    title: "Accept",
-                    sizeofwidth: size.width * 0.25,
-                    sizeofhight: size.height * 0.03,
-                    onTap: () => acceptGym(context)),
-                CustomElevatedButton(
-                    size: size,
-                    color: Pallete.redColor,
-                    title: "Refuse",
-                    sizeofwidth: size.width * 0.25,
-                    sizeofhight: size.height * 0.03,
-                    onTap: () => refusegym())
-              ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomElevatedButton(
+                      size: size,
+                      color: Pallete.greenButton,
+                      title: "Accept",
+                      sizeofwidth: size.width * 0.35,
+                      sizeofhight: size.height * 0.03,
+                      onTap: () => acceptGym(context)),
+                  CustomElevatedButton(
+                      size: size,
+                      color: Pallete.redColor,
+                      title: "Refuse",
+                      sizeofwidth: size.width * 0.35,
+                      sizeofhight: size.height * 0.03,
+                      onTap: () => goToScreen(context,
+                          RefuseGymRequestScreen(gymModel: widget.gymModel)))
+                ],
+              ),
             )
           : SafeArea(
               child: Column(

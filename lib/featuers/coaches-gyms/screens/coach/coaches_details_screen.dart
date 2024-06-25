@@ -5,20 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:kman/core/common/custom_elevated_button.dart';
+import 'package:kman/core/constants/constants.dart';
 import 'package:kman/edit_collaborator_state_screen.dart';
 import 'package:kman/featuers/auth/controller/auth_controller.dart';
 import 'package:kman/featuers/coaches-gyms/controller/coaches-gyms_controller.dart';
+import 'package:kman/featuers/coaches-gyms/screens/coach/refuse_coach_request.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches_details/coach_prices_card.dart';
 import 'package:kman/featuers/coaches-gyms/widget/coaches_details/custom_add_coachplans_button.dart';
 import 'package:kman/models/coach_prices_model.dart';
 import 'package:kman/models/coache_model.dart';
+import '../../../../core/common/custom_icon_uppersec.dart';
 import '../../../../core/common/custom_uppersec.dart';
 import '../../../../core/common/error_text.dart';
 import '../../../../core/common/update_gallery_screen.dart';
-import '../../../../core/constants/services/collection_constants.dart';
+import '../../../../core/constants/collection_constants.dart';
+import '../../../../core/function/goTo.dart';
 import '../../../../theme/pallete.dart';
 
+import '../../../orders/screens/service_provider_reservisions/service_provider_orders_screen.dart';
 import '../../../play/widget/play/showrating.dart';
+import '../../../user/controller/user_controller.dart';
+import 'update_coach_screen.dart';
 
 class CoachesDetailsScreen extends ConsumerStatefulWidget {
   final String collection;
@@ -75,12 +82,19 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
     ref
         .watch(coachesGymsControllerProvider.notifier)
         .deleteCoachRequest(widget.coacheModel!.id, context);
-  }
 
-  refuseCoach() {
+    // send message to user
+    ref.watch(userControllerProvider.notifier).sendInboxToUser(
+        title: "Congratulations",
+        description: "Your service has been added successfully to kamn",
+        imageFile: null,
+        userId: widget.coacheModel!.userId,
+        defImage: true,
+        context: context);
+//update user state
     ref
-        .watch(coachesGymsControllerProvider.notifier)
-        .deleteCoachRequest(widget.coacheModel!.id, context);
+        .watch(authControllerProvider.notifier)
+        .updateUserServiceStatus("4", widget.coacheModel!.userId, context);
   }
 
   @override
@@ -91,22 +105,32 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(usersProvider);
+    final user = ref.watch(usersProvider)!;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
-            CustomUpperSec(
-              size: size,
-              color: Pallete.fontColor,
-              title: "COACHES",
-            ),
+            widget.coacheModel!.userId == user.uid || user.state == "1"
+                ? CustomIconUpperSec(
+                    size: size,
+                    color: Pallete.fontColor,
+                    title: "COACHES",
+                    onTapAction: () {
+                      goToScreen(context,
+                          UpdateCoachScreen(coacheModel: widget.coacheModel!));
+                    },
+                  )
+                : CustomUpperSec(
+                    size: size,
+                    color: Pallete.fontColor,
+                    title: "COACHES",
+                  ),
             SizedBox(
               height: size.height * 0.02,
             ),
-            Divider(
+            const Divider(
               thickness: 3,
               color: Colors.black,
             ),
@@ -120,12 +144,12 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                   Column(
                     children: [
                       AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           height: status2 == CoachFilterStatusPricse.main
                               ? size.height * 0.1
                               : size.height * 0.03),
                       AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 500),
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
                                 colors: Pallete.listofGridient,
@@ -135,17 +159,17 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                 topLeft: Radius.circular(size.width * 0.02),
                                 topRight: Radius.circular(size.width * 0.02))),
                         height: status2 == CoachFilterStatusPricse.main
-                            ? size.height * 0.62
+                            ? size.height * 0.64
                             : size.height * 0.7,
                         width: size.width,
-                        child: Text(""),
+                        child: const Text(""),
                       ),
                       Material(
                         elevation: 5.0,
                         borderRadius: BorderRadius.circular(size.width * 0.02),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(227, 66, 209, 109),
+                              color: const Color.fromARGB(227, 66, 209, 109),
                               borderRadius: BorderRadius.only(
                                   bottomLeft:
                                       Radius.circular(size.width * 0.02),
@@ -158,8 +182,20 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                 horizontal: size.width * 0.03),
                             child: Row(
                               children: [
-                                status2 == CoachFilterStatusPricse.main
-                                    ? Container(child: Text("             "))
+                                status2 == CoachFilterStatusPricse.main &&
+                                        user.uid == widget.coacheModel!.userId
+                                    ? IconButton(
+                                        onPressed: () {
+                                          goToScreen(
+                                              context,
+                                              ServiceProviderOrdersScreen(
+                                                storeId: widget.coacheModel!.id,
+                                              ));
+                                        },
+                                        icon: const Icon(
+                                          Icons.assignment_turned_in_outlined,
+                                          color: Pallete.whiteColor,
+                                        ))
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
@@ -196,7 +232,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           CoachPricesCard(
                             coachId: widget.coacheModel!.id,
                             collection: widget.collection,
-                            usermodel: user!,
+                            usermodel: user,
                             coachName: widget.coacheModel!.name,
                             pricesModel: CoachPricesModel(
                                 prices: widget.coacheModel!.onlineprices,
@@ -210,7 +246,8 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                     widget.coacheModel!.onlineReservisionTimes),
                             serviceProviderId: widget.coacheModel!.userId,
                           ),
-                          if (user.state == "1")
+                          if (user.state == "1" ||
+                              user.uid == widget.coacheModel!.userId)
                             CustomAddCoachPlansButton(
                               coachPricesModel: CoachPricesModel(
                                   prices: widget.coacheModel!.onlineprices,
@@ -235,7 +272,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           CoachPricesCard(
                             coachId: widget.coacheModel!.id,
                             collection: widget.collection,
-                            usermodel: user!,
+                            usermodel: user,
                             coachName: widget.coacheModel!.name,
                             pricesModel: CoachPricesModel(
                                 prices: widget.coacheModel!.offlineprices,
@@ -286,7 +323,10 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                               child: Center(
                                 child: CircleAvatar(
                                     backgroundColor: Pallete.primaryColor,
-                                    radius: size.width * 0.2,
+                                    radius: widget.coacheModel!.image ==
+                                            Constants.defpro
+                                        ? size.width * 0.26
+                                        : size.width * 0.2,
                                     backgroundImage: CachedNetworkImageProvider(
                                         widget.coacheModel!.image)),
                               ),
@@ -310,9 +350,6 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                               color: Pallete.whiteColor,
                               fontSize: size.width * 0.05,
                               fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: size.width * 0.008,
                         ),
                         Text(
                           widget.coacheModel!.categoriry,
@@ -414,18 +451,19 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                             ? InkWell(
                                 onLongPress: user!.uid ==
                                         widget.coacheModel!.userId
-                                    ? () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                UpdateGalleryScreen(
-                                                  gymlLocatyionId: "",
-                                                  collection: Collections
-                                                      .coachCollection,
-                                                  gallery: widget
-                                                      .coacheModel!.gallery,
-                                                  storeId:
-                                                      widget.coacheModel!.id,
-                                                )))
+                                    ? () {}
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             UpdateGalleryScreen(
+                                    //               gymlLocatyionId: "",
+                                    //               collection: Collections
+                                    //                   .coachCollection,
+                                    //               gallery: widget
+                                    //                   .coacheModel!.gallery,
+                                    //               storeId:
+                                    //                   widget.coacheModel!.id,
+                                    //             )))
                                     : () {},
                                 child: SizedBox(
                                   height: size.height * 0.3,
@@ -561,7 +599,11 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                                 title: "Refuse",
                                                 sizeofwidth: size.width * 0.3,
                                                 sizeofhight: size.height * 0.03,
-                                                onTap: () => refuseCoach())
+                                                onTap: () => goToScreen(
+                                                    context,
+                                                    RefuseCoachRequestScreen(
+                                                        coacheModel: widget
+                                                            .coacheModel!)))
                                           ],
                                         )
                                     ],
@@ -572,7 +614,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           height: size.height * 0.01,
                         ),
                         if (status == CoachesFilterStatus.CV)
-                          Container(
+                          SizedBox(
                             height: size.height * 0.12,
                             width: size.width * 0.75,
                             child: Row(
@@ -588,7 +630,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 1, 17, 53),
                                               width: 2),
                                           borderRadius:
@@ -605,7 +647,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                             SizedBox(
                                               height: size.width * 0.03,
                                             ),
-                                            Text(
+                                            const Text(
                                               "ONLINE",
                                               style: TextStyle(
                                                   color: Colors.white),
@@ -630,7 +672,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 1, 17, 53),
                                               width: 2),
                                           borderRadius:
@@ -647,7 +689,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                                             SizedBox(
                                               height: size.width * 0.03,
                                             ),
-                                            Text(
+                                            const Text(
                                               "OFFLINE",
                                               style: TextStyle(
                                                   color: Colors.white),
@@ -708,7 +750,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           onTap: () => openLink(
                               ref, widget.coacheModel!.faceBook, context),
                           child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 800),
+                            duration: const Duration(milliseconds: 800),
                             opacity:
                                 status2 == CoachFilterStatusPricse.main ? 1 : 0,
                             child: Image.asset(
@@ -726,7 +768,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           onTap: () => openWhatsApp(
                               ref, widget.coacheModel!.whatsAppNum, context),
                           child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 800),
+                            duration: const Duration(milliseconds: 800),
                             opacity:
                                 status2 == CoachFilterStatusPricse.main ? 1 : 0,
                             child: Image.asset(
@@ -744,7 +786,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           onTap: () => openLink(
                               ref, widget.coacheModel!.instgram, context),
                           child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 800),
+                            duration: const Duration(milliseconds: 800),
                             opacity:
                                 status2 == CoachFilterStatusPricse.main ? 1 : 0,
                             child: Image.asset(
@@ -762,7 +804,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
                           onTap: () => openLink(
                               ref, widget.coacheModel!.dynamicLink, context),
                           child: AnimatedOpacity(
-                            duration: Duration(milliseconds: 800),
+                            duration: const Duration(milliseconds: 800),
                             opacity:
                                 status2 == CoachFilterStatusPricse.main ? 1 : 0,
                             child: Image.asset(
@@ -815,7 +857,7 @@ class _CoachesDetailsState extends ConsumerState<CoachesDetailsScreen> {
 
                       return ErrorText(error: error.toString());
                     }, loading: () {
-                      return Center(
+                      return const Center(
                         child: Column(),
                       );
                     }),

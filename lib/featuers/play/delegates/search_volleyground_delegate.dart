@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
-import 'package:kman/core/class/searchParameters.dart';
 import 'package:kman/featuers/play/controller/play_controller.dart';
 import 'package:kman/featuers/play/screens/ground_details_screen.dart';
 import '../../../core/common/error_text.dart';
@@ -49,76 +48,77 @@ class SearchVolleyBallGroundDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ref.watch(getSearchVolleyBallGrounds(query)).when(
-          data: (grounds) => ListView.builder(
-            itemCount: grounds.length,
-            itemBuilder: (BuildContext context, int index) {
-              print("hello");
-              final ground = grounds[index];
-              return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(ground.image),
-                  ),
-                  title: Text('r/${ground.name}'),
-                  onTap: () async {
-                    FocusScope.of(context).unfocus();
-                    // Future.delayed(Duration(milliseconds: 30));
-                    Get.to(GroundDetailsScreen(
-                      fromAsk: false,
-                      color: color,
-                      size: size,
-                      backgroundColor: backGorundColor,
-                      collection: collection,
-                      groundModel: ground,
-                    ));
-                  });
-            },
-          ),
+    List<GroundModel> fliterList;
+    return ref.watch(getVolleyBallGrounds).when(
+          data: (grounds) {
+            fliterList = grounds
+                .where(
+                    (element) => element.name.toLowerCase().startsWith(query))
+                .toList();
+            return query == ""
+                ? Center(
+                    child: Text(""),
+                  )
+                : ListView.builder(
+                    itemCount: fliterList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      print("hello");
+                      final ground = fliterList[index];
+                      return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage:
+                                CachedNetworkImageProvider(ground.image),
+                          ),
+                          title: Text('r/${ground.name}'),
+                          onTap: () async {
+                            FocusScope.of(context).unfocus();
+                            // Future.delayed(Duration(milliseconds: 30));
+                            Get.to(GroundDetailsScreen(
+                              fromAsk: false,
+                              color: color,
+                              size: size,
+                              backgroundColor: backGorundColor,
+                              collection: collection,
+                              groundModel: ground,
+                            ));
+                          });
+                    },
+                  );
+          },
           error: (error, stackTrace) => ErrorText(
             error: error.toString(),
           ),
           loading: () => const Loader(),
         );
-
-    //          List<GroundModel> fliterList;
-    // return ref.watch(getVolleyBallGrounds).when(
-    //       data: (grounds) {
-    //         fliterList = grounds
-    //             .where(
-    //                 (element) => element.name.toLowerCase().startsWith(query))
-    //             .toList();
-    //         return query == ""
-    //             ? Center(
-    //                 child: Text(""),
-    //               )
-    //             : ListView.builder(
-    //                 itemCount: fliterList.length,
-    //                 itemBuilder: (BuildContext context, int index) {
-    //                   print("hello");
-    //                   final ground = fliterList[index];
-    //                   return ListTile(
-    //                       leading: CircleAvatar(
-    //                         backgroundImage: CachedNetworkImageProvider(ground.image),
-    //                       ),
-    //                       title: Text('r/${ground.name}'),
-    //                       onTap: () async {
-    //                         FocusScope.of(context).unfocus();
-    //                         // Future.delayed(Duration(milliseconds: 30));
-    //                       Get.to(GroundDetailsScreen(
+  }
+}
+    // return ref.watch(getSearchVolleyBallGrounds(query)).when(
+    //       data: (grounds) => ListView.builder(
+    //         itemCount: grounds.length,
+    //         itemBuilder: (BuildContext context, int index) {
+    //           print("hello");
+    //           final ground = grounds[index];
+    //           return ListTile(
+    //               leading: CircleAvatar(
+    //                 backgroundImage: CachedNetworkImageProvider(ground.image),
+    //               ),
+    //               title: Text('r/${ground.name}'),
+    //               onTap: () async {
+    //                 FocusScope.of(context).unfocus();
+    //                 // Future.delayed(Duration(milliseconds: 30));
+    //                 Get.to(GroundDetailsScreen(
+    //                   fromAsk: false,
     //                   color: color,
     //                   size: size,
     //                   backgroundColor: backGorundColor,
     //                   collection: collection,
     //                   groundModel: ground,
     //                 ));
-    //                       });
-    //                 },
-    //               );
-    //       },
+    //               });
+    //         },
+    //       ),
     //       error: (error, stackTrace) => ErrorText(
     //         error: error.toString(),
     //       ),
     //       loading: () => const Loader(),
     //     );
-  }
-}
